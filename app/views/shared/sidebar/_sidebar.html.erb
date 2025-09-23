@@ -1,5 +1,24 @@
-<div class="sidebar sidebar-dark sidebar-main sidebar-expand-xl" style="background: #005171;">
+<style>
+  /* Força cor branca para links de submenus */
+  .nav-group-sub .nav-link {
+    color: #fff !important;
+  }
+
+  /* Cor do ícone dos submenus */
+  .nav-group-sub .nav-link i {
+    color: #fff !important;
+  }
+
+  /* Hover dos submenus */
+  .nav-group-sub .nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+  }
+</style>
+
+<div class="sidebar sidebar-dark sidebar-main sidebar-expand-xl" style="background: #317a6cff;">
   <div class="sidebar-content">
+
+    <!-- Cabeçalho do menu -->
     <div class="sidebar-section">
       <div class="sidebar-section-body d-flex justify-content-center">
         <h5 class="sidebar-resize-hide flex-grow-1 my-auto"><b>Menu</b></h5>
@@ -13,6 +32,7 @@
         </div>
       </div>
     </div>
+
     <!-- Barra de pesquisa -->
     <div class="sidebar-section-body">
       <div class="form-control-feedback form-control-feedback-end">
@@ -28,38 +48,103 @@
         </div>
       </div>
     </div>
+
     <!-- Itens da sidebar -->
     <div class="sidebar-section">
       <ul class="nav nav-sidebar" data-nav-type="accordion" id="sidebar-items">
-        <li class="nav-item"></li>
-          <a href="<%= root_path %>" class="nav-link" id="config-link" data-no-close>
+
+        <!-- Home -->
+        <li class="nav-item">
+          <a href="<%= root_path %>" class="nav-link" data-no-close>
             <i class="ph-house"></i>
             <span>Home</span>
           </a>
         </li>
+
+        <!-- Cartões (submenu) -->
+        <li class="nav-item nav-item-submenu">
+          <a href="#" class="nav-link">
+            <i class="ph-credit-card"></i>
+            <span>Cartões</span>
+          </a>
+          <ul class="nav nav-group-sub" style="display: none;">
+            <li class="nav-item">
+              <a href="<%= c_cartoes_path %>" class="nav-link">
+                <i class="ph-list"></i> Todos os Cartões
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="<%= c_tipo_cartoes_path %>" class="nav-link">
+                <i class="ph-list"></i> Tipos de Cartão
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="<%= c_nivel_cartoes_path %>" class="nav-link">
+                <i class="ph-list"></i> Níveis de Cartão
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Outros recursos -->
+        <% sidebar_resources = [
+             {name: "Síndicos", path: c_sindicos_path, icon: "ph-user"},
+             {name: "Tipos de Usuários", path: g_tipo_usuarios_path, icon: "ph-users"},
+             {name: "Status de Usuários", path: g_status_usuarios_path, icon: "ph-clipboard"},
+             {name: "Condomínios", path: c_condominios_path, icon: "ph-align-bottom"}, # ícone ajustado
+             {name: "Prestadores", path: p_prestadores_path, icon: "ph-briefcase"}, 
+             {name: "Categorias", path: p_categorias_path, icon: "ph-archive"}
+           ] %>
+
+        <% sidebar_resources.each do |res| %>
+          <li class="nav-item">
+            <a href="<%= res[:path] %>" class="nav-link">
+              <i class="<%= res[:icon] %>"></i>
+              <span><%= res[:name] %></span>
+            </a>
+          </li>
+        <% end %>
+
       </ul>
     </div>
   </div>
 </div>
 
-  <script>
-    function filterSidebar() {
-      const input = document.getElementById('sidebar-search-input');
-      const filter = input.value.toLowerCase();
-      const navItems = document.querySelectorAll('#sidebar-items .nav-item, #sidebar-items .nav-item-header');
+<script>
+  // Sidebar filter
+  function filterSidebar() {
+    const input = document.getElementById('sidebar-search-input');
+    const filter = input.value.toLowerCase();
+    const navItems = document.querySelectorAll('#sidebar-items .nav-item, #sidebar-items .nav-item-header');
 
-      navItems.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        const isCollapsible = item.querySelector('.nav-group-sub');
+    navItems.forEach(item => {
+      const text = item.textContent.toLowerCase();
+      const isCollapsible = item.querySelector('.nav-group-sub');
 
-        if (text.includes(filter)) {
-          item.style.display = ''; // Mostra o item
-          if (isCollapsible) {
-            isCollapsible.classList.add('show'); // Abre a seção colapsável
-          }
-        } else {
-          item.style.display = 'none'; // Oculta o item
+      if (text.includes(filter)) {
+        item.style.display = ''; // mostra o item
+        if (isCollapsible) {
+          isCollapsible.style.display = ''; // abre submenu
         }
-      });
-    }
-  </script>
+      } else {
+        item.style.display = 'none'; // oculta item
+        if (isCollapsible) {
+          isCollapsible.style.display = 'none';
+        }
+      }
+    });
+  }
+
+  // Toggle submenus
+  document.querySelectorAll('.nav-item-submenu > a').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const submenu = this.nextElementSibling;
+      if (submenu.style.display === 'block') {
+        submenu.style.display = 'none';
+      } else {
+        submenu.style.display = 'block';
+      }
+    });
+  });
+</script>

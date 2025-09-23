@@ -1,0 +1,2 @@
+module GStatusUsuariosHelper
+end

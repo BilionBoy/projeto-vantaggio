@@ -11,42 +11,79 @@ pt-BR:
 
   activerecord:
     models:
-      funcao:
-        one: "Função"
-        other: "Funções"
-      estabelecimento:
-        one: "Estabelecimento"
-        other: "Estabelecimentos"
-      user_estabelecimento:
-        one: "Usuário Estabelecimento"
-        other: "Usuários Estabelecimentos"
-      categoria:
+      g_tipo_usuario:
+        one: "Tipo de Usuário"
+        other: "Tipos de Usuários"
+      user:
+        one: "Usuário"
+        other: "Usuários"
+      g_status_usuario:
+        one: "Status de Usuário"
+        other: "Status de Usuários"
+      c_condominio:
+        one: "Condomínio"
+        other: "Condomínios"
+      c_sindico:
+        one: "Síndico"
+        other: "Síndicos"
+      c_tipo_cartao:
+        one: "Tipo de Cartão"
+        other: "Tipos de Cartões"
+      c_nivel_cartao:
+        one: "Nível do Cartão"
+        other: "Níveis do Cartão"
+      c_cartao:
+        one: "Cartão"
+        other: "Cartões"
+      p_categoria:
         one: "Categoria"
         other: "Categorias"
-      produto:
-        one: "Produto"
-        other: "Produtos"
+      p_prestador:
+        one: "Prestador"
+        other: "Prestadores"
+
     attributes:
-      funcao:
+      user:
         nome: "Nome"
-        descricao: "Descrição"
-      estabelecimento:
-        nome: "Nome"
-        cnpj: "CNPJ"
-        endereco: "Endereço"
+        email: "E-mail"
+        password: "Senha"
+        password_confirmation: "Confirmação de Senha"
         telefone: "Telefone"
-      user_estabelecimento:
-        nome: "Usuário"
-        estabelecimento: "Estabelecimento"
-      categoria:
-        nome: "Nome"
+        g_tipo_usuario_id: "Tipo de Usuário"
+      g_tipo_usuario:
         descricao: "Descrição"
-      produto:
-        nome: "Nome"
+      g_status_usuario:
         descricao: "Descrição"
-        preco: "Preço"
-        categoria: "Categoria"
-        quantidade_estoque: "Quantidade em Estoque"
+      c_condominio:
+        nome: "Nome"
+        endereco: "Endereço"
+        cidade: "Cidade"
+        estado: "Estado"
+      c_sindico:
+        nome: "Nome"
+        telefone: "Telefone"
+        cpf: "CPF"
+        matricula: "Matrícula"
+        c_condominio_id: "Condomínio"
+        g_tipo_usuario_id: "Tipo de Usuário"
+        g_status_usuario_id: "Status de Usuário"
+      p_categoria:
+        descricao: "Descrição"
+      p_prestador:
+        empresa_nome: "Nome da Empresa"
+        cnpj: "CNPJ"
+        p_categoria_id: "Categoria"
+        g_tipo_usuario_id: "Tipo de Usuário"
+        g_status_usuario_id: "Status de Usuário"
+      c_tipo_cartao:
+        descricao: "Descrição"
+      c_nivel_cartao:
+        descricao: "Descrição"
+      c_cartao:
+        codigo_cartao: "Código do Cartão"
+        qrcode: "QR Code"
+        c_tipo_cartao_id: "Tipo do Cartão"
+        c_nivel_cartao_id: "Nível do Cartão"
     errors:
       messages:
         record_invalid: "A validação falhou: %{errors}"

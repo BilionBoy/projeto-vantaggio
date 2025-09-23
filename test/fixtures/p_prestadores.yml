@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  empresa_nome: MyString
+  cnpj: MyString
+  p_categoria: one
+  g_tipo_usuario: one
+  g_status_usuario: one
+
+two:
+  empresa_nome: MyString
+  cnpj: MyString
+  p_categoria: two
+  g_tipo_usuario: two
+  g_status_usuario: two

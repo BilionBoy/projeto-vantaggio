@@ -1,0 +1,43 @@
+<div class="auth-container">
+  <!-- Left Side (Hero) -->
+  <div class="auth-hero">
+    <div class="hero-overlay">
+      <h2>Bem-vindo ao <span>VANTAGGIO</span></h2>
+    </div>
+  </div>
+  <!-- Right Side (Form) -->
+  <div class="auth-content">
+    <div class="auth-card">
+      <div class="auth-logo">M</div>
+      <h1 class="auth-title">Acesse sua conta</h1>
+      <p class="auth-subtitle">Preencha seus dados para continuar</p>
+      <%= simple_form_for(resource, as: resource_name, url: send("#{resource_name}_session_path"), html: { class: "auth-form", novalidate: true }) do |f| %>
+        <% if resource.errors.any? %>
+          <div class="auth-errors">
+            <strong>⚠️ Verifique os erros abaixo:</strong>
+            <ul>
+              <% resource.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <div class="form-inputs">
+          <%= f.input :email, required: true, label: "E-mail", input_html: { autocomplete: "email", autofocus: true, placeholder: "Digite seu e-mail" } %>
+          <%= f.input :password, required: true, label: "Senha", input_html: { autocomplete: "current-password", placeholder: "Digite sua senha" } %>
+          <% if devise_mapping.rememberable? %>
+            <%= f.input :remember_me, as: :boolean, label: "Lembrar de mim" %>
+          <% end %>
+        </div>
+        <div class="form-actions">
+          <%= f.button :submit, "Entrar", class: "btn-primary", data: { disable_with: "Entrando..." } %>
+        </div>
+      <% end %>
+      <div class="auth-links">
+        <% if devise_mapping.registerable? %>
+          <%= link_to "Criar nova conta", new_user_registration_path, class: "auth-link" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  codigo_cartao: MyString
+  qrcode: MyString
+  c_tipo_cartao: one
+  c_nivel_cartao: one
+
+two:
+  codigo_cartao: MyString
+  qrcode: MyString
+  c_tipo_cartao: two
+  c_nivel_cartao: two
