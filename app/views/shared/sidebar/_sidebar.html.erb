@@ -27,30 +27,30 @@
     <div class="sidebar-section">
       <ul class="nav nav-sidebar" data-nav-type="accordion" id="sidebar-items">
         <% SidebarMenu.items.each do |item| %>
-            <% if item[:submenu] %>
-              <% visible_subitems = item[:submenu].select { |sub| sub[:roles].nil? || sub[:roles].include?(current_user.role&.name) } %>
-              <% next if visible_subitems.empty? %>
-              <li class="nav-item nav-item-submenu">
-                <a href="#" class="nav-link">
-                  <i class="<%= item[:icon] %>"></i>
-                  <span><%= item[:name] %></span>
-                </a>
-                <ul class="nav-group-sub collapse">
-                  <% visible_subitems.each do |sub| %>
-                    <li class="nav-item">
-                      <%= link_to t(sub[:name]), sub[:path].is_a?(Proc) ? instance_exec(&sub[:path]) : send(sub[:path]), class: "nav-link" %>
-                    </li>
-                  <% end %>
-                </ul>
-              </li>
-            <% else %>
-              <li class="nav-item">
-                <%= link_to send(item[:path]), class: "nav-link" do %>
-                  <i class="<%= item[:icon] %>"></i>
-                  <span><%= item[:name] %></span>
+          <% if item[:submenu] %>
+            <% visible_subitems = item[:submenu].select { |sub| sub[:roles].nil? || sub[:roles].include?(current_user.role&.name) } %>
+            <% next if visible_subitems.empty? %>
+            <li class="nav-item nav-item-submenu">
+              <a href="#" class="nav-link">
+                <i class="<%= item[:icon] %>"></i>
+                <span><%= item[:name] %></span>
+              </a>
+              <ul class="nav-group-sub collapse">
+                <% visible_subitems.each do |sub| %>
+                  <li class="nav-item">
+                    <%= link_to t(sub[:name]), sub[:path].is_a?(Proc) ? instance_exec(&sub[:path]) : send(sub[:path]), class: "nav-link" %>
+                  </li>
                 <% end %>
-              </li>
-            <% end %>
+              </ul>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to send(item[:path]), class: "nav-link" do %>
+                <i class="<%= item[:icon] %>"></i>
+                <span><%= item[:name] %></span>
+              <% end %>
+            </li>
+          <% end %>
         <% end %>
       </ul>
     </div>

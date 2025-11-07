@@ -64,6 +64,10 @@ pt-BR:
       g_localidade:
         descricao: "Descrição"
         g_distrito: "Distrito"
+      user:
+      nome: "Nome"
+      telefone: "Telefone"
+      a_tipo_usuario_id: "Tipo de Usuário"
     errors:
       messages:
         record_invalid: "A validação falhou: %{errors}"

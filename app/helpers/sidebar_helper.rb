@@ -1,14 +1,17 @@
 module SidebarHelper
-  def user_has_role?(*roles)
-    current_user && roles.include?(current_user.role&.name)
-  end
-  def sidebar_background_style
-    if user_has_role?("Alimentação", "Secretaria Regional", "Coordenador Regional", "Preposto", "Comissão Disciplinar")
-      "background: linear-gradient(to right, #09304c, #0b4973);"
-    elsif session[:evento_etapa] == "OLÍMPICO"
-      "background: linear-gradient(to right, #09304c, #0b4973);"
+  def render_sidebar(user)
+    return unless user
+
+    if user.admin?
+      render 'shared/sidebar/sidebar'
+    elsif user.gestor?
+      render 'shared/sidebar/sidebar_gestor'
+    elsif user.fornecedor?
+      render 'shared/sidebar/sidebar_fornecedor'
+    elsif user.gerenciador?
+      render 'shared/sidebar/sidebar_gerenciador'
     else
-      "background: linear-gradient(to right, #03a62d, #07a15d);"
+      render 'shared/sidebar/sidebar' 
     end
   end
 end
