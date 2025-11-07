@@ -1,0 +1,45 @@
+<div class="container">
+  <%= render "shared/notice" %>
+  <div class="card border-0 shadow shadow-sm">
+    <div class="card-header border-0 d-flex justify-content-between">
+      <span class="fs-4">Visualizar C Centro Custo</span>
+    </div>
+    <div class="card-body">
+      <div id="<%= dom_id @c_centro_custo %>">
+          <p>
+            <strong>Custo:</strong>
+            <%= @c_centro_custo.custo %>
+          </p>
+          <p>
+            <strong>Nome:</strong>
+            <%= @c_centro_custo.nome %>
+          </p>
+          <p>
+            <strong>C Tipo Centro Custo:</strong>
+            <%= @c_centro_custo.c_tipo_centro_custo %>
+          </p>
+          <p>
+            <strong>C Condominio:</strong>
+            <%= @c_centro_custo.c_condominio %>
+          </p>
+          <p>
+            <strong>Valor Inicial:</strong>
+            <%= @c_centro_custo.valor_inicial %>
+          </p>
+          <p>
+            <strong>Saldo Atual:</strong>
+            <%= @c_centro_custo.saldo_atual %>
+          </p>
+      </div>
+    </div>
+    <div class="card-footer border-0 d-flex justify-content-between">
+      <div>
+        <%= link_to edit_c_centro_custo_path(@c_centro_custo), class: "btn btn-primary" do %>
+        <i class="bi bi-pencil-square"></i> Editar
+        <% end %>
+        <%= link_to "Voltar", c_centros_custos_path, class: "btn btn-secondary" %>
+      </div>
+      <%= button_to "Deletar", @c_centro_custo, method: :delete, class: "btn btn-outline-danger border-0" %>
+    </div>
+  </div>
+</div>

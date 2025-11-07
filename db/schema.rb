@@ -10,9 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_23_193729) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_07_191719) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "a_empresas_prestadores", force: :cascade do |t|
+    t.string "nome_fantasia"
+    t.string "razao_social"
+    t.string "cnpj"
+    t.string "endereco"
+    t.string "telefone"
+    t.string "contato"
+    t.string "email"
+    t.bigint "a_status_id", null: false
+    t.bigint "g_municipio_id", null: false
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["a_status_id"], name: "index_a_empresas_prestadores_on_a_status_id"
+    t.index ["g_municipio_id"], name: "index_a_empresas_prestadores_on_g_municipio_id"
+  end
+
+  create_table "a_status", force: :cascade do |t|
+    t.string "descricao"
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "a_tipo_usuarios", force: :cascade do |t|
+    t.string "descricao"
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "c_cartoes", force: :cascade do |t|
     t.string "codigo_cartao"
@@ -26,6 +63,38 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_23_193729) do
     t.datetime "updated_at", null: false
     t.index ["c_nivel_cartao_id"], name: "index_c_cartoes_on_c_nivel_cartao_id"
     t.index ["c_tipo_cartao_id"], name: "index_c_cartoes_on_c_tipo_cartao_id"
+  end
+
+  create_table "c_centros", force: :cascade do |t|
+    t.string "custo"
+    t.string "nome"
+    t.bigint "c_tipo_centro_custo_id", null: false
+    t.bigint "c_condominio_id", null: false
+    t.decimal "valor_inicial", precision: 15, scale: 2
+    t.decimal "saldo_atual", precision: 15, scale: 2
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["c_condominio_id"], name: "index_c_centros_on_c_condominio_id"
+    t.index ["c_tipo_centro_custo_id"], name: "index_c_centros_on_c_tipo_centro_custo_id"
+  end
+
+  create_table "c_centros_custos", force: :cascade do |t|
+    t.string "custo"
+    t.string "nome"
+    t.bigint "c_tipo_centro_custo_id", null: false
+    t.bigint "c_condominio_id", null: false
+    t.decimal "valor_inicial", precision: 15, scale: 2
+    t.decimal "saldo_atual", precision: 15, scale: 2
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["c_condominio_id"], name: "index_c_centros_custos_on_c_condominio_id"
+    t.index ["c_tipo_centro_custo_id"], name: "index_c_centros_custos_on_c_tipo_centro_custo_id"
   end
 
   create_table "c_condominios", force: :cascade do |t|
@@ -48,25 +117,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_23_193729) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "c_sindicos", force: :cascade do |t|
-    t.string "nome"
-    t.string "email"
-    t.string "telefone"
-    t.string "cpf"
-    t.string "matricula"
-    t.bigint "c_condominio_id", null: false
-    t.bigint "g_tipo_usuario_id", null: false
-    t.bigint "g_status_usuario_id", null: false
-    t.string "created_by"
-    t.string "updated_by"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["c_condominio_id"], name: "index_c_sindicos_on_c_condominio_id"
-    t.index ["g_status_usuario_id"], name: "index_c_sindicos_on_g_status_usuario_id"
-    t.index ["g_tipo_usuario_id"], name: "index_c_sindicos_on_g_tipo_usuario_id"
-  end
-
   create_table "c_tipo_cartoes", force: :cascade do |t|
     t.string "descricao"
     t.string "created_by"
@@ -76,7 +126,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_23_193729) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "g_status_usuarios", force: :cascade do |t|
+  create_table "c_tipos_centros_custos", force: :cascade do |t|
     t.string "descricao"
     t.string "created_by"
     t.string "updated_by"
@@ -85,7 +135,73 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_23_193729) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "g_tipo_usuarios", force: :cascade do |t|
+  create_table "g_bairros", force: :cascade do |t|
+    t.string "descricao"
+    t.bigint "g_municipio_id", null: false
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["g_municipio_id"], name: "index_g_bairros_on_g_municipio_id"
+  end
+
+  create_table "g_distritos", force: :cascade do |t|
+    t.string "descricao"
+    t.bigint "g_municipio_id", null: false
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["g_municipio_id"], name: "index_g_distritos_on_g_municipio_id"
+  end
+
+  create_table "g_estados", force: :cascade do |t|
+    t.string "descricao"
+    t.string "uf"
+    t.bigint "g_pais_id", null: false
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["g_pais_id"], name: "index_g_estados_on_g_pais_id"
+  end
+
+  create_table "g_localidades", force: :cascade do |t|
+    t.string "descricao"
+    t.bigint "g_distrito_id", null: false
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["g_distrito_id"], name: "index_g_localidades_on_g_distrito_id"
+  end
+
+  create_table "g_municipios", force: :cascade do |t|
+    t.string "descricao"
+    t.bigint "g_estado_id", null: false
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["g_estado_id"], name: "index_g_municipios_on_g_estado_id"
+  end
+
+  create_table "g_paises", force: :cascade do |t|
+    t.string "descricao"
+    t.string "sigla"
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "o_categorias_servicos", force: :cascade do |t|
     t.string "descricao"
     t.string "created_by"
     t.string "updated_by"
@@ -94,7 +210,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_23_193729) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "p_categorias", force: :cascade do |t|
+  create_table "o_tipos_solicitacoes", force: :cascade do |t|
     t.string "descricao"
     t.string "created_by"
     t.string "updated_by"
@@ -103,20 +219,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_23_193729) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "p_prestadores", force: :cascade do |t|
-    t.string "empresa_nome"
-    t.string "cnpj"
-    t.bigint "p_categoria_id", null: false
-    t.bigint "g_tipo_usuario_id", null: false
-    t.bigint "g_status_usuario_id", null: false
+  create_table "o_urgencias", force: :cascade do |t|
+    t.string "descricao"
     t.string "created_by"
     t.string "updated_by"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["g_status_usuario_id"], name: "index_p_prestadores_on_g_status_usuario_id"
-    t.index ["g_tipo_usuario_id"], name: "index_p_prestadores_on_g_tipo_usuario_id"
-    t.index ["p_categoria_id"], name: "index_p_prestadores_on_p_categoria_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -127,21 +236,26 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_23_193729) do
     t.datetime "remember_created_at"
     t.string "nome"
     t.string "telefone"
-    t.bigint "g_tipo_usuario_id", null: false
+    t.bigint "a_tipo_usuario_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["a_tipo_usuario_id"], name: "index_users_on_a_tipo_usuario_id"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["g_tipo_usuario_id"], name: "index_users_on_g_tipo_usuario_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "a_empresas_prestadores", "a_status"
+  add_foreign_key "a_empresas_prestadores", "g_municipios"
   add_foreign_key "c_cartoes", "c_nivel_cartoes"
   add_foreign_key "c_cartoes", "c_tipo_cartoes"
-  add_foreign_key "c_sindicos", "c_condominios"
-  add_foreign_key "c_sindicos", "g_status_usuarios"
-  add_foreign_key "c_sindicos", "g_tipo_usuarios"
-  add_foreign_key "p_prestadores", "g_status_usuarios"
-  add_foreign_key "p_prestadores", "g_tipo_usuarios"
-  add_foreign_key "p_prestadores", "p_categorias"
-  add_foreign_key "users", "g_tipo_usuarios"
+  add_foreign_key "c_centros", "c_condominios"
+  add_foreign_key "c_centros", "c_tipos_centros_custos"
+  add_foreign_key "c_centros_custos", "c_condominios"
+  add_foreign_key "c_centros_custos", "c_tipos_centros_custos"
+  add_foreign_key "g_bairros", "g_municipios"
+  add_foreign_key "g_distritos", "g_municipios"
+  add_foreign_key "g_estados", "g_paises"
+  add_foreign_key "g_localidades", "g_distritos"
+  add_foreign_key "g_municipios", "g_estados"
+  add_foreign_key "users", "a_tipo_usuarios"
 end

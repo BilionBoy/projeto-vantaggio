@@ -9,7 +9,7 @@ module LayoutByUser
 
   def set_layout_by_controller
     if devise_controller?
-      self.class.layout 'devise_application'
+      self.class.layout 'auth'
     else
       self.class.layout 'application'
     end

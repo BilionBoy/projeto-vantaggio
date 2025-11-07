@@ -11,21 +11,12 @@ pt-BR:
 
   activerecord:
     models:
-      g_tipo_usuario:
-        one: "Tipo de Usuário"
-        other: "Tipos de Usuários"
       user:
         one: "Usuário"
         other: "Usuários"
-      g_status_usuario:
-        one: "Status de Usuário"
-        other: "Status de Usuários"
-      c_condominio:
-        one: "Condomínio"
-        other: "Condomínios"
-      c_sindico:
-        one: "Síndico"
-        other: "Síndicos"
+      a_tipo_usuario:
+        one: "Tipo de Usuário"
+        other: "Tipos de Usuários"
       c_tipo_cartao:
         one: "Tipo de Cartão"
         other: "Tipos de Cartões"
@@ -35,13 +26,40 @@ pt-BR:
       c_cartao:
         one: "Cartão"
         other: "Cartões"
-      p_categoria:
-        one: "Categoria"
-        other: "Categorias"
-      p_prestador:
-        one: "Prestador"
-        other: "Prestadores"
-
+      g_bairro:
+        one: "Bairro"
+        other: "Bairros"
+      g_distrito:
+        one: "Distrito"
+        other: "Distritos"
+      g_estado:
+        one: "Estado"
+        other: "Estados"
+      g_municipio:
+        one: "Município"
+        other: "Municípios"
+      g_pais:
+        one: "País"
+        other: "Países"
+      g_localidade:
+        one: "Localidade"
+        other: "Localidades"
+      c_condominio:
+        one: "Condomínio"
+        other: "Condomínios"
+      c_tipo_centro_custo:
+         one: "Tipo de Centro de Custo"
+         other: "Tipos de Centros de Custo"
+      c_centro_custo:
+         one: "Centro de Custo"
+         other: "Centros de Custo"
+      a_status:
+        one: "Status"
+        other: "Status"
+      a_empresa_prestador:
+        one: "Empresa Prestador"
+        other: "Empresas Prestadores"
+      
     attributes:
       user:
         nome: "Nome"
@@ -49,32 +67,9 @@ pt-BR:
         password: "Senha"
         password_confirmation: "Confirmação de Senha"
         telefone: "Telefone"
-        g_tipo_usuario_id: "Tipo de Usuário"
-      g_tipo_usuario:
+        a_tipo_usuario: "Tipo de Usuário"
+      a_tipo_usuario:
         descricao: "Descrição"
-      g_status_usuario:
-        descricao: "Descrição"
-      c_condominio:
-        nome: "Nome"
-        endereco: "Endereço"
-        cidade: "Cidade"
-        estado: "Estado"
-      c_sindico:
-        nome: "Nome"
-        telefone: "Telefone"
-        cpf: "CPF"
-        matricula: "Matrícula"
-        c_condominio_id: "Condomínio"
-        g_tipo_usuario_id: "Tipo de Usuário"
-        g_status_usuario_id: "Status de Usuário"
-      p_categoria:
-        descricao: "Descrição"
-      p_prestador:
-        empresa_nome: "Nome da Empresa"
-        cnpj: "CNPJ"
-        p_categoria_id: "Categoria"
-        g_tipo_usuario_id: "Tipo de Usuário"
-        g_status_usuario_id: "Status de Usuário"
       c_tipo_cartao:
         descricao: "Descrição"
       c_nivel_cartao:
@@ -84,20 +79,59 @@ pt-BR:
         qrcode: "QR Code"
         c_tipo_cartao_id: "Tipo do Cartão"
         c_nivel_cartao_id: "Nível do Cartão"
+      c_centro_custo:
+        nome: "Nome"
+        codigo_dotacao: "Código de Dotação"
+        c_condominio_id: "Condominio"
+        c_tipo_centro_custo_id: "Tipo de Centro de Custo"
+        valor_inicial: "Valor Inicial"
+        valor_atual: "Valor Atual"
+      c_condominio:
+        nome: "Nome"
+        endereco: "Endereço"
+        cidade: "Cidade"
+        estado: "Estado"
+      g_bairro:
+        descricao: "Descrição"
+        g_municipio: "Município"
+      g_estado:
+        descricao: "Descrição"
+        uf: "UF"
+        g_pais: "País"
+      g_distrito:
+        descricao: "Descrição"
+        g_municipio: "Município"
+      g_pais:
+        descricao: "Descrição"
+        sigla: "Sigla"
+      g_municipio:
+        descricao: "Descrição"
+        g_estado: "Estado"
+      g_localidade:
+        descricao: "Descrição"
+        g_distrito: "Distrito"
+      user:
+       nome: "Nome"
+       telefone: "Telefone"
+       a_tipo_usuario_id: "Tipo de Usuário"
+      a_empresa_prestador:
+        nome_fantasia: "Nome Fantasia"
+        razao_social: "Razão Social"
+        cnpj: "Cnpj"
+        telefone: "Telefone"
+        email: "Email"
+        endereco: "Endereço"
+        numero: "Número"
+        complemento: "Complemento"
+        g_municipio_id: "Município"
+        a_status_id: "Status"
+        t_taxa_id: "Taxa"
     errors:
       messages:
         record_invalid: "A validação falhou: %{errors}"
         restrict_dependent_destroy:
           has_one: Não é possível excluir o registro pois existe um %{record} dependente
           has_many: Não é possível excluir o registro pois existem %{record} dependentes
-      models:
-        funcao:
-          one: "Funcao"
-          other: "Funcões"
-      attributes:
-        funcoes:
-          nome: "Nome"
-          descricao: "Descrição"
   date:
     abbr_day_names:
       - dom

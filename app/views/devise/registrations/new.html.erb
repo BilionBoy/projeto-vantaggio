@@ -40,7 +40,7 @@
             <%= f.input :password_confirmation, required: true, label: "Confirmação de Senha", input_html: { placeholder: "Confirme sua senha" } %>
           </div>
           <div class="col-md-6">
-            <%= f.input :g_tipo_usuario_id, collection: GTipoUsuario.all, label_method: :descricao, value_method: :id, prompt: "Selecione o tipo de usuário", required: true, input_html: { class: "form-select" } %>
+            <%= f.input :a_tipo_usuario_id, collection: ATipoUsuario.all, label_method: :descricao, value_method: :id, prompt: "Selecione o tipo de usuário", required: true, input_html: { class: "form-select" } %>
           </div>
         </div>
         <div class="mt-4 d-flex justify-content-center">

@@ -1,150 +1,176 @@
 <style>
-  /* Força cor branca para links de submenus */
-  .nav-group-sub .nav-link {
-    color: #fff !important;
+  /* Fundo degradê */
+  .sidebar.sidebar-dark {
+    background: linear-gradient(135deg, #317a6cff 0%, #44A08D 100%) !important;
   }
 
-  /* Cor do ícone dos submenus */
+  /* Links e ícones dos submenus */
+  .nav-group-sub .nav-link,
   .nav-group-sub .nav-link i {
     color: #fff !important;
   }
 
   /* Hover dos submenus */
   .nav-group-sub .nav-link:hover {
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Ícones principais */
+  .nav-sidebar .nav-link i {
+    margin-right: 8px;
+  }
+
+  /* Transição suave */
+  .nav-link {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Campo de busca */
+  #sidebar-search-input {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+  }
+
+  #sidebar-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .form-control-feedback-icon {
+    color: rgba(255, 255, 255, 0.8);
   }
 </style>
-
-<div class="sidebar sidebar-dark sidebar-main sidebar-expand-xl" style="background: #317a6cff;">
+<div class="sidebar sidebar-dark sidebar-main sidebar-expand-xl">
   <div class="sidebar-content">
-
-    <!-- Cabeçalho do menu -->
-    <div class="sidebar-section">
-      <div class="sidebar-section-body d-flex justify-content-center">
-        <h5 class="sidebar-resize-hide flex-grow-1 my-auto"><b>Menu</b></h5>
-        <div>
-          <button
-            type="button"
-            class="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-mobile-main-toggle d-xl-none"
-          >
-            <i class="ph-x"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Barra de pesquisa -->
-    <div class="sidebar-section-body">
+    <!-- Campo de pesquisa -->
+    <div class="sidebar-section-body p-2">
       <div class="form-control-feedback form-control-feedback-end">
-        <input
-          type="search"
-          id="sidebar-search-input"
-          class="form-control"
-          placeholder="Pesquisar"
-          onkeyup="filterSidebar()"
-        />
+        <input type="search" id="sidebar-search-input" class="form-control" placeholder="Pesquisar" onkeyup="filterSidebar()">
         <div class="form-control-feedback-icon">
           <i class="ph-magnifying-glass opacity-50"></i>
         </div>
       </div>
     </div>
-
-    <!-- Itens da sidebar -->
+    <!-- Menu principal -->
     <div class="sidebar-section">
       <ul class="nav nav-sidebar" data-nav-type="accordion" id="sidebar-items">
-
         <!-- Home -->
         <li class="nav-item">
-          <a href="<%= root_path %>" class="nav-link" data-no-close>
+          <%= link_to root_path, class: "nav-link" do %>
             <i class="ph-house"></i>
             <span>Home</span>
-          </a>
+          <% end %>
         </li>
-
-        <!-- Cartões (submenu) -->
+        <!-- Usuários -->
+        <li class="nav-item">
+          <%= link_to users_path, class: "nav-link" do %>
+            <i class="ph-users"></i>
+            <span>Usuários</span>
+          <% end %>
+        </li>
+        <!-- Empresas Prestadoras -->
+        <li class="nav-item">
+          <%= link_to a_empresas_prestadores_path, class: "nav-link" do %>
+            <i class="ph-storefront"></i>
+            <span>Empresas Prestadoras</span>
+          <% end %>
+        </li>
+        <!-- Condomínios -->
+        <li class="nav-item">
+          <%= link_to c_condominios_path, class: "nav-link" do %>
+            <i class="ph-buildings"></i>
+            <span>Condomínios</span>
+          <% end %>
+        </li>
+        <!-- Cartões -->
         <li class="nav-item nav-item-submenu">
           <a href="#" class="nav-link">
             <i class="ph-credit-card"></i>
             <span>Cartões</span>
           </a>
-          <ul class="nav nav-group-sub" style="display: none;">
-            <li class="nav-item">
-              <a href="<%= c_cartoes_path %>" class="nav-link">
-                <i class="ph-list"></i> Todos os Cartões
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="<%= c_tipo_cartoes_path %>" class="nav-link">
-                <i class="ph-list"></i> Tipos de Cartão
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="<%= c_nivel_cartoes_path %>" class="nav-link">
-                <i class="ph-list"></i> Níveis de Cartão
-              </a>
-            </li>
+          <ul class="nav-group-sub collapse">
+            <li class="nav-item"><%= link_to "Cartões", c_cartoes_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Tipos de Cartão", c_tipo_cartoes_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Níveis de Cartão", c_nivel_cartoes_path, class: "nav-link" %></li>
           </ul>
         </li>
-
-        <!-- Outros recursos -->
-        <% sidebar_resources = [
-             {name: "Síndicos", path: c_sindicos_path, icon: "ph-user"},
-             {name: "Tipos de Usuários", path: g_tipo_usuarios_path, icon: "ph-users"},
-             {name: "Status de Usuários", path: g_status_usuarios_path, icon: "ph-clipboard"},
-             {name: "Condomínios", path: c_condominios_path, icon: "ph-align-bottom"}, # ícone ajustado
-             {name: "Prestadores", path: p_prestadores_path, icon: "ph-briefcase"}, 
-             {name: "Categorias", path: p_categorias_path, icon: "ph-archive"}
-           ] %>
-
-        <% sidebar_resources.each do |res| %>
-          <li class="nav-item">
-            <a href="<%= res[:path] %>" class="nav-link">
-              <i class="<%= res[:icon] %>"></i>
-              <span><%= res[:name] %></span>
-            </a>
-          </li>
-        <% end %>
-
+        <!-- Operações -->
+        <li class="nav-item nav-item-submenu">
+          <a href="#" class="nav-link">
+            <i class="ph-briefcase"></i>
+            <span>Operações</span>
+          </a>
+          <ul class="nav-group-sub collapse">
+            <li class="nav-item"><%= link_to "Tipos de Solicitação", o_tipos_solicitacoes_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Categorias de Serviços", o_categorias_servicos_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Urgências", o_urgencias_path, class: "nav-link" %></li>
+          </ul>
+        </li>
+        <!-- Tabelas Referenciais -->
+        <li class="nav-item nav-item-submenu">
+          <a href="#" class="nav-link">
+            <i class="ph-folders"></i>
+            <span>Tabelas Referenciais</span>
+          </a>
+          <ul class="nav-group-sub collapse">
+            <li class="nav-item"><%= link_to "Status", a_status_index_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Tipo Usuários", a_tipo_usuarios_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Países", g_paises_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Estados", g_estados_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Municípios", g_municipios_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Bairros", g_bairros_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Distritos", g_distritos_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Localidades", g_localidades_path, class: "nav-link" %></li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>
 </div>
-
 <script>
-  // Sidebar filter
+  // --- Filtro de pesquisa no sidebar ---
   function filterSidebar() {
-    const input = document.getElementById('sidebar-search-input');
-    const filter = input.value.toLowerCase();
-    const navItems = document.querySelectorAll('#sidebar-items .nav-item, #sidebar-items .nav-item-header');
+    const input = document.getElementById("sidebar-search-input");
+    const filter = input.value.toLowerCase().trim();
+    const items = document.querySelectorAll("#sidebar-items > li");
 
-    navItems.forEach(item => {
-      const text = item.textContent.toLowerCase();
-      const isCollapsible = item.querySelector('.nav-group-sub');
+    if (filter === "") {
+      items.forEach(item => {
+        item.style.display = "";
+        const submenu = item.querySelector(".nav-group-sub");
+        if (submenu) {
+          submenu.classList.remove("show");
+          submenu.querySelectorAll("li.nav-item").forEach(sub => sub.style.display = "");
+        }
+      });
+      return;
+    }
 
-      if (text.includes(filter)) {
-        item.style.display = ''; // mostra o item
-        if (isCollapsible) {
-          isCollapsible.style.display = ''; // abre submenu
+    items.forEach(item => {
+      const linkText = item.textContent.toLowerCase();
+      const submenu = item.querySelector(".nav-group-sub");
+
+      if (submenu) {
+        const subitems = submenu.querySelectorAll("li.nav-item");
+        let matchFound = false;
+
+        subitems.forEach(sub => {
+          const text = sub.textContent.toLowerCase();
+          const visible = text.includes(filter);
+          sub.style.display = visible ? "" : "none";
+          if (visible) matchFound = true;
+        });
+
+        if (matchFound || linkText.includes(filter)) {
+          item.style.display = "";
+          submenu.classList.add("show");
+        } else {
+          item.style.display = "none";
+          submenu.classList.remove("show");
         }
       } else {
-        item.style.display = 'none'; // oculta item
-        if (isCollapsible) {
-          isCollapsible.style.display = 'none';
-        }
+        item.style.display = linkText.includes(filter) ? "" : "none";
       }
     });
   }
-
-  // Toggle submenus
-  document.querySelectorAll('.nav-item-submenu > a').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const submenu = this.nextElementSibling;
-      if (submenu.style.display === 'block') {
-        submenu.style.display = 'none';
-      } else {
-        submenu.style.display = 'block';
-      }
-    });
-  });
 </script>

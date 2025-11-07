@@ -36,6 +36,8 @@ group :development, :test do
   # Veja https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
 
+  gem 'dotenv-rails'
+
   # Análise estática para vulnerabilidades de segurança [https://brakemanscanner.org/]
   gem 'brakeman', require: false
 end
@@ -67,7 +69,7 @@ gem 'devise'
 gem 'ransack'
 
 # Paginação
-gem 'pagy'
+gem 'pagy', '~> 5.10'
 
 # Gerar PDF
 gem 'wicked_pdf'

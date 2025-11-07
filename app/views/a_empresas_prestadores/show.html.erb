@@ -1,0 +1,69 @@
+<div class="container">
+  <%= render "shared/notice" %>
+  <div class="card border-0 shadow shadow-sm">
+    <div class="card-header border-0 d-flex justify-content-between">
+      <span class="fs-4">Visualizar A Empresa Prestador</span>
+    </div>
+    <div class="card-body">
+      <div id="<%= dom_id @a_empresa_prestador %>">
+          <p>
+            <strong>Nome Fantasia:</strong>
+            <%= @a_empresa_prestador.nome_fantasia %>
+          </p>
+          <p>
+            <strong>Razao Social:</strong>
+            <%= @a_empresa_prestador.razao_social %>
+          </p>
+          <p>
+            <strong>Cnpj:</strong>
+            <%= @a_empresa_prestador.cnpj %>
+          </p>
+          <p>
+            <strong>Endereco:</strong>
+            <%= @a_empresa_prestador.endereco %>
+          </p>
+          <p>
+            <strong>Telefone:</strong>
+            <%= @a_empresa_prestador.telefone %>
+          </p>
+          <p>
+            <strong>Contato:</strong>
+            <%= @a_empresa_prestador.contato %>
+          </p>
+          <p>
+            <strong>Email:</strong>
+            <%= @a_empresa_prestador.email %>
+          </p>
+          <p>
+            <strong>A Status:</strong>
+            <%= @a_empresa_prestador.a_status %>
+          </p>
+          <p>
+            <strong>G Municipio:</strong>
+            <%= @a_empresa_prestador.g_municipio %>
+          </p>
+          <p>
+            <strong>Created By:</strong>
+            <%= @a_empresa_prestador.created_by %>
+          </p>
+          <p>
+            <strong>Updated By:</strong>
+            <%= @a_empresa_prestador.updated_by %>
+          </p>
+          <p>
+            <strong>Deleted At:</strong>
+            <%= @a_empresa_prestador.deleted_at %>
+          </p>
+      </div>
+    </div>
+    <div class="card-footer border-0 d-flex justify-content-between">
+      <div>
+        <%= link_to edit_a_empresa_prestador_path(@a_empresa_prestador), class: "btn btn-primary" do %>
+        <i class="bi bi-pencil-square"></i> Editar
+        <% end %>
+        <%= link_to "Voltar", a_empresas_prestadores_path, class: "btn btn-secondary" %>
+      </div>
+      <%= button_to "Deletar", @a_empresa_prestador, method: :delete, class: "btn btn-outline-danger border-0" %>
+    </div>
+  </div>
+</div>

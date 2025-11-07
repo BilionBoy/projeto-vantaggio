@@ -4,10 +4,10 @@ one:
   codigo_cartao: MyString
   qrcode: MyString
   c_tipo_cartao: one
-  c_nivel_cartao: one
+  c_nivel_cartal: one
 
 two:
   codigo_cartao: MyString
   qrcode: MyString
   c_tipo_cartao: two
-  c_nivel_cartao: two
+  c_nivel_cartal: two

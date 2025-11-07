@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
 class <%= class_name %> < ApplicationRecord
+<% attributes.select { |attribute| attribute.type == :references }.each do |attribute| -%>
+  belongs_to :<%= attribute.name %>
+<% end -%>
   # Adicione aqui quaisquer métodos ou validações padrão para seus modelos
 end

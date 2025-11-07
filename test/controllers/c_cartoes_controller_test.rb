@@ -17,7 +17,7 @@ class CCartoesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create c_cartao" do
     assert_difference("CCartao.count") do
-      post c_cartoes_url, params: { c_cartao: { c_nivel_cartao_id: @c_cartao.c_nivel_cartao_id, c_tipo_cartao_id: @c_cartao.c_tipo_cartao_id, codigo_cartao: @c_cartao.codigo_cartao, qrcode: @c_cartao.qrcode } }
+      post c_cartoes_url, params: { c_cartao: { c_nivel_cartal_id: @c_cartao.c_nivel_cartal_id, c_tipo_cartao_id: @c_cartao.c_tipo_cartao_id, codigo_cartao: @c_cartao.codigo_cartao, qrcode: @c_cartao.qrcode } }
     end
 
     assert_redirected_to c_cartao_url(CCartao.last)
@@ -34,7 +34,7 @@ class CCartoesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update c_cartao" do
-    patch c_cartao_url(@c_cartao), params: { c_cartao: { c_nivel_cartao_id: @c_cartao.c_nivel_cartao_id, c_tipo_cartao_id: @c_cartao.c_tipo_cartao_id, codigo_cartao: @c_cartao.codigo_cartao, qrcode: @c_cartao.qrcode } }
+    patch c_cartao_url(@c_cartao), params: { c_cartao: { c_nivel_cartal_id: @c_cartao.c_nivel_cartal_id, c_tipo_cartao_id: @c_cartao.c_tipo_cartao_id, codigo_cartao: @c_cartao.codigo_cartao, qrcode: @c_cartao.qrcode } }
     assert_redirected_to c_cartao_url(@c_cartao)
   end
 

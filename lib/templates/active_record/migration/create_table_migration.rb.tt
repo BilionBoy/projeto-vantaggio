@@ -5,9 +5,13 @@ class <%= migration_class_name %> < ActiveRecord::Migration[<%= ActiveRecord::Mi
     create_table :<%= table_name %> do |t|
 <% attributes.each do |attribute| -%>
 <% if attribute.name != "deleted_at" -%>
+<% if attribute.type == :references -%>
+      t.references :<%= attribute.name %>, null: false, foreign_key: true
+<% else -%>
       t.<%= attribute.type %> :<%= attribute.name %>
 <% end -%>
-<% end -%>          
+<% end -%>
+<% end -%>
       t.string :created_by
       t.string :updated_by
       t.datetime :deleted_at
@@ -16,6 +20,6 @@ class <%= migration_class_name %> < ActiveRecord::Migration[<%= ActiveRecord::Mi
   end
 
   def down
-    drop_table :<%= table_name %>
+    drop_table :<%= table_name %> if table_exists?(:<%= table_name %>)
   end
 end

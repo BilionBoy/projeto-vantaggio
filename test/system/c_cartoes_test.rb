@@ -14,7 +14,7 @@ class CCartaosTest < ApplicationSystemTestCase
     visit c_cartoes_url
     click_on "New c cartao"
 
-    fill_in "C nivel cartao", with: @c_cartao.c_nivel_cartao_id
+    fill_in "C nivel cartal", with: @c_cartao.c_nivel_cartal_id
     fill_in "C tipo cartao", with: @c_cartao.c_tipo_cartao_id
     fill_in "Codigo cartao", with: @c_cartao.codigo_cartao
     fill_in "Qrcode", with: @c_cartao.qrcode
@@ -28,7 +28,7 @@ class CCartaosTest < ApplicationSystemTestCase
     visit c_cartao_url(@c_cartao)
     click_on "Edit this c cartao", match: :first
 
-    fill_in "C nivel cartao", with: @c_cartao.c_nivel_cartao_id
+    fill_in "C nivel cartal", with: @c_cartao.c_nivel_cartal_id
     fill_in "C tipo cartao", with: @c_cartao.c_tipo_cartao_id
     fill_in "Codigo cartao", with: @c_cartao.codigo_cartao
     fill_in "Qrcode", with: @c_cartao.qrcode

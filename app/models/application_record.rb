@@ -1,11 +1,8 @@
 class ApplicationRecord < ActiveRecord::Base
   primary_abstract_class
-  def self.ransackable_attributes(auth_object = nil)
-    %w[created_at created_by deleted_at empresa_nome_cont codigo_cartao descricao id nome updated_at updated_by]
-  end
 
-  def self.ransackable_associations(auth_object = nil)
-    %w[estabelecimento user]
+  def self.ransackable_attributes(auth_object = nil)
+    column_names + _ransackers.keys
   end
 
   def self.ransackable_associations(auth_object = nil)

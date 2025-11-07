@@ -13,13 +13,13 @@
       <%= f.error_notification %>
       <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
       <div class="row">
-        <div class="col-3">
+        <div class="col-4">
           <%= f.input :nome, input_html: { class: "capitalize"}, placeholder: "Nome"  %>
         </div>
-        <div class="col-3">
+        <div class="col-4">
           <%= f.input :endereco, input_html: { class: "capitalize"}, placeholder: "Endereco"  %>
         </div>
-        <div class="col-3">
+        <div class="col-4">
           <%= f.input :unidade, input_html: { class: "capitalize"}, placeholder: "Unidade"  %>
         </div>
       </div>

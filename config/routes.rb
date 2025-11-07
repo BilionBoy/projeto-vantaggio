@@ -1,20 +1,37 @@
 Rails.application.routes.draw do
+  resources :c_centros_custos
+  resources :c_tipos_centros_custos
+
+  
+  # --- Módulos gerais ---
+  resources :a_tipo_usuarios
+  resources :g_localidades
+  resources :g_distritos
+  resources :g_bairros
+  resources :g_municipios
+  resources :g_estados
+  resources :g_paises
+  resources :c_condominios
   resources :c_cartoes
   resources :c_nivel_cartoes
   resources :c_tipo_cartoes
-  devise_for :users
-  
-  root 'home#index'
-  get 'home/index'
-  
-  # Rotas Scaffold
-  
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+
+  resources :o_tipos_solicitacoes
+  resources :o_categorias_servicos
+  resources :o_urgencias
+  resources :a_empresas_prestadores
+  resources :a_status
+
+  # --- Devise ---
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations'
+  }
+
+  # --- CRUD administrativo de usuários (painel) ---
+  resources :users, path: "usuarios"
+
+  # --- Sistema e utilitários ---
   get 'up' => 'rails/health#show', as: :rails_health_check
-  resources :p_categorias
-  resources :g_status_usuarios
-  resources :g_tipo_usuarios
-  resources :c_condominios
-  resources :c_sindicos
-  resources :p_prestadores
+  root 'home#index'
 end
