@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :t_taxas
   resources :c_centros_custos
   resources :c_tipos_centros_custos
 
