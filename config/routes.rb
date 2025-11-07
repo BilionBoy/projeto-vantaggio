@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-  resources :c_condominios
-  resources :c_cartoes
-  resources :c_nivel_cartoes
-  resources :c_tipo_cartoes
   # --- Módulos gerais ---
   resources :a_tipo_usuarios
   resources :g_localidades
@@ -11,6 +7,10 @@ Rails.application.routes.draw do
   resources :g_municipios
   resources :g_estados
   resources :g_paises
+  resources :c_condominios
+  resources :c_cartoes
+  resources :c_nivel_cartoes
+  resources :c_tipo_cartoes
   resources :o_tipos_solicitacoes
   resources :o_categorias_servicos
   resources :o_urgencias

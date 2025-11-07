@@ -68,12 +68,31 @@
             <span>Usuários</span>
           <% end %>
         </li>
-        <!-- Empresas Prestadores -->
+        <!-- Empresas Prestadoras -->
         <li class="nav-item">
           <%= link_to a_empresas_prestadores_path, class: "nav-link" do %>
             <i class="ph-storefront"></i>
             <span>Empresas Prestadoras</span>
           <% end %>
+        </li>
+        <!-- Condomínios -->
+        <li class="nav-item">
+          <%= link_to c_condominios_path, class: "nav-link" do %>
+            <i class="ph-buildings"></i>
+            <span>Condomínios</span>
+          <% end %>
+        </li>
+        <!-- Cartões -->
+        <li class="nav-item nav-item-submenu">
+          <a href="#" class="nav-link">
+            <i class="ph-credit-card"></i>
+            <span>Cartões</span>
+          </a>
+          <ul class="nav-group-sub collapse">
+            <li class="nav-item"><%= link_to "Cartões", c_cartoes_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Tipos de Cartão", c_tipo_cartoes_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Níveis de Cartão", c_nivel_cartoes_path, class: "nav-link" %></li>
+          </ul>
         </li>
         <!-- Operações -->
         <li class="nav-item nav-item-submenu">

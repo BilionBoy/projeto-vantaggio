@@ -44,12 +44,16 @@ pt-BR:
       g_localidade:
         one: "Localidade"
         other: "Localidades"
+      c_condominio:
+        one: "Condomínio"
+        other: "Condomínios"
       a_status:
         one: "Status"
         other: "Status"
       a_empresa_prestador:
         one: "Empresa Prestador"
         other: "Empresas Prestadores"
+      
     attributes:
       user:
         nome: "Nome"
@@ -69,6 +73,11 @@ pt-BR:
         qrcode: "QR Code"
         c_tipo_cartao_id: "Tipo do Cartão"
         c_nivel_cartao_id: "Nível do Cartão"
+      c_condominio:
+        nome: "Nome"
+        endereco: "Endereço"
+        cidade: "Cidade"
+        estado: "Estado"
       g_bairro:
         descricao: "Descrição"
         g_municipio: "Município"
