@@ -1,5 +1,4 @@
-require 'pagy'
-require 'pagy/extras/bootstrap'
+require "pagy/extras/i18n"
+require "pagy/extras/bootstrap"
 
-Pagy::I18n.load(locale: 'pt-BR')
-Pagy::DEFAULT[:items] = 6
+Pagy::DEFAULT[:limit] = 6 # items per page

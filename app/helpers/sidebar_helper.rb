@@ -4,12 +4,10 @@ module SidebarHelper
 
     if user.admin?
       render 'shared/sidebar/sidebar'
-    elsif user.gestor?
-      render 'shared/sidebar/sidebar_gestor'
-    elsif user.fornecedor?
-      render 'shared/sidebar/sidebar_fornecedor'
-    elsif user.gerenciador?
-      render 'shared/sidebar/sidebar_gerenciador'
+    elsif user.prestador?
+      render 'shared/sidebar/sidebar_prestador'
+    elsif user.sindico?
+      render 'shared/sidebar/sidebar_sindico'
     else
       render 'shared/sidebar/sidebar' 
     end

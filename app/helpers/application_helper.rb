@@ -1,14 +1,18 @@
 module ApplicationHelper
   include Pagy::Frontend
 
-  def btn_submit(form)
-    text = form.object.new_record? ? 'Incluir' : 'Atualizar'
-    icon_class = 'ph-paper-plane-tilt ms-1'
+ def btn_submit(form)
+  text = form.object.new_record? ? '💾 Incluir' : '🔄 Atualizar'
+  icon_class = form.object.new_record? ? 'ph-check-fat ms-2' : 'ph-arrow-clockwise ms-2'
 
-    button_tag(type: 'submit', class: 'btn btn-primary') do
-      safe_join([text, content_tag(:i, '', class: icon_class)])
-    end
+  button_tag(type: 'submit', class: 'btn btn-success btn-submit-animal') do
+    safe_join([
+      content_tag(:span, text, class: 'fw-bold'),
+      content_tag(:i, '', class: icon_class)
+    ])
   end
+ end
+
 
   def formatar_boolean_xlsx(value)
     value ? 'Sim' : 'Não'

@@ -1,40 +1,44 @@
+# frozen_string_literal: true
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :set_user, only: %i[ edit update destroy]
 
   def index
-    @users = User.all
+   @q = User.ransack(params[:q])
+   @pagy, @users = pagy(@q.result)
   end
-
-  def show
-  end
-
   def new
     @user = User.new
-  end
-
-  def edit
+    @tipos_usuarios = ATipoUsuario.all
   end
 
   def create
     @user = User.new(user_params)
+    @user.password = SecureRandom.hex(8) if @user.password.blank? # gera senha padrão
     if @user.save
-      redirect_to users_path, notice: 'Usuário criado com sucesso.'
+      redirect_to users_path, notice: "Usuário criado com sucesso!"
     else
+      @tipos_usuarios = ATipoUsuario.all
       render :new, status: :unprocessable_entity
     end
   end
 
+  def edit
+    @tipos_usuarios = ATipoUsuario.all
+  end
+
   def update
     if @user.update(user_params)
-      redirect_to users_path, notice: 'Usuário atualizado com sucesso.'
+      redirect_to users_path, notice: "Usuário atualizado com sucesso!"
     else
+      @tipos_usuarios = ATipoUsuario.all
       render :edit, status: :unprocessable_entity
     end
   end
 
   def destroy
     @user.destroy
-    redirect_to users_path, notice: 'Usuário removido com sucesso.'
+    redirect_to users_path, notice: "Usuário removido com sucesso!"
   end
 
   private
@@ -44,6 +48,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:nome, :email, :telefone, :password, :tipo_usuario_id)
+    params.require(:user).permit(:nome, :email, :telefone, :password, :password_confirmation, :a_tipo_usuario_id)
   end
 end
