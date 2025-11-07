@@ -8,7 +8,7 @@ module DevisePermittedParameters
   protected
 
   def configure_permitted_parameters
-    keys = %i[nome telefone g_tipo_usuario_id]
+    keys = %i[nome telefone a_tipo_usuario_id]
 
     # Permitir esses campos no sign_up e account_update
     devise_parameter_sanitizer.permit(:sign_up, keys: keys)

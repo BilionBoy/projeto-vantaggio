@@ -10,9 +10,9 @@ class Ability
     when 'admin'
       Abilities::AdminAbility.new(self, user)
     when 'gestor'
-      Abilities::GestorAbility.new(self, user)
+      Abilities::PrestadorAbility.new(self, user)
     when 'fornecedor'
-      Abilities::FornecedorAbility.new(self, user)
+      Abilities::SindicoAbility.new(self, user)
     end
   end
 end

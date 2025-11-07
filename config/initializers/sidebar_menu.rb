@@ -8,6 +8,12 @@ class SidebarMenu
         roles: :all
       },
       {
+        name: 'Usuários',
+        icon: 'ph-users',
+        path: :users_path,
+        roles: :all
+      },
+      {
         name: "Tabelas Referenciais",
         icon: "ph-folders",
         submenu: [

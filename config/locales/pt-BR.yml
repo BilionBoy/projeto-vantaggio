@@ -42,7 +42,7 @@ pt-BR:
         password: "Senha"
         password_confirmation: "Confirmação de Senha"
         telefone: "Telefone"
-        a_tipo_usuario_id: "Tipo de Usuário"
+        a_tipo_usuario: "Tipo de Usuário"
       a_tipo_usuario:
         descricao: "Descrição"
       g_bairro:

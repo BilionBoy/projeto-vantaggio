@@ -69,7 +69,7 @@ gem 'devise'
 gem 'ransack'
 
 # Paginação
-gem 'pagy'
+gem 'pagy', '~> 5.10'
 
 # Gerar PDF
 gem 'wicked_pdf'

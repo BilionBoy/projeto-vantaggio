@@ -1,0 +1,40 @@
+<%= render "shared/context_nav", title: t("activerecord.models.#{User.model_name.i18n_key}.other") do  %>
+<span class="breadcrumb-item"><%= link_to t("activerecord.models.#{User.model_name.i18n_key}.other"), class: "text-dark" %></span>
+<span class="breadcrumb-item active"><%= t("helpers.submit.#{params[:action]}") %></span>
+<% end %>
+
+<!-- Form Customizado -->
+<!-- Área de notificações -->
+<%= simple_form_for(@user) do |f| %>
+  <!-- Card e formulário -->
+  <div class="card">
+    <div class="card-header">
+    <h5 class="my-0">
+      <%= @user.new_record? ? "Incluir " : "Editar " %><%= t("activerecord.models.#{User.model_name.i18n_key}.one") %>
+    </h5>
+    </div>
+    <div class="card-body">
+      <div class="form-inputs">
+        <%= f.input :nome, required: true, autofocus: true %>
+        <%= f.input :email, required: true, autofocus: true %>
+        <%= f.input :a_tipo_usuario, collection: ATipoUsuario.all, required: true, prompt: "Selecione um cargo", input_html: { class: "form-select" } %>
+        <%= f.input :telefone, required: true, autofocus: true, input_html: { disabled: false } %>
+        <%= f.input :current_password,
+                hint: "Precisamos da sua senha atual para confirmar suas alterações",
+                required: true,
+                input_html: { autocomplete: "current-password" } %>
+        <%= f.input :password,
+                hint: "Deixe em branco se não quiser alterar",
+                required: false,
+                input_html: { autocomplete: "new-password" } %>
+        <%= f.input :password_confirmation,
+                required: false,
+                input_html: { autocomplete: "new-password" } %>
+      </div>
+      <div class="form-actions">
+        <%= link_to "Voltar", :back, class: "btn btn-outline-secondary" %>
+        <%= btn_submit(f) %>
+      </div>
+    </div>
+  </div>
+<% end %>
