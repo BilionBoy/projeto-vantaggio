@@ -15,6 +15,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.irregular 'c_condominio', 'c_condominios'
   inflect.irregular 'c_tipo_centro_custo',               'c_tipos_centros_custos'
   inflect.irregular 'c_centro_custo',                    'c_centros_custos'
+  inflect.irregular 't_taxa',                            't_taxas'
 
 
 end

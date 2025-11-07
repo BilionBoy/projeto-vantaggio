@@ -126,6 +126,10 @@ pt-BR:
         g_municipio_id: "Município"
         a_status_id: "Status"
         t_taxa_id: "Taxa"
+      t_taxa:
+       a_status_id: "Status"
+       nome: "Nome"
+       percentual: "Percentual"
     errors:
       messages:
         record_invalid: "A validação falhou: %{errors}"
