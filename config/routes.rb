@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :a_empresas_prestadores
+  resources :a_status
   # --- Módulos gerais ---
   resources :a_tipo_usuarios
   resources :g_localidades

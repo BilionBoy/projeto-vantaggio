@@ -1,22 +1,49 @@
 <style>
-  /* Força cor branca para links de submenus */
-  .nav-group-sub .nav-link {
-    color: #fff !important;
+  /* Fundo degradê */
+  .sidebar.sidebar-dark {
+    background: linear-gradient(135deg, #317a6cff 0%, #44A08D 100%) !important;
   }
 
-  /* Cor do ícone dos submenus */
+  /* Links e ícones dos submenus */
+  .nav-group-sub .nav-link,
   .nav-group-sub .nav-link i {
     color: #fff !important;
   }
 
   /* Hover dos submenus */
   .nav-group-sub .nav-link:hover {
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Ícones principais */
+  .nav-sidebar .nav-link i {
+    margin-right: 8px;
+  }
+
+  /* Transição suave */
+  .nav-link {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Campo de busca */
+  #sidebar-search-input {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+  }
+
+  #sidebar-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .form-control-feedback-icon {
+    color: rgba(255, 255, 255, 0.8);
   }
 </style>
-<div class="sidebar sidebar-dark sidebar-main sidebar-expand-xl" style="background: linear-gradient(135deg, #317a6cff 0%, #44A08D 100%)">
+<div class="sidebar sidebar-dark sidebar-main sidebar-expand-xl">
   <div class="sidebar-content">
-    <div class="sidebar-section-body">
+    <!-- Campo de pesquisa -->
+    <div class="sidebar-section-body p-2">
       <div class="form-control-feedback form-control-feedback-end">
         <input type="search" id="sidebar-search-input" class="form-control" placeholder="Pesquisar" onkeyup="filterSidebar()">
         <div class="form-control-feedback-icon">
@@ -24,43 +51,58 @@
         </div>
       </div>
     </div>
+    <!-- Menu principal -->
     <div class="sidebar-section">
       <ul class="nav nav-sidebar" data-nav-type="accordion" id="sidebar-items">
-        <% SidebarMenu.items.each do |item| %>
-          <% if item[:submenu] %>
-            <% visible_subitems = item[:submenu].select { |sub| sub[:roles].nil? || sub[:roles].include?(current_user.role&.name) } %>
-            <% next if visible_subitems.empty? %>
-            <li class="nav-item nav-item-submenu">
-              <a href="#" class="nav-link">
-                <i class="<%= item[:icon] %>"></i>
-                <span><%= item[:name] %></span>
-              </a>
-              <ul class="nav-group-sub collapse">
-                <% visible_subitems.each do |sub| %>
-                  <li class="nav-item">
-                    <%= link_to t(sub[:name]), sub[:path].is_a?(Proc) ? instance_exec(&sub[:path]) : send(sub[:path]), class: "nav-link" %>
-                  </li>
-                <% end %>
-              </ul>
-            </li>
-          <% else %>
-            <li class="nav-item">
-              <%= link_to send(item[:path]), class: "nav-link" do %>
-                <i class="<%= item[:icon] %>"></i>
-                <span><%= item[:name] %></span>
-              <% end %>
-            </li>
+        <!-- Home -->
+        <li class="nav-item">
+          <%= link_to root_path, class: "nav-link" do %>
+            <i class="ph-house"></i>
+            <span>Home</span>
           <% end %>
-        <% end %>
+        </li>
+        <!-- Usuários -->
+        <li class="nav-item">
+          <%= link_to users_path, class: "nav-link" do %>
+            <i class="ph-users"></i>
+            <span>Usuários</span>
+          <% end %>
+        </li>
+        <!-- Empresas Prestadores -->
+        <li class="nav-item">
+          <%= link_to a_empresas_prestadores_path, class: "nav-link" do %>
+            <i class="ph-storefront"></i>
+            <span>Empresas Prestadoras</span>
+          <% end %>
+        </li>
+        <!-- Tabelas Referenciais -->
+        <li class="nav-item nav-item-submenu">
+          <a href="#" class="nav-link">
+            <i class="ph-folders"></i>
+            <span>Tabelas Referenciais</span>
+          </a>
+          <ul class="nav-group-sub collapse">
+            <li class="nav-item"><%= link_to "Status", a_status_index_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Tipo Usuários", a_tipo_usuarios_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Países", g_paises_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Estados", g_estados_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Municípios", g_municipios_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Bairros", g_bairros_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Distritos", g_distritos_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Localidades", g_localidades_path, class: "nav-link" %></li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>
 </div>
 <script>
+  // --- Filtro de pesquisa no sidebar ---
   function filterSidebar() {
     const input = document.getElementById("sidebar-search-input");
     const filter = input.value.toLowerCase().trim();
     const items = document.querySelectorAll("#sidebar-items > li");
+
     if (filter === "") {
       items.forEach(item => {
         item.style.display = "";
@@ -72,6 +114,7 @@
       });
       return;
     }
+
     items.forEach(item => {
       const linkText = item.textContent.toLowerCase();
       const submenu = item.querySelector(".nav-group-sub");

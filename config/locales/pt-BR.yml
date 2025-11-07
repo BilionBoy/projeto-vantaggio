@@ -35,6 +35,12 @@ pt-BR:
       g_localidade:
         one: "Localidade"
         other: "Localidades"
+      a_status:
+        one: "Status"
+        other: "Status"
+      a_empresa_prestador:
+        one: "Empresa Prestador"
+        other: "Empresas Prestadores"
     attributes:
       user:
         nome: "Nome"
@@ -68,6 +74,18 @@ pt-BR:
        nome: "Nome"
        telefone: "Telefone"
        a_tipo_usuario_id: "Tipo de Usuário"
+      a_empresa_prestador:
+        nome_fantasia: "Nome Fantasia"
+        razao_social: "Razão Social"
+        cnpj: "Cnpj"
+        telefone: "Telefone"
+        email: "Email"
+        endereco: "Endereço"
+        numero: "Número"
+        complemento: "Complemento"
+        g_municipio_id: "Município"
+        a_status_id: "Status"
+        t_taxa_id: "Taxa"
     errors:
       messages:
         record_invalid: "A validação falhou: %{errors}"

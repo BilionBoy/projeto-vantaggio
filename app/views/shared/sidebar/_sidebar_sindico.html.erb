@@ -1,0 +1,137 @@
+<style>
+  /* Fundo degradê */
+  .sidebar.sidebar-dark {
+    background: linear-gradient(135deg, #317a6cff 0%, #44A08D 100%) !important;
+  }
+
+  /* Links e ícones dos submenus */
+  .nav-group-sub .nav-link,
+  .nav-group-sub .nav-link i {
+    color: #fff !important;
+  }
+
+  /* Hover dos submenus */
+  .nav-group-sub .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Ícones principais */
+  .nav-sidebar .nav-link i {
+    margin-right: 8px;
+  }
+
+  /* Transição suave */
+  .nav-link {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  /* Campo de busca */
+  #sidebar-search-input {
+    background-color: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+  }
+
+  #sidebar-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .form-control-feedback-icon {
+    color: rgba(255, 255, 255, 0.8);
+  }
+</style>
+<div class="sidebar sidebar-dark sidebar-main sidebar-expand-xl">
+  <div class="sidebar-content">
+    <!-- Campo de pesquisa -->
+    <div class="sidebar-section-body p-2">
+      <div class="form-control-feedback form-control-feedback-end">
+        <input type="search" id="sidebar-search-input" class="form-control" placeholder="Pesquisar" onkeyup="filterSidebar()">
+        <div class="form-control-feedback-icon">
+          <i class="ph-magnifying-glass opacity-50"></i>
+        </div>
+      </div>
+    </div>
+    <!-- Menu principal -->
+    <div class="sidebar-section">
+      <ul class="nav nav-sidebar" data-nav-type="accordion" id="sidebar-items">
+        <!-- Home -->
+        <li class="nav-item">
+          <%= link_to root_path, class: "nav-link" do %>
+            <i class="ph-house"></i>
+            <span>Home</span>
+          <% end %>
+        </li>
+        <!-- Usuários -->
+        <li class="nav-item">
+          <%= link_to users_path, class: "nav-link" do %>
+            <i class="ph-users"></i>
+            <span>Usuários</span>
+          <% end %>
+        </li>
+        <!-- Tabelas Referenciais -->
+        <li class="nav-item nav-item-submenu">
+          <a href="#" class="nav-link">
+            <i class="ph-folders"></i>
+            <span>Tabelas Referenciais</span>
+          </a>
+          <ul class="nav-group-sub collapse">
+            <li class="nav-item"><%= link_to "Tipo Usuários", a_tipo_usuarios_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Países", g_paises_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Estados", g_estados_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Municípios", g_municipios_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Bairros", g_bairros_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Distritos", g_distritos_path, class: "nav-link" %></li>
+            <li class="nav-item"><%= link_to "Localidades", g_localidades_path, class: "nav-link" %></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script>
+  // --- Filtro de pesquisa no sidebar ---
+  function filterSidebar() {
+    const input = document.getElementById("sidebar-search-input");
+    const filter = input.value.toLowerCase().trim();
+    const items = document.querySelectorAll("#sidebar-items > li");
+
+    if (filter === "") {
+      items.forEach(item => {
+        item.style.display = "";
+        const submenu = item.querySelector(".nav-group-sub");
+        if (submenu) {
+          submenu.classList.remove("show");
+          submenu.querySelectorAll("li.nav-item").forEach(sub => sub.style.display = "");
+        }
+      });
+      return;
+    }
+
+    items.forEach(item => {
+      const linkText = item.textContent.toLowerCase();
+      const submenu = item.querySelector(".nav-group-sub");
+
+      if (submenu) {
+        const subitems = submenu.querySelectorAll("li.nav-item");
+        let matchFound = false;
+
+        subitems.forEach(sub => {
+          const text = sub.textContent.toLowerCase();
+          const visible = text.includes(filter);
+          sub.style.display = visible ? "" : "none";
+          if (visible) matchFound = true;
+        });
+
+        if (matchFound || linkText.includes(filter)) {
+          item.style.display = "";
+          submenu.classList.add("show");
+        } else {
+          item.style.display = "none";
+          submenu.classList.remove("show");
+        }
+      } else {
+        item.style.display = linkText.includes(filter) ? "" : "none";
+      }
+    });
+  }
+</script>
