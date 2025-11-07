@@ -17,6 +17,15 @@ pt-BR:
       a_tipo_usuario:
         one: "Tipo de Usuário"
         other: "Tipos de Usuários"
+      c_tipo_cartao:
+        one: "Tipo de Cartão"
+        other: "Tipos de Cartões"
+      c_nivel_cartao:
+        one: "Nível do Cartão"
+        other: "Níveis do Cartão"
+      c_cartao:
+        one: "Cartão"
+        other: "Cartões"
       g_bairro:
         one: "Bairro"
         other: "Bairros"
@@ -51,6 +60,15 @@ pt-BR:
         a_tipo_usuario: "Tipo de Usuário"
       a_tipo_usuario:
         descricao: "Descrição"
+      c_tipo_cartao:
+        descricao: "Descrição"
+      c_nivel_cartao:
+        descricao: "Descrição"
+      c_cartao:
+        codigo_cartao: "Código do Cartão"
+        qrcode: "QR Code"
+        c_tipo_cartao_id: "Tipo do Cartão"
+        c_nivel_cartao_id: "Nível do Cartão"
       g_bairro:
         descricao: "Descrição"
         g_municipio: "Município"

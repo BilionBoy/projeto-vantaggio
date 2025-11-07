@@ -6,5 +6,12 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.irregular 'a_tipo_usuario', 'a_tipo_usuarios'
   inflect.irregular 'a_status',       'a_status'
   inflect.irregular 'a_empresa_prestador', 'a_empresas_prestadores' 
+  inflect.irregular 'o_tipo_solicitacao',                'o_tipos_solicitacoes'
+  inflect.irregular 'o_categoria_servico',               'o_categorias_servicos'
+  inflect.irregular 'o_urgencia',                        'o_urgencias'
+  inflect.irregular 'c_tipo_cartao', 'c_tipo_cartoes'
+  inflect.irregular 'c_nivel_cartao', 'c_nivel_cartoes'
+  inflect.irregular 'c_cartao', 'c_cartoes'
+  inflect.irregular 'c_condominio', 'c_condominios'
 
 end
