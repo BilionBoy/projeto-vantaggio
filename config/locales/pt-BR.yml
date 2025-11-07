@@ -47,6 +47,12 @@ pt-BR:
       c_condominio:
         one: "Condomínio"
         other: "Condomínios"
+      c_tipo_centro_custo:
+         one: "Tipo de Centro de Custo"
+         other: "Tipos de Centros de Custo"
+      c_centro_custo:
+         one: "Centro de Custo"
+         other: "Centros de Custo"
       a_status:
         one: "Status"
         other: "Status"
@@ -73,6 +79,13 @@ pt-BR:
         qrcode: "QR Code"
         c_tipo_cartao_id: "Tipo do Cartão"
         c_nivel_cartao_id: "Nível do Cartão"
+      c_centro_custo:
+        nome: "Nome"
+        codigo_dotacao: "Código de Dotação"
+        c_condominio_id: "Condominio"
+        c_tipo_centro_custo_id: "Tipo de Centro de Custo"
+        valor_inicial: "Valor Inicial"
+        valor_atual: "Valor Atual"
       c_condominio:
         nome: "Nome"
         endereco: "Endereço"

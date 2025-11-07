@@ -61,12 +61,20 @@
             <span>Home</span>
           <% end %>
         </li>
-        <!-- Usuários -->
-        <li class="nav-item">
-          <%= link_to users_path, class: "nav-link" do %>
-            <i class="ph-users"></i>
-            <span>Usuários</span>
-          <% end %>
+        <!-- Centros de Custos -->
+        <li class="nav-item nav-item-submenu">
+          <a href="#" class="nav-link">
+            <i class="ph-coins"></i>
+            <span>Centros de Custos</span>
+          </a>
+          <ul class="nav-group-sub collapse">
+            <li class="nav-item">
+              <%= link_to "Tipos de Centros de Custos", c_tipos_centros_custos_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Centros de Custos", c_centros_custos_path, class: "nav-link" %>
+            </li>
+          </ul>
         </li>
         <!-- Tabelas Referenciais -->
         <li class="nav-item nav-item-submenu">
@@ -75,13 +83,9 @@
             <span>Tabelas Referenciais</span>
           </a>
           <ul class="nav-group-sub collapse">
-            <li class="nav-item"><%= link_to "Tipo Usuários", a_tipo_usuarios_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Países", g_paises_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Estados", g_estados_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Municípios", g_municipios_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Bairros", g_bairros_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Distritos", g_distritos_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Localidades", g_localidades_path, class: "nav-link" %></li>
+            <li class="nav-item">
+              <%= link_to "Bairros", g_bairros_path, class: "nav-link" %>
+            </li>
           </ul>
         </li>
       </ul>

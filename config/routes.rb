@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :c_centros_custos
+  resources :c_tipos_centros_custos
+
+  
   # --- Módulos gerais ---
   resources :a_tipo_usuarios
   resources :g_localidades
@@ -11,6 +15,7 @@ Rails.application.routes.draw do
   resources :c_cartoes
   resources :c_nivel_cartoes
   resources :c_tipo_cartoes
+
   resources :o_tipos_solicitacoes
   resources :o_categorias_servicos
   resources :o_urgencias
