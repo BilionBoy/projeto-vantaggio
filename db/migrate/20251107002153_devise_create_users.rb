@@ -34,8 +34,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.2]
 
       t.string :nome
       t.string :telefone
-      t.references :g_tipo_usuario, null: false, foreign_key: true
-
+      t.references :a_tipo_usuario, null: false, foreign_key: true
       t.timestamps null: false
     end
 

@@ -14,137 +14,89 @@
     background-color: rgba(255,255,255,0.1);
   }
 </style>
-
 <div class="sidebar sidebar-dark sidebar-main sidebar-expand-xl" style="background: #317a6cff;">
   <div class="sidebar-content">
-
-    <!-- Cabeçalho do menu -->
-    <div class="sidebar-section">
-      <div class="sidebar-section-body d-flex justify-content-center">
-        <h5 class="sidebar-resize-hide flex-grow-1 my-auto"><b>Menu</b></h5>
-        <div>
-          <button
-            type="button"
-            class="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-mobile-main-toggle d-xl-none"
-          >
-            <i class="ph-x"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Barra de pesquisa -->
     <div class="sidebar-section-body">
       <div class="form-control-feedback form-control-feedback-end">
-        <input
-          type="search"
-          id="sidebar-search-input"
-          class="form-control"
-          placeholder="Pesquisar"
-          onkeyup="filterSidebar()"
-        />
+        <input type="search" id="sidebar-search-input" class="form-control" placeholder="Pesquisar" onkeyup="filterSidebar()">
         <div class="form-control-feedback-icon">
           <i class="ph-magnifying-glass opacity-50"></i>
         </div>
       </div>
     </div>
-
-    <!-- Itens da sidebar -->
     <div class="sidebar-section">
       <ul class="nav nav-sidebar" data-nav-type="accordion" id="sidebar-items">
-
-        <!-- Home -->
-        <li class="nav-item">
-          <a href="<%= root_path %>" class="nav-link" data-no-close>
-            <i class="ph-house"></i>
-            <span>Home</span>
-          </a>
-        </li>
-
-        <!-- Cartões (submenu) -->
-        <li class="nav-item nav-item-submenu">
-          <a href="#" class="nav-link">
-            <i class="ph-credit-card"></i>
-            <span>Cartões</span>
-          </a>
-          <ul class="nav nav-group-sub" style="display: none;">
-            <li class="nav-item">
-              <a href="<%= c_cartoes_path %>" class="nav-link">
-                <i class="ph-list"></i> Todos os Cartões
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="<%= c_tipo_cartoes_path %>" class="nav-link">
-                <i class="ph-list"></i> Tipos de Cartão
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="<%= c_nivel_cartoes_path %>" class="nav-link">
-                <i class="ph-list"></i> Níveis de Cartão
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <!-- Outros recursos -->
-        <% sidebar_resources = [
-             {name: "Síndicos", path: c_sindicos_path, icon: "ph-user"},
-             {name: "Tipos de Usuários", path: g_tipo_usuarios_path, icon: "ph-users"},
-             {name: "Status de Usuários", path: g_status_usuarios_path, icon: "ph-clipboard"},
-             {name: "Condomínios", path: c_condominios_path, icon: "ph-align-bottom"}, # ícone ajustado
-             {name: "Prestadores", path: p_prestadores_path, icon: "ph-briefcase"}, 
-             {name: "Categorias", path: p_categorias_path, icon: "ph-archive"}
-           ] %>
-
-        <% sidebar_resources.each do |res| %>
-          <li class="nav-item">
-            <a href="<%= res[:path] %>" class="nav-link">
-              <i class="<%= res[:icon] %>"></i>
-              <span><%= res[:name] %></span>
-            </a>
-          </li>
+        <% SidebarMenu.items.each do |item| %>
+            <% if item[:submenu] %>
+              <% visible_subitems = item[:submenu].select { |sub| sub[:roles].nil? || sub[:roles].include?(current_user.role&.name) } %>
+              <% next if visible_subitems.empty? %>
+              <li class="nav-item nav-item-submenu">
+                <a href="#" class="nav-link">
+                  <i class="<%= item[:icon] %>"></i>
+                  <span><%= item[:name] %></span>
+                </a>
+                <ul class="nav-group-sub collapse">
+                  <% visible_subitems.each do |sub| %>
+                    <li class="nav-item">
+                      <%= link_to t(sub[:name]), sub[:path].is_a?(Proc) ? instance_exec(&sub[:path]) : send(sub[:path]), class: "nav-link" %>
+                    </li>
+                  <% end %>
+                </ul>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to send(item[:path]), class: "nav-link" do %>
+                  <i class="<%= item[:icon] %>"></i>
+                  <span><%= item[:name] %></span>
+                <% end %>
+              </li>
+            <% end %>
         <% end %>
-
       </ul>
     </div>
   </div>
 </div>
-
 <script>
-  // Sidebar filter
   function filterSidebar() {
-    const input = document.getElementById('sidebar-search-input');
-    const filter = input.value.toLowerCase();
-    const navItems = document.querySelectorAll('#sidebar-items .nav-item, #sidebar-items .nav-item-header');
+    const input = document.getElementById("sidebar-search-input");
+    const filter = input.value.toLowerCase().trim();
+    const items = document.querySelectorAll("#sidebar-items > li");
+    if (filter === "") {
+      items.forEach(item => {
+        item.style.display = "";
+        const submenu = item.querySelector(".nav-group-sub");
+        if (submenu) {
+          submenu.classList.remove("show");
+          submenu.querySelectorAll("li.nav-item").forEach(sub => sub.style.display = "");
+        }
+      });
+      return;
+    }
+    items.forEach(item => {
+      const linkText = item.textContent.toLowerCase();
+      const submenu = item.querySelector(".nav-group-sub");
 
-    navItems.forEach(item => {
-      const text = item.textContent.toLowerCase();
-      const isCollapsible = item.querySelector('.nav-group-sub');
+      if (submenu) {
+        const subitems = submenu.querySelectorAll("li.nav-item");
+        let matchFound = false;
 
-      if (text.includes(filter)) {
-        item.style.display = ''; // mostra o item
-        if (isCollapsible) {
-          isCollapsible.style.display = ''; // abre submenu
+        subitems.forEach(sub => {
+          const text = sub.textContent.toLowerCase();
+          const visible = text.includes(filter);
+          sub.style.display = visible ? "" : "none";
+          if (visible) matchFound = true;
+        });
+
+        if (matchFound || linkText.includes(filter)) {
+          item.style.display = "";
+          submenu.classList.add("show");
+        } else {
+          item.style.display = "none";
+          submenu.classList.remove("show");
         }
       } else {
-        item.style.display = 'none'; // oculta item
-        if (isCollapsible) {
-          isCollapsible.style.display = 'none';
-        }
+        item.style.display = linkText.includes(filter) ? "" : "none";
       }
     });
   }
-
-  // Toggle submenus
-  document.querySelectorAll('.nav-item-submenu > a').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const submenu = this.nextElementSibling;
-      if (submenu.style.display === 'block') {
-        submenu.style.display = 'none';
-      } else {
-        submenu.style.display = 'block';
-      }
-    });
-  });
 </script>
