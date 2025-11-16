@@ -24,22 +24,39 @@
         </div>
         <div class="col-md-6">
           <%= f.input :a_tipo_usuario_id, 
-                      collection: ATipoUsuario.all,
+                      collection: @tipos_usuarios.all,
                       label_method: :descricao,
                       value_method: :id,
                       prompt: "Selecione o tipo de usuário",
                       input_html: { class: "form-select" } %>
         </div>
-        <div class="col-md-6">
-          <%= f.input :password,
-                      placeholder: "Digite uma senha (opcional se for auto-gerada)",
-                      input_html: { autocomplete: "new-password", class: "form-control" } %>
-        </div>
-        <div class="col-md-6">
-          <%= f.input :password_confirmation,
-                      placeholder: "Confirme a senha",
-                      input_html: { autocomplete: "new-password", class: "form-control" } %>
-        </div>
+        <% if @user.new_record? %>
+          <div class="col-md-6">
+            <%= f.input :password,
+                        required: true,
+                        placeholder: "Digite uma senha",
+                        input_html: { autocomplete: "new-password", class: "form-control" } %>
+          </div>
+          <div class="col-md-6">
+            <%= f.input :password_confirmation,
+                        required: true,
+                        placeholder: "Confirme a senha",
+                        input_html: { autocomplete: "new-password", class: "form-control" } %>
+          </div>
+        <% else %>
+          <div class="col-md-6">
+            <%= f.input :password,
+                        required: false,
+                        placeholder: "Deixe em branco para manter a senha atual",
+                        input_html: { autocomplete: "new-password", class: "form-control" } %>
+          </div>
+          <div class="col-md-6">
+            <%= f.input :password_confirmation,
+                        required: false,
+                        placeholder: "Confirme a senha (se alterada)",
+                        input_html: { autocomplete: "new-password", class: "form-control" } %>
+          </div>
+        <% end %>
       </div>
     </div>
     <div class="card-footer d-flex justify-content-between bg-light">

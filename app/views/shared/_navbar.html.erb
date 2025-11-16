@@ -29,7 +29,7 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 rounded-3 p-2 animate__animated animate__fadeIn" aria-labelledby="userMenuToggle">
           <li>
-            <%= link_to edit_user_registration_path, class: "dropdown-item d-flex align-items-center gap-2" do %>
+            <%= link_to edit_user_path(current_user.id), class: "dropdown-item d-flex align-items-center gap-2" do %>
               <i class="ph-user-gear text-primary"></i>
               <span>Meu perfil</span>
             <% end %>
