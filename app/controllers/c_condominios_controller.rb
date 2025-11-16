@@ -11,6 +11,8 @@ class CCondominiosController < ApplicationController
 
   def new
     @c_condominio = CCondominio.new
+    @c_condominio.build_g_endereco
+    @sindicos = User.where(a_tipo_usuario: 3)
   end
 
   def edit
@@ -51,7 +53,9 @@ class CCondominiosController < ApplicationController
 
   def c_condominio_params
     permitted_attributes = CCondominio.column_names.reject { |col| ['deleted_at', 'created_by', 'updated_by'].include?(col) }
-    params.require(:c_condominio).permit(permitted_attributes.map(&:to_sym))
+    params.require(:c_condominio).permit(permitted_attributes.map(&:to_sym),
+    :g_endereco_id,
+    g_endereco_attributes: [ :cep, :rua , :bairro, :numero, :g_municipio_id ])
   end
 
   def handle_not_found

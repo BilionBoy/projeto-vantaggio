@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :g_enderecos
   resources :t_taxas
   resources :c_centros_custos
   resources :c_tipos_centros_custos
@@ -6,9 +7,6 @@ Rails.application.routes.draw do
   
   # --- Módulos gerais ---
   resources :a_tipo_usuarios
-  resources :g_localidades
-  resources :g_distritos
-  resources :g_bairros
   resources :g_municipios
   resources :g_estados
   resources :g_paises

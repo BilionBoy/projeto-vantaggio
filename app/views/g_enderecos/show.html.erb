@@ -1,0 +1,41 @@
+<div class="container">
+  <%= render "shared/notice" %>
+  <div class="card border-0 shadow shadow-sm">
+    <div class="card-header border-0 d-flex justify-content-between">
+      <span class="fs-4">Visualizar G Endereco</span>
+    </div>
+    <div class="card-body">
+      <div id="<%= dom_id @g_endereco %>">
+          <p>
+            <strong>Cep:</strong>
+            <%= @g_endereco.cep %>
+          </p>
+          <p>
+            <strong>Rua:</strong>
+            <%= @g_endereco.rua %>
+          </p>
+          <p>
+            <strong>Bairro:</strong>
+            <%= @g_endereco.bairro %>
+          </p>
+          <p>
+            <strong>Numero:</strong>
+            <%= @g_endereco.numero %>
+          </p>
+          <p>
+            <strong>G Municipio:</strong>
+            <%= @g_endereco.g_municipio %>
+          </p>
+      </div>
+    </div>
+    <div class="card-footer border-0 d-flex justify-content-between">
+      <div>
+        <%= link_to edit_g_endereco_path(@g_endereco), class: "btn btn-primary" do %>
+        <i class="bi bi-pencil-square"></i> Editar
+        <% end %>
+        <%= link_to "Voltar", g_enderecos_path, class: "btn btn-secondary" %>
+      </div>
+      <%= button_to "Deletar", @g_endereco, method: :delete, class: "btn btn-outline-danger border-0" %>
+    </div>
+  </div>
+</div>

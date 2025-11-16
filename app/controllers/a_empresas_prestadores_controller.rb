@@ -11,6 +11,7 @@ class AEmpresasPrestadoresController < ApplicationController
 
   def new
     @a_empresa_prestador = AEmpresaPrestador.new
+    @a_empresa_prestador.build_g_endereco
   end
 
   def edit
@@ -51,7 +52,9 @@ class AEmpresasPrestadoresController < ApplicationController
 
   def a_empresa_prestador_params
     permitted_attributes = AEmpresaPrestador.column_names.reject { |col| ['deleted_at', 'created_by', 'updated_by'].include?(col) }
-    params.require(:a_empresa_prestador).permit(permitted_attributes.map(&:to_sym))
+    params.require(:a_empresa_prestador).permit(permitted_attributes.map(&:to_sym),
+    :g_endereco_id,
+    g_endereco_attributes: [ cep:, rua:, bairro:, numero:, g_municipio_id: ])
   end
 
   def handle_not_found

@@ -17,10 +17,31 @@
           <%= f.input :nome, input_html: { class: "capitalize"}, placeholder: "Nome"  %>
         </div>
         <div class="col-4">
-          <%= f.input :endereco, input_html: { class: "capitalize"}, placeholder: "Endereco"  %>
+          <%= f.input :user_id, collection: @sindicos, label_method: :nome, value_method: :id, prompt: "Selecione um Síndico" %>
         </div>
         <div class="col-4">
           <%= f.input :unidade, input_html: { class: "capitalize"}, placeholder: "Unidade"  %>
+        </div>
+        <hr>
+        <h5>Endereço</h5>
+        <div class="row">
+          <%= f.fields_for :g_endereco do |e| %>
+            <div class="col-3">
+              <%= e.input :cep, input_html: { class: "capitalize"}, placeholder: "CEP" %>
+            </div>
+            <div class="col-3">
+              <%= e.input :rua, input_html: { class: "capitalize"}, placeholder: "Rua" %>
+            </div>
+            <div class="col-3">
+              <%= e.input :bairro, input_html: { class: "capitalize"}, placeholder: "Bairro" %>
+            </div>
+            <div class="col-3">
+              <%= e.input :numero, input_html: { class: "capitalize"}, placeholder: "Número" %>
+            </div>
+            <div class="col-3">
+              <%= e.input :g_municipio_id, collection: GMunicipio.all, label_method: :to_s, value_method: :id, prompt: "Selecione um Município" %>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
