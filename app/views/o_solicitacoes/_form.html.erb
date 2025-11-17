@@ -1,0 +1,53 @@
+<%= render "shared/context_nav", title: t("activerecord.models.#{OSolicitacao.model_name.i18n_key}.other") do  %>
+  <span class="breadcrumb-item"><%= link_to t("activerecord.models.#{OSolicitacao.model_name.i18n_key}.other"), o_solicitacoes_path, class: "text-dark" %></span>
+  <span class="breadcrumb-item active"><%= t("helpers.submit.#{params[:action]}") %></span>
+<% end %>
+<%= simple_form_for(@o_solicitacao) do |f| %>
+  <div class="card">
+    <div class="card-header">
+      <h5 class="my-0">
+        <%= @o_solicitacao.new_record? ? "Incluir " : "Editar " %><%= t("activerecord.models.#{OSolicitacao.model_name.i18n_key}.one") %>
+      </h5>
+    </div>
+    <div class="card-body">
+      <%= f.error_notification %>
+      <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+      <div class="row">
+        <div class="col-6">
+          <%= f.association :c_condominio, input_html: { class: "capitalize select2"}, placeholder: "C condominio"  %>
+        </div>
+        <div class="col-6">
+          <%= f.input :responsavel, input_html: { class: "capitalize"}, placeholder: "Responsavel"  %>
+        </div>
+        <div class="col-6">
+          <%= f.input :telefone, input_html: { class: "capitalize"}, placeholder: "Telefone"  %>
+        </div>
+        <div class="col-6">
+          <%= f.input :email, input_html: { class: "capitalize"}, placeholder: "Email"  %>
+        </div>
+        <div class="col-6">
+          <%= f.association :o_tipo_solicitacao, input_html: { class: "capitalize select2"}, placeholder: "O tipo solicitacao"  %>
+        </div>
+        <div class="col-6">
+          <%= f.input :local, input_html: { class: "capitalize"}, placeholder: "Local"  %>
+        </div>
+        <div class="col-6">
+          <%= f.association :o_urgencia, input_html: { class: "capitalize select2"}, placeholder: "O urgencia"  %>
+        </div>
+        <div class="col-6">
+          <%= f.association :c_centro_custo, input_html: { class: "capitalize select2"}, placeholder: "C centro custo"  %>
+        </div>
+        <div class="col-6">
+          <%= f.input :data_publicacao, input_html: { class: "capitalize"}, placeholder: "Data publicacao"  %>
+        </div>
+        <div class="col-6">
+          <%= f.input :descricao, input_html: { class: "capitalize"}, placeholder: "Descricao"  %>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <%= btn_submit(f) %>
+      <%= link_to "Voltar", o_solicitacoes_path, class: "btn btn-light" %>
+    </div>
+  </div>
+<% end %>

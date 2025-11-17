@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  c_condominio: one
+  responsavel: MyString
+  telefone: MyString
+  email: MyString
+  o_tipo_solicitacao: one
+  local: MyString
+  o_urgencia: one
+  c_centro_custo: one
+  data_publicacao: 2025-11-16 20:11:30
+  descricao: MyText
+
+two:
+  c_condominio: two
+  responsavel: MyString
+  telefone: MyString
+  email: MyString
+  o_tipo_solicitacao: two
+  local: MyString
+  o_urgencia: two
+  c_centro_custo: two
+  data_publicacao: 2025-11-16 20:11:30
+  descricao: MyText

@@ -62,7 +62,9 @@ pt-BR:
       g_endereco:
         one: "Endereço"
         other: "Endereços"
-      
+      o_solicitacao:
+        one: "Solicitação"
+        other: "Solicitações"
     attributes:
       user:
         nome: "Nome"
@@ -140,6 +142,16 @@ pt-BR:
         numero: "Número"
         bairro: "Bairro"
         g_municipio_id: "Município"
+      o_solicitacao:
+        c_condominio: "Condomínio"
+        responsavel: "Responsável"
+        telefone: "Telefone"
+        email: "E-mail"
+        o_tipo_solicitacao: "Tipo de Solicitação"
+        local: "Local"
+        o_urgencia: "Urgência"
+        c_centro_custo: "Centro de Custo"
+        data_publicacao: "Data Limite de Publição"
     errors:
       messages:
         record_invalid: "A validação falhou: %{errors}"

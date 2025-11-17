@@ -1,0 +1,61 @@
+<div class="container">
+  <%= render "shared/notice" %>
+  <div class="card border-0 shadow shadow-sm">
+    <div class="card-header border-0 d-flex justify-content-between">
+      <span class="fs-4">Visualizar O Solicitacao</span>
+    </div>
+    <div class="card-body">
+      <div id="<%= dom_id @o_solicitacao %>">
+          <p>
+            <strong>C Condominio:</strong>
+            <%= @o_solicitacao.c_condominio %>
+          </p>
+          <p>
+            <strong>Responsavel:</strong>
+            <%= @o_solicitacao.responsavel %>
+          </p>
+          <p>
+            <strong>Telefone:</strong>
+            <%= @o_solicitacao.telefone %>
+          </p>
+          <p>
+            <strong>Email:</strong>
+            <%= @o_solicitacao.email %>
+          </p>
+          <p>
+            <strong>O Tipo Solicitacao:</strong>
+            <%= @o_solicitacao.o_tipo_solicitacao %>
+          </p>
+          <p>
+            <strong>Local:</strong>
+            <%= @o_solicitacao.local %>
+          </p>
+          <p>
+            <strong>O Urgencia:</strong>
+            <%= @o_solicitacao.o_urgencia %>
+          </p>
+          <p>
+            <strong>C Centro Custo:</strong>
+            <%= @o_solicitacao.c_centro_custo %>
+          </p>
+          <p>
+            <strong>Data Publicacao:</strong>
+            <%= @o_solicitacao.data_publicacao %>
+          </p>
+          <p>
+            <strong>Descricao:</strong>
+            <%= @o_solicitacao.descricao %>
+          </p>
+      </div>
+    </div>
+    <div class="card-footer border-0 d-flex justify-content-between">
+      <div>
+        <%= link_to edit_o_solicitacao_path(@o_solicitacao), class: "btn btn-primary" do %>
+        <i class="bi bi-pencil-square"></i> Editar
+        <% end %>
+        <%= link_to "Voltar", o_solicitacoes_path, class: "btn btn-secondary" %>
+      </div>
+      <%= button_to "Deletar", @o_solicitacao, method: :delete, class: "btn btn-outline-danger border-0" %>
+    </div>
+  </div>
+</div>
