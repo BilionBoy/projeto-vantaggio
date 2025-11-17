@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
+  resources :o_solicitacoes
+  resources :o_tipo_solicitacoes
   resources :g_enderecos
   resources :t_taxas
   resources :c_centros_custos
   resources :c_tipos_centros_custos
-
   
   # --- Módulos gerais ---
   resources :a_tipo_usuarios
@@ -14,8 +15,6 @@ Rails.application.routes.draw do
   resources :c_cartoes
   resources :c_nivel_cartoes
   resources :c_tipo_cartoes
-
-  resources :o_tipos_solicitacoes
   resources :o_categorias_servicos
   resources :o_urgencias
   resources :a_empresas_prestadores

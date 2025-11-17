@@ -5,4 +5,8 @@ class CCondominio < ApplicationRecord
   belongs_to :user
   belongs_to :g_endereco
   accepts_nested_attributes_for :g_endereco
+
+  def to_s
+    nome
+  end
 end

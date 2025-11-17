@@ -24,15 +24,12 @@
 /tmp/cache/*
 !/tmp/cache/.keep
 
-
 # Ignore storage (uploaded files in development and any SQLite databases).
 /storage/*
 !/storage/.keep
 /tmp/storage/*
 !/tmp/storage/
 !/tmp/storage/.keep
-
-
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
@@ -45,5 +42,5 @@ Gemfile.lock
 .env
 docker-compose.yml
 /config/environments/production.rb
-
 /config/credentials/development.key
+/public/assets
