@@ -1,0 +1,2 @@
+module OTipoSolicitacoesHelper
+end

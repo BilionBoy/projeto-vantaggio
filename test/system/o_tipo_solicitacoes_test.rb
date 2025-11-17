@@ -2,16 +2,16 @@ require "application_system_test_case"
 
 class OTipoSolicitacaosTest < ApplicationSystemTestCase
   setup do
-    @o_tipo_solicitacao = o_tipos_solicitacoes(:one)
+    @o_tipo_solicitacao = o_tipo_solicitacoes(:one)
   end
 
   test "visiting the index" do
-    visit o_tipos_solicitacoes_url
+    visit o_tipo_solicitacoes_url
     assert_selector "h1", text: "O tipo solicitacaos"
   end
 
   test "should create o tipo solicitacao" do
-    visit o_tipos_solicitacoes_url
+    visit o_tipo_solicitacoes_url
     click_on "New o tipo solicitacao"
 
     fill_in "Descricao", with: @o_tipo_solicitacao.descricao

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class CreateOTiposSolicitacoes < ActiveRecord::Migration[7.2]
+class CreateOTipoSolicitacoes < ActiveRecord::Migration[7.2]
   def up
-    create_table :o_tipos_solicitacoes do |t|
+    create_table :o_tipo_solicitacoes do |t|
       t.string :descricao
       t.string :created_by
       t.string :updated_by
@@ -12,6 +12,6 @@ class CreateOTiposSolicitacoes < ActiveRecord::Migration[7.2]
   end
 
   def down
-    drop_table :o_tipos_solicitacoes if table_exists?(:o_tipos_solicitacoes)
+    drop_table :o_tipo_solicitacoes if table_exists?(:o_tipo_solicitacoes)
   end
 end

@@ -6,7 +6,7 @@
     <%= search_form_for @q, html: { class: "d-flex gap-2" , autocomplete: "off"} do |f| %>
       <%= f.search_field :descricao_cont, class: "form-control", placeholder: "Pesquisar" %>
       <%= f.button(type: 'submit', class: 'btn btn-info') { tag.i(class: 'ph-magnifying-glass') } %>
-      <%= link_to  tag.i(class: 'ph-x-circle'), o_tipos_solicitacoes_path, class: "btn btn-light" if params[:q] %>
+      <%= link_to  tag.i(class: 'ph-x-circle'), o_tipo_solicitacoes_path, class: "btn btn-light" if params[:q] %>
       <% end %>
     </div>
     <div class="card-body">
@@ -22,7 +22,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @o_tipos_solicitacoes.each do |o_tipo_solicitacao| %>
+            <% @o_tipo_solicitacoes.each do |o_tipo_solicitacao| %>
             <tr>
               <td class="text-center">
                 <div class="dropdown-toggle">

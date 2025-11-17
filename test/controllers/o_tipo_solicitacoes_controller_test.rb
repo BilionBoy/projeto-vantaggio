@@ -1,12 +1,12 @@
 require "test_helper"
 
-class OTiposSolicitacoesControllerTest < ActionDispatch::IntegrationTest
+class OTipoSolicitacoesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @o_tipo_solicitacao = o_tipos_solicitacoes(:one)
+    @o_tipo_solicitacao = o_tipo_solicitacoes(:one)
   end
 
   test "should get index" do
-    get o_tipos_solicitacoes_url
+    get o_tipo_solicitacoes_url
     assert_response :success
   end
 
@@ -17,7 +17,7 @@ class OTiposSolicitacoesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create o_tipo_solicitacao" do
     assert_difference("OTipoSolicitacao.count") do
-      post o_tipos_solicitacoes_url, params: { o_tipo_solicitacao: { descricao: @o_tipo_solicitacao.descricao } }
+      post o_tipo_solicitacoes_url, params: { o_tipo_solicitacao: { descricao: @o_tipo_solicitacao.descricao } }
     end
 
     assert_redirected_to o_tipo_solicitacao_url(OTipoSolicitacao.last)
@@ -43,6 +43,6 @@ class OTiposSolicitacoesControllerTest < ActionDispatch::IntegrationTest
       delete o_tipo_solicitacao_url(@o_tipo_solicitacao)
     end
 
-    assert_redirected_to o_tipos_solicitacoes_url
+    assert_redirected_to o_tipo_solicitacoes_url
   end
 end
