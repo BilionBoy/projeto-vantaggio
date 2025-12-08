@@ -14,6 +14,12 @@ pt-BR:
       user:
         one: "Usuário"
         other: "Usuários"
+      a_status:
+        one: "Status"
+        other: "Status"
+      a_empresa_prestador:
+        one: "Empresa Prestador"
+        other: "Empresas Prestadores"
       a_tipo_usuario:
         one: "Tipo de Usuário"
         other: "Tipos de Usuários"
@@ -26,6 +32,15 @@ pt-BR:
       c_cartao:
         one: "Cartão"
         other: "Cartões"
+      c_condominio:
+        one: "Condomínio"
+        other: "Condomínios"
+      c_tipo_centro_custo:
+        one: "Tipo de Centro de Custo"
+        other: "Tipos de Centros de Custo"
+      c_centro_custo:
+        one: "Centro de Custo"
+        other: "Centros de Custo"
       g_bairro:
         one: "Bairro"
         other: "Bairros"
@@ -44,22 +59,21 @@ pt-BR:
       g_localidade:
         one: "Localidade"
         other: "Localidades"
-      c_condominio:
-        one: "Condomínio"
-        other: "Condomínios"
-      c_tipo_centro_custo:
-         one: "Tipo de Centro de Custo"
-         other: "Tipos de Centros de Custo"
-      c_centro_custo:
-         one: "Centro de Custo"
-         other: "Centros de Custo"
-      a_status:
-        one: "Status"
-        other: "Status"
-      a_empresa_prestador:
-        one: "Empresa Prestador"
-        other: "Empresas Prestadores"
-      
+      o_solicitacao:
+        one: "Solicitação"
+        other: "Solicitações"
+      o_tipo_solicitacao:
+        one: "Tipo de Solicitação"
+        other: "Tipos de Solicitações"
+      o_categoria_servico:
+        one: "Categoria de Serviço"
+        other: "Categorias de Serviços"
+      o_urgencia:
+        one: "Urgência"
+        other: "Urgências"
+      t_taxa:
+        one: "Taxa"
+        other: "Taxas"
     attributes:
       user:
         nome: "Nome"
@@ -67,53 +81,7 @@ pt-BR:
         password: "Senha"
         password_confirmation: "Confirmação de Senha"
         telefone: "Telefone"
-        a_tipo_usuario: "Tipo de Usuário"
-      a_tipo_usuario:
-        descricao: "Descrição"
-      c_tipo_cartao:
-        descricao: "Descrição"
-      c_nivel_cartao:
-        descricao: "Descrição"
-      c_cartao:
-        codigo_cartao: "Código do Cartão"
-        qrcode: "QR Code"
-        c_tipo_cartao_id: "Tipo do Cartão"
-        c_nivel_cartao_id: "Nível do Cartão"
-      c_centro_custo:
-        nome: "Nome"
-        codigo_dotacao: "Código de Dotação"
-        c_condominio_id: "Condominio"
-        c_tipo_centro_custo_id: "Tipo de Centro de Custo"
-        valor_inicial: "Valor Inicial"
-        valor_atual: "Valor Atual"
-      c_condominio:
-        nome: "Nome"
-        endereco: "Endereço"
-        cidade: "Cidade"
-        estado: "Estado"
-      g_bairro:
-        descricao: "Descrição"
-        g_municipio: "Município"
-      g_estado:
-        descricao: "Descrição"
-        uf: "UF"
-        g_pais: "País"
-      g_distrito:
-        descricao: "Descrição"
-        g_municipio: "Município"
-      g_pais:
-        descricao: "Descrição"
-        sigla: "Sigla"
-      g_municipio:
-        descricao: "Descrição"
-        g_estado: "Estado"
-      g_localidade:
-        descricao: "Descrição"
-        g_distrito: "Distrito"
-      user:
-       nome: "Nome"
-       telefone: "Telefone"
-       a_tipo_usuario_id: "Tipo de Usuário"
+        a_tipo_usuario_id: "Tipo de Usuário"
       a_empresa_prestador:
         nome_fantasia: "Nome Fantasia"
         razao_social: "Razão Social"
@@ -126,10 +94,62 @@ pt-BR:
         g_municipio_id: "Município"
         a_status_id: "Status"
         t_taxa_id: "Taxa"
+      a_tipo_usuario:
+        descricao: "Descrição"
+      c_tipo_cartao:
+        descricao: "Descrição"
+      c_nivel_cartao:
+        descricao: "Descrição"
+      c_cartao:
+        codigo_cartao: "Código do Cartão"
+        qrcode: "QR Code"
+        c_tipo_cartao_id: "Tipo do Cartão"
+        c_nivel_cartao_id: "Nível do Cartão"
+      c_centro_custo:
+        nome: "Título"
+        codigo_dotacao: "Código de Dotação"
+        c_condominio_id: "Condominio"
+        c_tipo_centro_custo_id: "Tipo de Centro de Custo"
+        valor_inicial: "Valor Inicial"
+        valor_atual: "Valor Atual"
+      c_condominio:
+        nome: "Nome"
+        endereco: "Endereço"
+        cidade: "Cidade"
+        estado: "Estado"
+      g_bairro:
+        descricao: "Descrição"
+        g_municipio_id: "Município"
+      g_estado:
+        descricao: "Descrição"
+        uf: "UF"
+        g_pais_id: "País"
+      g_distrito:
+        descricao: "Descrição"
+        g_municipio: "Município"
+      g_pais:
+        descricao: "Descrição"
+        sigla: "Sigla"
+      g_municipio:
+        descricao: "Descrição"
+        g_estado_id: "Estado"
+      g_localidade:
+        descricao: "Descrição"
+        g_distrito: "Distrito"
+      o_solicitacao:
+        descricao: "Título"
+        observacao: "Observação"
+        a_empresa_prestador_id: "Empresa Prestador"
+        a_status_id: "Status"
+        c_centro_custo_id: "Centro de Custo"
+        c_condominio_id: "Condomínio"
+        o_tipo_solicitacao_id: "Tipo de Solicitação"
+        o_categoria_servico_id: "Categoria de Serviço"
+        o_urgencia_id: "Urgência"
       t_taxa:
-       a_status_id: "Status"
-       nome: "Nome"
-       percentual: "Percentual"
+        a_status_id: "Status"
+        nome: "Nome"
+        percentual: "Percentual"
     errors:
       messages:
         record_invalid: "A validação falhou: %{errors}"

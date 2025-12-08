@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_07_194300) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_08_002052) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,8 +29,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_07_194300) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "t_taxa_id", null: false
     t.index ["a_status_id"], name: "index_a_empresas_prestadores_on_a_status_id"
     t.index ["g_municipio_id"], name: "index_a_empresas_prestadores_on_g_municipio_id"
+    t.index ["t_taxa_id"], name: "index_a_empresas_prestadores_on_t_taxa_id"
   end
 
   create_table "a_status", force: :cascade do |t|
@@ -63,22 +65,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_07_194300) do
     t.datetime "updated_at", null: false
     t.index ["c_nivel_cartao_id"], name: "index_c_cartoes_on_c_nivel_cartao_id"
     t.index ["c_tipo_cartao_id"], name: "index_c_cartoes_on_c_tipo_cartao_id"
-  end
-
-  create_table "c_centros", force: :cascade do |t|
-    t.string "custo"
-    t.string "nome"
-    t.bigint "c_tipo_centro_custo_id", null: false
-    t.bigint "c_condominio_id", null: false
-    t.decimal "valor_inicial", precision: 15, scale: 2
-    t.decimal "saldo_atual", precision: 15, scale: 2
-    t.string "created_by"
-    t.string "updated_by"
-    t.datetime "deleted_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["c_condominio_id"], name: "index_c_centros_on_c_condominio_id"
-    t.index ["c_tipo_centro_custo_id"], name: "index_c_centros_on_c_tipo_centro_custo_id"
   end
 
   create_table "c_centros_custos", force: :cascade do |t|
@@ -210,6 +196,30 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_07_194300) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "o_solicitacoes", force: :cascade do |t|
+    t.integer "numero"
+    t.string "descricao"
+    t.text "observacao"
+    t.bigint "a_status_id", null: false
+    t.bigint "c_condominio_id", null: false
+    t.bigint "o_urgencia_id"
+    t.bigint "o_tipo_solicitacao_id"
+    t.bigint "o_categoria_servico_id"
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "c_centro_custo_id", null: false
+    t.decimal "saldo_snapshot", precision: 15, scale: 2
+    t.index ["a_status_id"], name: "index_o_solicitacoes_on_a_status_id"
+    t.index ["c_centro_custo_id"], name: "index_o_solicitacoes_on_c_centro_custo_id"
+    t.index ["c_condominio_id"], name: "index_o_solicitacoes_on_c_condominio_id"
+    t.index ["o_categoria_servico_id"], name: "index_o_solicitacoes_on_o_categoria_servico_id"
+    t.index ["o_tipo_solicitacao_id"], name: "index_o_solicitacoes_on_o_tipo_solicitacao_id"
+    t.index ["o_urgencia_id"], name: "index_o_solicitacoes_on_o_urgencia_id"
+  end
+
   create_table "o_tipos_solicitacoes", force: :cascade do |t|
     t.string "descricao"
     t.string "created_by"
@@ -259,10 +269,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_07_194300) do
 
   add_foreign_key "a_empresas_prestadores", "a_status"
   add_foreign_key "a_empresas_prestadores", "g_municipios"
+  add_foreign_key "a_empresas_prestadores", "t_taxas"
   add_foreign_key "c_cartoes", "c_nivel_cartoes"
   add_foreign_key "c_cartoes", "c_tipo_cartoes"
-  add_foreign_key "c_centros", "c_condominios"
-  add_foreign_key "c_centros", "c_tipos_centros_custos"
   add_foreign_key "c_centros_custos", "c_condominios"
   add_foreign_key "c_centros_custos", "c_tipos_centros_custos"
   add_foreign_key "g_bairros", "g_municipios"
@@ -270,6 +279,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_07_194300) do
   add_foreign_key "g_estados", "g_paises"
   add_foreign_key "g_localidades", "g_distritos"
   add_foreign_key "g_municipios", "g_estados"
+  add_foreign_key "o_solicitacoes", "a_status"
+  add_foreign_key "o_solicitacoes", "c_centros_custos"
+  add_foreign_key "o_solicitacoes", "c_condominios"
+  add_foreign_key "o_solicitacoes", "o_categorias_servicos"
+  add_foreign_key "o_solicitacoes", "o_tipos_solicitacoes"
+  add_foreign_key "o_solicitacoes", "o_urgencias"
   add_foreign_key "t_taxas", "a_status"
   add_foreign_key "users", "a_tipo_usuarios"
 end

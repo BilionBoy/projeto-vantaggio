@@ -40,6 +40,9 @@
         <div class="col-4">
           <%= f.input :g_municipio_id, collection: GMunicipio.all, label_method: :descricao, value_method: :id, prompt: "Selecione o Município" %>
         </div>
+        <div class="col-4">
+          <%= f.input :t_taxa_id, collection: TTaxa.all, label_method: :nome_com_percentual, value_method: :id, prompt: "Selecione a Taxa" %>
+        </div>
       </div>
     </div>
     <div class="card-footer">

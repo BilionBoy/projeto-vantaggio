@@ -1,10 +1,20 @@
 Rails.application.routes.draw do
-  resources :t_taxas
-  resources :c_centros_custos
-  resources :c_tipos_centros_custos
 
-  
-  # --- Módulos gerais ---
+  resources :c_centros_custos do
+    member do
+      get :saldo   # ← NECESSÁRIO PARA O AJAX FUNCIONAR
+    end
+  end
+
+  resources :o_solicitacoes do
+    member do
+      get :saldo_centro
+    end
+  end
+
+  #Rotas Scaffold
+  resources :a_empresas_prestadores
+  resources :a_status
   resources :a_tipo_usuarios
   resources :g_localidades
   resources :g_distritos
@@ -16,23 +26,16 @@ Rails.application.routes.draw do
   resources :c_cartoes
   resources :c_nivel_cartoes
   resources :c_tipo_cartoes
-
+  resources :c_tipos_centros_custos
   resources :o_tipos_solicitacoes
   resources :o_categorias_servicos
   resources :o_urgencias
-  resources :a_empresas_prestadores
-  resources :a_status
+  resources :t_taxas
 
-  # --- Devise ---
-  devise_for :users, controllers: {
-    sessions: 'users/sessions',
-    registrations: 'users/registrations'
-  }
+  devise_for :users
 
-  # --- CRUD administrativo de usuários (painel) ---
   resources :users, path: "usuarios"
 
-  # --- Sistema e utilitários ---
   get 'up' => 'rails/health#show', as: :rails_health_check
   root 'home#index'
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class CCentrosCustosController < ApplicationController
-  before_action :set_c_centro_custo, only: %i[show edit update destroy]
+  before_action :set_c_centro_custo, only: %i[show edit update destroy saldo]
 
   rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
 
@@ -13,8 +13,7 @@ class CCentrosCustosController < ApplicationController
     @c_centro_custo = CCentroCusto.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @c_centro_custo = CCentroCusto.new(c_centro_custo_params)
@@ -28,7 +27,7 @@ class CCentrosCustosController < ApplicationController
 
   def update
     if @c_centro_custo.update(c_centro_custo_params)
-      redirect_to c_centros_custos_path, notice: t('messages.updated_successfully'), status: :see_other
+      redirect_to c_centros_custos_path, notice: t('messages.updated_successfully')
     else
       render :edit, status: :unprocessable_entity
     end
@@ -39,19 +38,26 @@ class CCentrosCustosController < ApplicationController
       redirect_to c_centros_custos_url, notice: t('messages.deleted_successfully')
     else
       redirect_to c_centros_custos_url, alert: t('messages.delete_failed_due_to_dependencies')
-    end   
+    end
+  end
+
+  # ================================
+  # AJAX → retorna saldo para o form
+  # ================================
+  def saldo
+    render json: { saldo: @c_centro_custo.saldo_atual.to_f }
   end
 
   private
 
   def set_c_centro_custo
     @c_centro_custo = CCentroCusto.find_by(id: params[:id])
-    return redirect_to c_centros_custos_path, alert: t('messages.not_found') unless @c_centro_custo
+    redirect_to c_centros_custos_path, alert: t('messages.not_found') unless @c_centro_custo
   end
 
   def c_centro_custo_params
-    permitted_attributes = CCentroCusto.column_names.reject { |col| ['deleted_at', 'created_by', 'updated_by'].include?(col) }
-    params.require(:c_centro_custo).permit(permitted_attributes.map(&:to_sym))
+    permitted = CCentroCusto.column_names.reject { |col| %w[deleted_at created_by updated_by].include?(col) }
+    params.require(:c_centro_custo).permit(permitted.map(&:to_sym))
   end
 
   def handle_not_found

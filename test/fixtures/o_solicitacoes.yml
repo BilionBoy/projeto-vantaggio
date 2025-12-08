@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  numero: 1
+  descricao: MyString
+  observacao: MyText
+  a_status: one
+  o_urgencia: one
+  o_tipo_solicitacao: one
+  o_categoria_servico: one
+  c_condominio: one
+  created_by: MyString
+  updated_by: MyString
+  deleted_at: 2025-12-07 19:21:59
+
+two:
+  numero: 1
+  descricao: MyString
+  observacao: MyText
+  a_status: two
+  o_urgencia: two
+  o_tipo_solicitacao: two
+  o_categoria_servico: two
+  c_condominio: two
+  created_by: MyString
+  updated_by: MyString
+  deleted_at: 2025-12-07 19:21:59

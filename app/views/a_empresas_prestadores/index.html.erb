@@ -18,12 +18,11 @@
             <th><%= sort_link(@q, :nome_fantasia, t("activerecord.attributes.a_empresa_prestador.nome_fantasia")) %></th>
             <th><%= sort_link(@q, :razao_social, t("activerecord.attributes.a_empresa_prestador.razao_social")) %></th>
             <th><%= sort_link(@q, :cnpj, t("activerecord.attributes.a_empresa_prestador.cnpj")) %></th>
-            <th><%= sort_link(@q, :endereco, t("activerecord.attributes.a_empresa_prestador.endereco")) %></th>
             <th><%= sort_link(@q, :telefone, t("activerecord.attributes.a_empresa_prestador.telefone")) %></th>
-            <th><%= sort_link(@q, :contato, t("activerecord.attributes.a_empresa_prestador.contato")) %></th>
             <th><%= sort_link(@q, :email, t("activerecord.attributes.a_empresa_prestador.email")) %></th>
             <th><%= sort_link(@q, :a_status, t("activerecord.attributes.a_empresa_prestador.status")) %></th>
             <th><%= sort_link(@q, :g_municipio, t("activerecord.attributes.a_empresa_prestador.municipio")) %></th>
+            <th><%= sort_link(@q, :t_taxa, t("activerecord.attributes.a_empresa_prestador.taxa")) %></th>
           </tr>
         </thead>
         <tbody>
@@ -34,28 +33,29 @@
                   <a href="#" class="text-body dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="ph-gear"></i>
                   </a>
-                  <div class="dropdown-menu" style="">
+                  <div class="dropdown-menu">
                     <div class="dropdown-header">Opções</div>
                     <%= link_to edit_a_empresa_prestador_path(a_empresa_prestador), class: "dropdown-item" do %>
                       <i class="ph-pen me-2"></i> Editar
                     <% end %>
                     <%= form_for a_empresa_prestador, method: :delete do |f| %>
-                      <a class="dropdown-item hand-pointer " data-confirm-delete="<%= a_empresa_prestador_path(a_empresa_prestador) %>" data-csrf-token="<%= form_authenticity_token %>">
+                      <a class="dropdown-item hand-pointer"
+                   data-confirm-delete="<%= a_empresa_prestador_path(a_empresa_prestador) %>"
+                   data-csrf-token="<%= form_authenticity_token %>">
                         <i class="ph-trash-simple me-2"></i>Excluir
                       </a>
                     <% end %>
-                    <td><%= a_empresa_prestador.nome_fantasia %></td>
-                    <td><%= a_empresa_prestador.razao_social %></td>
-                    <td><%= a_empresa_prestador.cnpj %></td>
-                    <td><%= a_empresa_prestador.endereco %></td>
-                    <td><%= a_empresa_prestador.telefone %></td>
-                    <td><%= a_empresa_prestador.contato %></td>
-                    <td><%= a_empresa_prestador.email %></td>
-                    <td><%= a_empresa_prestador.a_status&.descricao %></td>
-                    <td><%= a_empresa_prestador.g_municipio&.descricao %></td>
                   </div>
                 </div>
               </td>
+              <td><%= a_empresa_prestador.nome_fantasia %></td>
+              <td><%= a_empresa_prestador.razao_social %></td>
+              <td><%= a_empresa_prestador.cnpj %></td>
+              <td><%= a_empresa_prestador.telefone %></td>
+              <td><%= a_empresa_prestador.email %></td>
+              <td><%= a_empresa_prestador.a_status&.descricao %></td>
+              <td><%= a_empresa_prestador.g_municipio&.descricao %></td>
+              <td><%= a_empresa_prestador.t_taxa&.nome_com_percentual%></td>
             </tr>
           <% end %>
         </tbody>

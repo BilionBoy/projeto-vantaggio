@@ -15,7 +15,6 @@
         <thead>
           <tr>
             <th class="text-center">Ações</th>
-            <th><%= sort_link(@q, :custo, t("activerecord.attributes.c_centro_custo.custo")) %></th>
             <th><%= sort_link(@q, :nome, t("activerecord.attributes.c_centro_custo.nome")) %></th>
             <th><%= sort_link(@q, :c_tipo_centro_custo, t("activerecord.attributes.c_centro_custo.tipo_centro_custo")) %></th>
             <th><%= sort_link(@q, :c_condominio, t("activerecord.attributes.c_centro_custo.condominio")) %></th>
@@ -41,7 +40,6 @@
                         <i class="ph-trash-simple me-2"></i>Excluir
                       </a>
                     <% end %>
-                    <td><%= c_centro_custo.custo %></td>
                     <td><%= c_centro_custo.nome %></td>
                     <td><%= c_centro_custo.c_tipo_centro_custo&.descricao %></td>
                     <td><%= c_centro_custo.c_condominio&.nome %></td>

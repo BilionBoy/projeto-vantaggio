@@ -3,5 +3,9 @@
 class CCentroCusto < ApplicationRecord
   belongs_to :c_tipo_centro_custo
   belongs_to :c_condominio
-  # Adicione aqui quaisquer métodos ou validações padrão para seus modelos
+
+  def saldo_atual
+    saldo_atual = self[:saldo_atual] || 0
+    saldo_atual.to_f
+  end
 end

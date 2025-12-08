@@ -3,5 +3,10 @@
 class AEmpresaPrestador < ApplicationRecord
   belongs_to :a_status
   belongs_to :g_municipio
-  # Adicione aqui quaisquer métodos ou validações padrão para seus modelos
+  belongs_to :t_taxa
+
+
+  validates :nome_fantasia, presence: true
+  validates :cnpj,          presence: true
+  
 end

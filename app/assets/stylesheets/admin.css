@@ -61,6 +61,39 @@ abbr {
   right: 1.2rem;
 }
 
+.btn-primary {
+  --btn-color: #fff;
+  --btn-bg: #317a6cff;
+  --btn-border-color: #317a6cff;
+  --btn-hover-color: #fff;
+  --btn-hover-bg: rgb(26, 75, 65);
+  --btn-hover-border-color: #317a6cff;
+  --btn-focus-shadow-rgb: 48, 150, 255;
+  --btn-active-color: #fff;
+  --btn-active-bg: #317a6cff;
+  --btn-active-border-color: #317a6cff;
+  --btn-active-shadow: inset 0 0 0 0 transparent;
+  --btn-disabled-color: #fff;
+  --btn-disabled-bg: #317a6cff;
+  --btn-disabled-border-color: #317a6cff;
+}
+.btn-info {
+  --btn-color: #fff;
+  --btn-bg: #317a6cff;
+  --btn-border-color: #317a6cff;
+  --btn-hover-color: #fff;
+  --btn-hover-bg: #317a6cff;
+  --btn-hover-border-color: #317a6cff;
+  --btn-focus-shadow-rgb: 42, 169, 185;
+  --btn-active-color: #fff;
+  --btn-active-bg: #317a6cff;
+  --btn-active-border-color: #317a6cff;
+  --btn-active-shadow: inset 0 0 0 0 transparent;
+  --btn-disabled-color: #fff;
+  --btn-disabled-bg: #317a6cff;
+  --btn-disabled-border-color: #317a6cff;
+}
+
 /* Estilo para impressão */
 @media print {
   /* Elementos que você deseja ocultar na impressão */

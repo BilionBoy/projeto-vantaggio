@@ -14,10 +14,7 @@
       <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
       <div class="row">
         <div class="col-4">
-          <%= f.input :custo, input_html: { class: "capitalize"}, placeholder: "Custo"  %>
-        </div>
-        <div class="col-4">
-          <%= f.input :nome, input_html: { class: "capitalize"}, placeholder: "Nome"  %>
+          <%= f.input :nome, input_html: { class: "capitalize"}, placeholder: "Título"  %>
         </div>
         <div class="col-4">
           <%= f.input :c_tipo_centro_custo_id, collection: CTipoCentroCusto.all, label_method: :descricao, value_method: :id, prompt: "Selecione o Tipo de Centro de Custo" %>
