@@ -4,28 +4,23 @@
     background: linear-gradient(135deg, #317a6cff 0%, #44A08D 100%) !important;
   }
 
-  /* Links e ícones dos submenus */
   .nav-group-sub .nav-link,
   .nav-group-sub .nav-link i {
     color: #fff !important;
   }
 
-  /* Hover dos submenus */
   .nav-group-sub .nav-link:hover {
     background-color: rgba(255, 255, 255, 0.1);
   }
 
-  /* Ícones principais */
   .nav-sidebar .nav-link i {
     margin-right: 8px;
   }
 
-  /* Transição suave */
   .nav-link {
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  /* Campo de busca */
   #sidebar-search-input {
     background-color: rgba(255, 255, 255, 0.15);
     border: none;
@@ -42,7 +37,7 @@
 </style>
 <div class="sidebar sidebar-dark sidebar-main sidebar-expand-xl">
   <div class="sidebar-content">
-    <!-- Campo de pesquisa -->
+    <!-- Busca -->
     <div class="sidebar-section-body p-2">
       <div class="form-control-feedback form-control-feedback-end">
         <input type="search" id="sidebar-search-input" class="form-control" placeholder="Pesquisar" onkeyup="filterSidebar()">
@@ -51,7 +46,7 @@
         </div>
       </div>
     </div>
-    <!-- Menu principal -->
+    <!-- Menu -->
     <div class="sidebar-section">
       <ul class="nav nav-sidebar" data-nav-type="accordion" id="sidebar-items">
         <!-- Home -->
@@ -94,6 +89,7 @@
             <li class="nav-item"><%= link_to "Níveis de Cartão", c_nivel_cartoes_path, class: "nav-link" %></li>
           </ul>
         </li>
+        <!-- Taxas -->
         <li class="nav-item">
           <%= link_to t_taxas_path, class: "nav-link" do %>
             <i class="ph-percent"></i>
@@ -110,6 +106,13 @@
             <li class="nav-item"><%= link_to "Tipos de Solicitação", o_tipos_solicitacoes_path, class: "nav-link" %></li>
             <li class="nav-item"><%= link_to "Categorias de Serviços", o_categorias_servicos_path, class: "nav-link" %></li>
             <li class="nav-item"><%= link_to "Urgências", o_urgencias_path, class: "nav-link" %></li>
+            <!-- 🔥 NOVO: Ordens de Serviço -->
+            <li class="nav-item">
+              <%= link_to o_ordem_servicos_path, class: "nav-link" do %>
+                <i class="ph-hammer"></i>
+                <span>Ordens de Serviço</span>
+              <% end %>
+            </li>
           </ul>
         </li>
         <!-- Tabelas Referenciais -->
@@ -135,48 +138,36 @@
   </div>
 </div>
 <script>
-  // --- Filtro de pesquisa no sidebar ---
   function filterSidebar() {
-    const input = document.getElementById("sidebar-search-input");
-    const filter = input.value.toLowerCase().trim();
+    const filter = document.getElementById("sidebar-search-input").value.toLowerCase().trim();
     const items = document.querySelectorAll("#sidebar-items > li");
 
-    if (filter === "") {
-      items.forEach(item => {
-        item.style.display = "";
-        const submenu = item.querySelector(".nav-group-sub");
-        if (submenu) {
-          submenu.classList.remove("show");
-          submenu.querySelectorAll("li.nav-item").forEach(sub => sub.style.display = "");
-        }
-      });
-      return;
-    }
-
     items.forEach(item => {
-      const linkText = item.textContent.toLowerCase();
+      const text = item.textContent.toLowerCase();
       const submenu = item.querySelector(".nav-group-sub");
 
-      if (submenu) {
-        const subitems = submenu.querySelectorAll("li.nav-item");
-        let matchFound = false;
+      if (!filter) {
+        item.style.display = "";
+        if (submenu) submenu.classList.remove("show");
+        return;
+      }
 
-        subitems.forEach(sub => {
-          const text = sub.textContent.toLowerCase();
-          const visible = text.includes(filter);
-          sub.style.display = visible ? "" : "none";
-          if (visible) matchFound = true;
+      if (submenu) {
+        let match = false;
+        submenu.querySelectorAll("li.nav-item").forEach(sub => {
+          const ok = sub.textContent.toLowerCase().includes(filter);
+          sub.style.display = ok ? "" : "none";
+          if (ok) match = true;
         });
 
-        if (matchFound || linkText.includes(filter)) {
+        if (match || text.includes(filter)) {
           item.style.display = "";
           submenu.classList.add("show");
         } else {
           item.style.display = "none";
-          submenu.classList.remove("show");
         }
       } else {
-        item.style.display = linkText.includes(filter) ? "" : "none";
+        item.style.display = text.includes(filter) ? "" : "none";
       }
     });
   }
