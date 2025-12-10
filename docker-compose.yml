@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  vantaggio_app:
+    build: .
+    container_name: vantaggio_app
+    restart: always
+    depends_on:
+      - vantaggio_db
+    environment:
+      RAILS_ENV: production
+      DATABASE_URL: postgres://vantaggio:vantaggio123@vantaggio_db:5432/vantaggio_production
+      DB_NAME: vantaggio_production
+      DB_USERNAME: vantaggio
+      DB_PASSWORD: vantaggio123
+      DB_HOST: vantaggio_db
+    volumes:
+      - .:/app
+      - ./storage:/app/storage
+      - ./log:/app/log
+      - ./tmp:/app/tmp
+    ports:
+      - "3200:3200"
+    command: sh -c "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0 -p 3200"
+
+  vantaggio_db:
+    image: postgres:15
+    container_name: vantaggio_db
+    restart: always
+    environment:
+      POSTGRES_USER: vantaggio
+      POSTGRES_PASSWORD: vantaggio123
+      POSTGRES_DB: vantaggio_production
+    volumes:
+      - pgdata_vtg:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+
+volumes:
+  pgdata_vtg:

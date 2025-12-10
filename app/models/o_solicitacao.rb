@@ -8,7 +8,7 @@ class OSolicitacao < ApplicationRecord
   belongs_to :o_categoria_servico
   belongs_to :c_condominio
   belongs_to :c_centro_custo
-
+  has_many :o_propostas, dependent: :destroy 
   before_validation :set_saldo_snapshot
   before_validation :set_status_pendente, on: :create
   before_validation :set_numero,          on: :create

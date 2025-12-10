@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_08_225222) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_10_035745) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -196,6 +196,26 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_08_225222) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "o_propostas", force: :cascade do |t|
+    t.bigint "o_solicitacao_id", null: false
+    t.bigint "a_empresa_prestador_id", null: false
+    t.bigint "usuario_envio_id", null: false
+    t.bigint "o_status_id", null: false
+    t.decimal "valor_total"
+    t.integer "prazo_execucao_dias"
+    t.datetime "validade_proposta"
+    t.text "observacao"
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["a_empresa_prestador_id"], name: "index_o_propostas_on_a_empresa_prestador_id"
+    t.index ["o_solicitacao_id"], name: "index_o_propostas_on_o_solicitacao_id"
+    t.index ["o_status_id"], name: "index_o_propostas_on_o_status_id"
+    t.index ["usuario_envio_id"], name: "index_o_propostas_on_usuario_envio_id"
+  end
+
   create_table "o_solicitacoes", force: :cascade do |t|
     t.integer "numero"
     t.string "descricao"
@@ -293,6 +313,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_08_225222) do
   add_foreign_key "g_estados", "g_paises"
   add_foreign_key "g_localidades", "g_distritos"
   add_foreign_key "g_municipios", "g_estados"
+  add_foreign_key "o_propostas", "a_empresas_prestadores"
+  add_foreign_key "o_propostas", "o_solicitacoes"
+  add_foreign_key "o_propostas", "o_status"
+  add_foreign_key "o_propostas", "users", column: "usuario_envio_id"
   add_foreign_key "o_solicitacoes", "c_centros_custos"
   add_foreign_key "o_solicitacoes", "c_condominios"
   add_foreign_key "o_solicitacoes", "o_categorias_servicos"

@@ -1,0 +1,86 @@
+<div class="container">
+  <%= render "shared/notice" %>
+  <div class="card border-0 shadow shadow-sm">
+    <div class="card-header border-0 d-flex justify-content-between align-items-center">
+      <span class="fs-4 fw-semibold text-primary">Proposta Recebida</span>
+      <div>
+        <%= link_to recebidas_o_propostas_path, class: "btn btn-sm btn-light" do %>
+          <i class="ph-arrow-left me-1"></i> Voltar
+        <% end %>
+      </div>
+    </div>
+    <div class="card-body" id="<%= dom_id @o_proposta %>">
+      <!-- ===========================
+           DADOS PRINCIPAIS
+      ============================ -->
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <p><strong>Solicitação:</strong><br>
+            <%= @o_proposta.o_solicitacao&.descricao || "—" %>
+          </p>
+          <p><strong>Prestador:</strong><br>
+            <%= @o_proposta.a_empresa_prestador&.nome_fantasia || "—" %>
+          </p>
+          <p><strong>Enviada por:</strong><br>
+            <%= @o_proposta.usuario_envio&.nome || "—" %>
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Status:</strong><br>
+            <%= @o_proposta.o_status&.descricao %>
+          </p>
+          <p><strong>Prazo de Execução:</strong><br>
+            <%= @o_proposta.prazo_execucao_dias %> dias
+          </p>
+          <p><strong>Validade da Proposta:</strong><br>
+            <%= @o_proposta.validade_proposta ? l(@o_proposta.validade_proposta, format: :long) : "—" %>
+          </p>
+        </div>
+      </div>
+      <!-- ===========================
+           OBSERVAÇÃO
+      ============================ -->
+      <h5 class="fw-semibold text-primary mb-2">Observações</h5>
+      <% if @o_proposta.observacao.present? %>
+        <div class="alert alert-info border-start border-info border-3">
+          <%= simple_format(@o_proposta.observacao) %>
+        </div>
+      <% else %>
+        <div class="text-muted fst-italic">
+          Nenhuma observação adicionada pelo prestador.
+        </div>
+      <% end %>
+      <!-- ===========================
+           VALOR TOTAL
+      ============================ -->
+      <hr class="my-4">
+      <div class="d-flex justify-content-between align-items-center">
+        <h4 class="fw-bold text-success">
+          Valor Total: <%= number_to_currency(@o_proposta.valor_total) %>
+        </h4>
+      </div>
+    </div>
+    <!-- ===========================
+         AÇÕES DO CONDOMÍNIO
+    ============================ -->
+    <div class="card-footer border-0 d-flex justify-content-between">
+      <%= link_to recebidas_o_propostas_path, class: "btn btn-secondary" do %>
+        <i class="ph-arrow-left"></i> Voltar
+      <% end %>
+      <div class="d-flex gap-2">
+        <%= button_to aceitar_o_proposta_path(@o_proposta),
+              method: :post,
+              class: "btn btn-success",
+              data: { confirm: "Aceitar esta proposta e gerar a Ordem de Serviço?" } do %>
+          <i class="ph-check"></i> Aceitar
+        <% end %>
+        <%= button_to recusar_o_proposta_path(@o_proposta),
+              method: :post,
+              class: "btn btn-danger",
+              data: { confirm: "Tem certeza que deseja recusar esta proposta?" } do %>
+          <i class="ph-x"></i> Recusar
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

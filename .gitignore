@@ -43,7 +43,6 @@ stop.sh
 /coverage/
 Gemfile.lock
 .env
-docker-compose.yml
 /config/environments/production.rb
 
 /config/credentials/development.key
