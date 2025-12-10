@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 class OPropostasController < ApplicationController
   before_action :set_solicitacao, only: %i[new create]
-  before_action :set_o_proposta, only: %i[show edit update destroy]
+  before_action :set_o_proposta, only: %i[show edit update destroy aceitar recusar]
   rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
 
-  # Prestador → vê solicitações para enviar proposta
-  # Condomínio → vê propostas recebidas
+  # Prestador vê solicitações para enviar proposta
+  # Condomínio vê propostas recebidas
   def index
     if current_user.a_empresa_prestador_id.present?
+      # Prestador → vê solicitações pendentes
       @q = OSolicitacao.ransack(params[:q])
 
       solicitacoes_result =
@@ -17,6 +18,7 @@ class OPropostasController < ApplicationController
 
       @pagy, @solicitacoes = pagy(solicitacoes_result.order(created_at: :desc))
     else
+      # Condomínio → vê propostas recebidas
       @q = OProposta
             .includes(:o_solicitacao, :a_empresa_prestador, :o_status)
             .ransack(params[:q])
@@ -68,23 +70,66 @@ class OPropostasController < ApplicationController
     redirect_to o_propostas_url, notice: "Proposta removida com sucesso."
   end
 
+  # -----------------------------------------------------
+  # SÍNDICO ACEITA → Gera OS automaticamente
+  # -----------------------------------------------------
+  def aceitar
+    unless current_user.c_condominio_id.present?
+      return redirect_to recebidas_o_propostas_path, alert: "Apenas síndicos podem aceitar propostas."
+    end
+
+    ActiveRecord::Base.transaction do
+      @o_proposta.update!(
+        o_status: OStatus.find_by(descricao: "Aprovada")
+      )
+
+      OOrdemServico.create!(
+        o_proposta: @o_proposta,
+        c_condominio: @o_proposta.o_solicitacao.c_condominio,
+        a_empresa_prestador: @o_proposta.a_empresa_prestador,
+        valor_total: @o_proposta.valor_total,
+        prazo_execucao_dias: @o_proposta.prazo_execucao_dias,
+        o_status: OStatus.find_by(descricao: "Aberta")
+      )
+    end
+
+    redirect_to recebidas_o_propostas_path, notice: "Proposta aprovada e OS criada com sucesso!"
+  rescue => e
+    redirect_to recebidas_o_propostas_path, alert: "Erro ao aceitar proposta: #{e.message}"
+  end
+
+  # -----------------------------------------------------
+  # SÍNDICO RECUSA
+  # -----------------------------------------------------
+  def recusar
+    @o_proposta.update!(
+      o_status: OStatus.find_by(descricao: "Rejeitada")
+    )
+
+    redirect_to recebidas_o_propostas_path, notice: "Proposta rejeitada."
+  end
+
+  # -----------------------------------------------------
+  # PROPOSTAS RECEBIDAS PELO CONDOMÍNIO
+  # -----------------------------------------------------
   def recebidas
     unless current_user.c_condominio_id.present?
       return redirect_to root_path, alert: "Apenas condomínios podem visualizar propostas recebidas."
     end
-  
+
     @q = OProposta
           .joins(:o_solicitacao)
           .where(o_solicitacoes: { c_condominio_id: current_user.c_condominio_id })
           .includes(:a_empresa_prestador, :usuario_envio, :o_status, :o_solicitacao)
           .ransack(params[:q])
-  
+
     @pagy, @o_propostas = pagy(@q.result.order(created_at: :desc))
   end
 
   private
 
   def set_solicitacao
+    return unless params[:o_solicitacao_id].present?
     @solicitacao = OSolicitacao.find(params[:o_solicitacao_id])
   end
 

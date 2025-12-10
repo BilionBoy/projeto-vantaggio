@@ -1,0 +1,752 @@
+<div class="report-container">
+  <!-- HEADER -->
+  <div class="report-header">
+    <div class="header-content">
+      <div>
+        <h1 class="report-title">Ordens de Serviço</h1>
+        <p class="report-subtitle">Acompanhamento das manutenções e serviços do condomínio</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn-secondary" onclick="window.print()">Imprimir</button>
+        <button class="btn-secondary">Exportar</button>
+      </div>
+    </div>
+  </div>
+  <!-- FILTROS -->
+  <div class="filters-card">
+    <%= search_form_for @q, url: o_ordem_servicos_path, method: :get, html: { class: "filters-form" } do |f| %>
+      <div class="filter-group flex flex-col">
+        <label class="filter-label mb-1 text-sm font-medium text-gray-700">Status</label>
+        <%= f.select :o_status_id_eq,
+          options_from_collection_for_select(OStatus.all, :id, :descricao, params.dig(:q, :o_status_id_eq)),
+          { include_blank: "Todos os Status" },
+          class: "filter-select block w-48 px-3 py-2 border border-gray-300 rounded-md shadow-sm" %>
+      </div>
+      <button type="submit" class="btn-primary">Filtrar Resultados</button>
+    <% end %>
+  </div>
+  <!-- MÉTRICAS -->
+  <% total_ordens     = @o_ordem_servicos.size %>
+  <% status_counts    = @o_ordem_servicos.group_by { |os| os.o_status&.descricao || "Sem Status" }.transform_values(&:count) %>
+  <% abertas          = status_counts["Aberta"] || 0 %>
+  <% em_andamento     = status_counts["Em Andamento"] || 0 %>
+  <% concluidas       = status_counts["Concluída"] || 0 %>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <line x1="9" y1="9" x2="15" y2="9"/>
+          <line x1="9" y1="15" x2="15" y2="15"/>
+        </svg>
+      </div>
+      <div class="metric-content">
+        <div class="metric-label">Total de Ordens</div>
+        <div class="metric-value"><%= total_ordens %></div>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+      <div class="metric-content">
+        <div class="metric-label">Abertas</div>
+        <div class="metric-value"><%= abertas %></div>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+      </div>
+      <div class="metric-content">
+        <div class="metric-label">Em Andamento</div>
+        <div class="metric-value"><%= em_andamento %></div>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+      </div>
+      <div class="metric-content">
+        <div class="metric-label">Concluídas</div>
+        <div class="metric-value"><%= concluidas %></div>
+      </div>
+    </div>
+  </div>
+  <!-- LISTA DE ORDENS -->
+  <div class="orders-grid">
+    <% @o_ordem_servicos.each do |os| %>
+      <% status_descricao = os.o_status&.descricao || "Sem Status" %>
+      <% status_class = case status_descricao.downcase
+          when /aberta/ then "status-open"
+          when /andamento/ then "status-progress"
+          when /conclu/ then "status-completed"
+          when /cancel/ then "status-cancelled"
+          else "status-default"
+      end %>
+      <div class="order-card">
+        <!-- HEADER -->
+        <div class="card-header">
+          <div class="card-title">
+            <%= os.o_proposta.o_solicitacao.descricao.presence ||
+                "Solicitação ##{os.o_proposta.o_solicitacao.numero}" %>
+          </div>
+          <div class="<%= status_class %>">
+            <span class="status-dot"></span>
+            <%= status_descricao %>
+          </div>
+        </div>
+        <!-- DETALHES -->
+        <div class="service-details">
+          <p><strong>Prestador:</strong> <%= os.a_empresa_prestador.nome_fantasia %></p>
+          <p><strong>Valor Total:</strong> <%= number_to_currency(os.valor_total) %></p>
+          <p><strong>Prazo de Execução:</strong> <%= os.prazo_execucao_dias %> dias</p>
+          <% if os.data_inicio.present? %>
+            <p><strong>Início:</strong> <%= l(os.data_inicio, format: :short) %></p>
+          <% end %>
+          <% if os.data_fim.present? %>
+            <p><strong>Fim:</strong> <%= l(os.data_fim, format: :short) %></p>
+          <% end %>
+        </div>
+        <!-- AÇÕES -->
+        <div class="card-footer">
+          <!-- PRESTADOR FINALIZA -->
+          <% if current_user.a_empresa_prestador_id.present? && status_descricao == "Aberta" %>
+            <%= button_to finalizar_o_ordem_servico_path(os),
+                method: :patch,
+                class: "btn btn-success" do %>
+              Marcar como Finalizada
+            <% end %>
+          <% end %>
+          <!-- SÍNDICO APROVA FINALIZAÇÃO -->
+          <% if current_user.c_condominio_id.present? && status_descricao == "Finalizada" %>
+            <%= button_to aprovar_finalizacao_o_ordem_servico_path(os),
+                method: :patch,
+                class: "btn btn-primary" do %>
+              Aprovar Finalização
+            <% end %>
+          <% end %>
+          <!-- ADMIN CONFIRMA PAGAMENTO -->
+          <% if current_user.admin? && status_descricao == "Aprovada" %>
+            <%= button_to pagar_o_ordem_servico_path(os),
+                method: :patch,
+                class: "btn btn-warning" do %>
+              Confirmar Pagamento
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <!-- EMPTY STATE -->
+  <% if @o_ordem_servicos.empty? %>
+    <div class="empty-state">
+      <h3 class="empty-title">Nenhuma ordem de serviço encontrada</h3>
+      <p class="empty-description">Ajuste os filtros ou aguarde novas OS serem criadas.</p>
+    </div>
+  <% end %>
+  <!-- PAGINAÇÃO -->
+  <% if defined?(@pagy) && @pagy %>
+    <div class="pagination-container">
+      <%= pagy_bootstrap_nav(@pagy).html_safe %>
+    </div>
+  <% end %>
+</div>
+<style>
+  body {
+    background: black;
+    }
+    p{
+      color: white;
+    }
+
+  .btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(10px);
+  min-height: 44px;
+  }
+
+
+  .form-label{
+  color: white;
+  }
+  .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  }
+
+  .btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 44px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+
+  .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  }
+
+  .btn-primary:active {
+  transform: translateY(0);
+  }
+
+
+  /* ORDEM DE SERVIÇOS */
+
+  .report-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  }
+
+  /* Header Section */
+  .report-header {
+  margin-bottom: 2rem;
+  }
+
+  .header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  }
+
+  .report-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.025em;
+  }
+
+  .report-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+  }
+
+  .header-actions {
+  display: flex;
+  gap: 0.75rem;
+  }
+
+  /* Metrics Grid */
+  .metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  }
+
+  .metric-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+  }
+
+  .metric-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .metric-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  }
+
+  .metric-content {
+  flex: 1;
+  }
+
+  .metric-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  }
+
+  .metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  }
+
+  /* Filters Card */
+  .filters-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  }
+
+  .filters-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  align-items: end;
+  }
+
+  .filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  }
+
+  .filter-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  }
+
+  .filter-select {
+  padding: 0.875rem 1rem;
+  font-size: 0.9375rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 44px;
+  backdrop-filter: blur(10px);
+  }
+
+  .filter-select:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .filter-select:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+  }
+
+  .filter-select option {
+  background: #1e40af;
+  color: #ffffff;
+  }
+
+  /* Orders Grid */
+  .orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  }
+
+  .order-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 1.75rem;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  }
+
+  .order-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Card Header */
+  .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  }
+
+  .card-title {
+  color: white;
+  }
+
+  .card-number {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  }
+
+  .status-open,
+  .status-progress,
+  .status-completed,
+  .status-cancelled,
+  .status-default {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  }
+
+  .status-open {
+  background: rgba(59, 130, 246, 0.2);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .status-progress {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fcd34d;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  }
+
+  .status-completed {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .status-cancelled {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .status-default {
+  background: rgba(156, 163, 175, 0.2);
+  color: #d1d5db;
+  border: 1px solid rgba(156, 163, 175, 0.3);
+  }
+
+  .status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  }
+
+  /* Vehicle Section */
+  .vehicle-section {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .vehicle-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  }
+
+  .vehicle-info {
+  flex: 1;
+  }
+
+  .vehicle-plate {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+  }
+
+  .vehicle-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  }
+
+  /* Service Details */
+  .service-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  }
+
+  .detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  }
+
+  .detail-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  flex-shrink: 0;
+  }
+
+  .detail-value {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+  text-align: right;
+  }
+
+  /* Progress Section */
+  .progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  }
+
+  .progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  }
+
+  .progress-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  }
+
+  .progress-percentage {
+  font-size: 0.875rem;
+  color: #10b981;
+  font-weight: 700;
+  }
+
+  .progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  }
+
+  .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  }
+
+  /* Card Footer */
+  .card-footer {
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 44px;
+  }
+
+  .btn-detail:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  }
+
+  /* Empty State */
+  .empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  }
+
+  .empty-icon {
+  margin-bottom: 1.5rem;
+  opacity: 0.5;
+  }
+
+  .empty-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.5rem;
+  }
+
+  .empty-description {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Pagination */
+  .pagination-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  }
+
+  .pagination-link {
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  }
+
+  .pagination-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .pagination-link.active {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-color: #10b981;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+  .report-container {
+    padding: 1rem;
+  }
+
+  .report-title {
+    font-size: 1.5rem;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-form {
+    grid-template-columns: 1fr;
+  }
+
+  .orders-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-row {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .detail-value {
+    text-align: left;
+  }
+  }
+
+  /* Print Styles */
+  @media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  .header-actions,
+  .filters-card,
+  .btn-detail,
+  .pagination-container {
+    display: none;
+  }
+
+  .order-card {
+    break-inside: avoid;
+    border: 1px solid #e5e7eb;
+    background: white;
+  }
+  }
+</style>

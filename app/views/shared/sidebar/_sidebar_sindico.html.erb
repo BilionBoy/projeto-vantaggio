@@ -1,7 +1,7 @@
 <style>
   /* Fundo degradê */
   .sidebar.sidebar-dark {
-    background: linear-gradient(135deg, #317a6cff 0%, #44A08D 100%) !important;
+    background: linear-gradient(135deg, #317a6c 0%, #44A08D 100%) !important;
   }
 
   /* Links e ícones dos submenus */
@@ -20,7 +20,6 @@
     margin-right: 8px;
   }
 
-  /* Transição suave */
   .nav-link {
     transition: background-color 0.2s ease, color 0.2s ease;
   }
@@ -45,7 +44,8 @@
     <!-- Campo de pesquisa -->
     <div class="sidebar-section-body p-2">
       <div class="form-control-feedback form-control-feedback-end">
-        <input type="search" id="sidebar-search-input" class="form-control" placeholder="Pesquisar" onkeyup="filterSidebar()">
+        <input type="search" id="sidebar-search-input" class="form-control"
+               placeholder="Pesquisar" onkeyup="filterSidebar()">
         <div class="form-control-feedback-icon">
           <i class="ph-magnifying-glass opacity-50"></i>
         </div>
@@ -53,20 +53,35 @@
     </div>
     <div class="sidebar-section">
       <ul class="nav nav-sidebar" data-nav-type="accordion" id="sidebar-items">
+        <!-- INÍCIO -->
         <li class="nav-item">
           <%= link_to root_path, class: "nav-link" do %>
             <i class="ph-house"></i>
             <span>Página Inicial</span>
           <% end %>
         </li>
-        <li><a href="<%= o_solicitacoes_path %>" class="nav-link"><i class="ph-clipboard-text"></i> Solicitar Orçamento</a></li>
-        <li>
+        <!-- SOLICITAÇÕES -->
+        <li class="nav-item">
+          <%= link_to o_solicitacoes_path, class: "nav-link" do %>
+            <i class="ph-clipboard-text"></i>
+            <span>Solicitações</span>
+          <% end %>
+        </li>
+        <!-- PROPOSTAS RECEBIDAS -->
+        <li class="nav-item">
           <%= link_to recebidas_o_propostas_path, class: "nav-link" do %>
             <i class="ph-envelope-open"></i>
             <span>Propostas Recebidas</span>
           <% end %>
         </li>
-        <!-- Centros de Custos -->
+        <!-- ORDENS DE SERVIÇO -->
+        <li class="nav-item">
+          <%= link_to o_ordem_servicos_path, class: "nav-link" do %>
+            <i class="ph-wrench"></i>
+            <span>Ordens de Serviço</span>
+          <% end %>
+        </li>
+        <!-- CENTROS DE CUSTO -->
         <li class="nav-item nav-item-submenu">
           <a href="#" class="nav-link">
             <i class="ph-coins"></i>
@@ -81,7 +96,7 @@
             </li>
           </ul>
         </li>
-        <!-- Tabelas Referenciais -->
+        <!-- TABELAS DE APOIO -->
         <li class="nav-item nav-item-submenu">
           <a href="#" class="nav-link">
             <i class="ph-folders"></i>
@@ -98,7 +113,6 @@
   </div>
 </div>
 <script>
-  // --- Filtro de pesquisa no sidebar ---
   function filterSidebar() {
     const input = document.getElementById("sidebar-search-input");
     const filter = input.value.toLowerCase().trim();

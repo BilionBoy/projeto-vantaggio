@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  o_proposta: one
+  c_condominio: one
+  a_empresa_prestador: one
+  valor_total: 9.99
+  prazo_execucao_dias: 1
+  data_inicio: 2025-12-10 15:46:39
+  data_fim: 2025-12-10 15:46:39
+  o_status: one
+
+two:
+  o_proposta: two
+  c_condominio: two
+  a_empresa_prestador: two
+  valor_total: 9.99
+  prazo_execucao_dias: 1
+  data_inicio: 2025-12-10 15:46:39
+  data_fim: 2025-12-10 15:46:39
+  o_status: two

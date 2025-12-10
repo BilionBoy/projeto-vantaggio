@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
-  
+resources :o_ordem_servicos do
+  member do
+    patch :finalizar       # prestador finaliza
+    patch :aprovar         # síndico aprova OS finalizada
+    patch :pagar           # admin paga
+  end
+end  
   resources :c_centros_custos do
     member do
       get :saldo  
