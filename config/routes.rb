@@ -1,16 +1,26 @@
 Rails.application.routes.draw do
-  resources :o_propostas
-  resources :o_status
-
+  
   resources :c_centros_custos do
     member do
-      get :saldo   # ← NECESSÁRIO PARA O AJAX FUNCIONAR
+      get :saldo  
+    end
+  end
+  
+  resources :o_solicitacoes do
+    resources :o_propostas, only: [:new, :create]
+    member do
+      get :saldo_centro
     end
   end
 
-  resources :o_solicitacoes do
+  resources :o_propostas, except: [:new, :create] do
+    collection do
+      get :recebidas
+    end
+  
     member do
-      get :saldo_centro
+      post :aceitar
+      post :recusar
     end
   end
 
@@ -32,8 +42,8 @@ Rails.application.routes.draw do
   resources :o_tipos_solicitacoes
   resources :o_categorias_servicos
   resources :o_urgencias
+  resources :o_status
   resources :t_taxas
-
   devise_for :users
 
   resources :users, path: "usuarios"

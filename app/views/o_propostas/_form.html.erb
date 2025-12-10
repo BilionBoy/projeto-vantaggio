@@ -1,68 +1,46 @@
-
-<%= render "shared/context_nav", title: t("activerecord.models.#{OProposta.model_name.i18n_key}.other") do  %>
-<span class="breadcrumb-item"><%= link_to t("activerecord.models.#{OProposta.model_name.i18n_key}.other"), o_propostas_path, class: "text-dark" %></span>
-<span class="breadcrumb-item active"><%= t("helpers.submit.#{params[:action]}") %></span>
+<%= render "shared/context_nav",
+     title: "Enviar Proposta" do %>
+  <span class="breadcrumb-item">
+    <%= link_to "Propostas", o_propostas_path, class: "text-dark" %>
+  </span>
+  <span class="breadcrumb-item active">
+    Nova Proposta
+  </span>
 <% end %>
-<%= simple_form_for(@o_proposta) do |f| %>
-<div class="card">
-  <div class="card-header">
-    <h5 class="my-0">
-      <%= @o_proposta.new_record? ? "Incluir " : "Editar " %><%= t("activerecord.models.#{OProposta.model_name.i18n_key}.one") %>
+<div class="card shadow-sm border-0">
+  <div class="card-header bg-light">
+    <h5 class="my-0 fw-semibold">
+      Enviar Proposta para: <%= @solicitacao.descricao %>
     </h5>
   </div>
-  <div class="card-body">
-    <%= f.error_notification %>
-    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
-    <div class="row">
-      
-        
-          <div class="col-12">
-            <%= f.association :o_solicitacao, input_html: { class: "capitalize"}, placeholder: "O solicitacao"  %>
-          </div>
-        
-        
-          <div class="col-12">
-            <%= f.association :a_empresa_prestador, input_html: { class: "capitalize"}, placeholder: "A empresa prestador"  %>
-          </div>
-        
-        
-          <div class="col-12">
-            <%= f.association :usuario_envio, input_html: { class: "capitalize"}, placeholder: "Usuario envio"  %>
-          </div>
-        
-        
-          <div class="col-12">
-            <%= f.association :o_status, input_html: { class: "capitalize"}, placeholder: "O status"  %>
-          </div>
-        
-        
-          <div class="col-12">
-            <%= f.input :valor_total, input_html: { class: "capitalize"}, placeholder: "Valor total"  %>
-          </div>
-        
-        
-          <div class="col-12">
-            <%= f.input :prazo_execucao_dias, input_html: { class: "capitalize"}, placeholder: "Prazo execucao dias"  %>
-          </div>
-        
-        
-          <div class="col-12">
-            <%= f.input :validade_proposta, input_html: { class: "capitalize"}, placeholder: "Validade proposta"  %>
-          </div>
-        
-        
-          <div class="col-12">
-            <%= f.input :observacao, input_html: { class: "capitalize"}, placeholder: "Observacao"  %>
-          </div>
-        
-        
-        
-        
+  <%= simple_form_for [@solicitacao, @o_proposta] do |f| %>
+    <div class="card-body">
+      <%= f.error_notification %>
+      <div class="row mb-3">
+        <div class="col-4">
+          <%= f.input :valor_total,
+              label: "Valor Total (R$)",
+              placeholder: "Ex.: 1500.00" %>
+        </div>
+        <div class="col-4">
+          <%= f.input :prazo_execucao_dias,
+              label: "Prazo de Execução (dias)",
+              placeholder: "Ex.: 5" %>
+        </div>
+        <div class="col-4">
+          <%= f.input :validade_proposta,
+              as: :date,
+              label: "Validade da Proposta" %>
+        </div>
+      </div>
+      <%= f.input :observacao,
+          as: :text,
+          label: "Observações",
+          input_html: { rows: 4, placeholder: "Informações adicionais do serviço..." } %>
     </div>
-  </div>
-  <div class="card-footer">
-    <%= btn_submit(f) %>
-    <%= link_to "Voltar", o_propostas_path, class: "btn btn-light" %>
-  </div>
+    <div class="card-footer d-flex justify-content-between">
+      <%= f.submit "Enviar Proposta", class: "btn btn-primary" %>
+      <%= link_to "Cancelar", o_propostas_path, class: "btn btn-light" %>
+    </div>
+  <% end %>
 </div>
-<% end %>

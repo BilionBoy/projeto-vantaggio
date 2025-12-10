@@ -60,6 +60,12 @@
           <% end %>
         </li>
         <li><a href="<%= o_solicitacoes_path %>" class="nav-link"><i class="ph-clipboard-text"></i> Solicitar Orçamento</a></li>
+        <li>
+          <%= link_to recebidas_o_propostas_path, class: "nav-link" do %>
+            <i class="ph-envelope-open"></i>
+            <span>Propostas Recebidas</span>
+          <% end %>
+        </li>
         <!-- Centros de Custos -->
         <li class="nav-item nav-item-submenu">
           <a href="#" class="nav-link">
