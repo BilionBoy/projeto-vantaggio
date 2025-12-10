@@ -4,23 +4,17 @@
     background: linear-gradient(135deg, #317a6cff 0%, #44A08D 100%) !important;
   }
 
-  /* Links e ícones dos submenus */
+  /* Links e ícones */
   .nav-group-sub .nav-link,
-  .nav-group-sub .nav-link i {
+  .nav-group-sub .nav-link i,
+  .nav-sidebar .nav-link i {
     color: #fff !important;
   }
 
-  /* Hover dos submenus */
   .nav-group-sub .nav-link:hover {
     background-color: rgba(255, 255, 255, 0.1);
   }
 
-  /* Ícones principais */
-  .nav-sidebar .nav-link i {
-    margin-right: 8px;
-  }
-
-  /* Transição suave */
   .nav-link {
     transition: background-color 0.2s ease, color 0.2s ease;
   }
@@ -31,11 +25,9 @@
     border: none;
     color: #fff;
   }
-
   #sidebar-search-input::placeholder {
     color: rgba(255, 255, 255, 0.8);
   }
-
   .form-control-feedback-icon {
     color: rgba(255, 255, 255, 0.8);
   }
@@ -53,18 +45,35 @@
     </div>
     <div class="sidebar-section">
       <ul class="nav nav-sidebar" data-nav-type="accordion" id="sidebar-items">
+        <!-- Home -->
         <li class="nav-item">
           <%= link_to root_path, class: "nav-link" do %>
             <i class="ph-house"></i>
             <span>Página Inicial</span>
           <% end %>
         </li>
+        <!-- Solicitações abertas (prestador envia proposta) -->
         <li class="nav-item">
-          <a href="<%= o_propostas_path %>" class="nav-link">
-            <i class="ph-file-text"></i> Propostas
-          </a>
+          <%= link_to o_propostas_path, class: "nav-link" do %>
+            <i class="ph-list-checks"></i>
+            <span>Solicitações Disponíveis</span>
+          <% end %>
         </li>
-        <!-- Tabelas Referenciais -->
+        <!-- Minhas propostas -->
+        <li class="nav-item">
+          <%= link_to o_propostas_path(q: { a_empresa_prestador_id_eq: current_user.a_empresa_prestador_id }), class: "nav-link" do %>
+            <i class="ph-file-text"></i>
+            <span>Minhas Propostas</span>
+          <% end %>
+        </li>
+        <!-- Minhas Ordens de Serviço -->
+        <li class="nav-item">
+          <%= link_to o_ordem_servicos_path(q: { a_empresa_prestador_id_eq: current_user.a_empresa_prestador_id }), class: "nav-link" do %>
+            <i class="ph-wrench"></i>
+            <span>Ordens de Serviço</span>
+          <% end %>
+        </li>
+        <!-- Tabelas referenciais -->
         <li class="nav-item nav-item-submenu">
           <a href="#" class="nav-link">
             <i class="ph-folders"></i>

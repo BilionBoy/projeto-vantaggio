@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_10_035745) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_10_194639) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -196,6 +196,26 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_035745) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "o_ordem_servicos", force: :cascade do |t|
+    t.bigint "o_proposta_id", null: false
+    t.bigint "c_condominio_id", null: false
+    t.bigint "a_empresa_prestador_id", null: false
+    t.decimal "valor_total"
+    t.integer "prazo_execucao_dias"
+    t.datetime "data_inicio"
+    t.datetime "data_fim"
+    t.bigint "o_status_id", null: false
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["a_empresa_prestador_id"], name: "index_o_ordem_servicos_on_a_empresa_prestador_id"
+    t.index ["c_condominio_id"], name: "index_o_ordem_servicos_on_c_condominio_id"
+    t.index ["o_proposta_id"], name: "index_o_ordem_servicos_on_o_proposta_id"
+    t.index ["o_status_id"], name: "index_o_ordem_servicos_on_o_status_id"
+  end
+
   create_table "o_propostas", force: :cascade do |t|
     t.bigint "o_solicitacao_id", null: false
     t.bigint "a_empresa_prestador_id", null: false
@@ -313,6 +333,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_035745) do
   add_foreign_key "g_estados", "g_paises"
   add_foreign_key "g_localidades", "g_distritos"
   add_foreign_key "g_municipios", "g_estados"
+  add_foreign_key "o_ordem_servicos", "a_empresas_prestadores"
+  add_foreign_key "o_ordem_servicos", "c_condominios"
+  add_foreign_key "o_ordem_servicos", "o_propostas"
+  add_foreign_key "o_ordem_servicos", "o_status"
   add_foreign_key "o_propostas", "a_empresas_prestadores"
   add_foreign_key "o_propostas", "o_solicitacoes"
   add_foreign_key "o_propostas", "o_status"

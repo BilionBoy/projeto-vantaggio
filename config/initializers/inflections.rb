@@ -12,6 +12,7 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.irregular 'o_orcamento',                       'o_orcamentos'
   inflect.irregular 'o_solicitacao',                     'o_solicitacoes'
   inflect.irregular 'o_status',                          'o_status'  
+  inflect.irregular 'o_ordem_servico',                   'o_ordem_servicos'
   inflect.irregular 'o_proposta',                        'o_propostas'
   inflect.irregular 'c_tipo_cartao',                     'c_tipo_cartoes'
   inflect.irregular 'c_nivel_cartao',                    'c_nivel_cartoes'
