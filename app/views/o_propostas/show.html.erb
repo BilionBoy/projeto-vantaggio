@@ -1,0 +1,65 @@
+<div class="container">
+  <%= render "shared/notice" %>
+  <div class="card border-0 shadow shadow-sm">
+    <div class="card-header border-0 d-flex justify-content-between">
+      <span class="fs-4">Visualizar O Proposta</span>
+    </div>
+    <div class="card-body">
+      <div id="<%= dom_id @o_proposta %>">
+          <p>
+            <strong>O Solicitacao:</strong>
+            <%= @o_proposta.o_solicitacao %>
+          </p>
+          <p>
+            <strong>A Empresa Prestador:</strong>
+            <%= @o_proposta.a_empresa_prestador %>
+          </p>
+          <p>
+            <strong>Usuario Envio:</strong>
+            <%= @o_proposta.usuario_envio %>
+          </p>
+          <p>
+            <strong>O Status:</strong>
+            <%= @o_proposta.o_status %>
+          </p>
+          <p>
+            <strong>Valor Total:</strong>
+            <%= @o_proposta.valor_total %>
+          </p>
+          <p>
+            <strong>Prazo Execucao Dias:</strong>
+            <%= @o_proposta.prazo_execucao_dias %>
+          </p>
+          <p>
+            <strong>Validade Proposta:</strong>
+            <%= @o_proposta.validade_proposta %>
+          </p>
+          <p>
+            <strong>Observacao:</strong>
+            <%= @o_proposta.observacao %>
+          </p>
+          <p>
+            <strong>Created By:</strong>
+            <%= @o_proposta.created_by %>
+          </p>
+          <p>
+            <strong>Updated By:</strong>
+            <%= @o_proposta.updated_by %>
+          </p>
+          <p>
+            <strong>Deleted At:</strong>
+            <%= @o_proposta.deleted_at %>
+          </p>
+      </div>
+    </div>
+    <div class="card-footer border-0 d-flex justify-content-between">
+      <div>
+        <%= link_to edit_o_proposta_path(@o_proposta), class: "btn btn-primary" do %>
+        <i class="bi bi-pencil-square"></i> Editar
+        <% end %>
+        <%= link_to "Voltar", o_propostas_path, class: "btn btn-secondary" %>
+      </div>
+      <%= button_to "Deletar", @o_proposta, method: :delete, class: "btn btn-outline-danger border-0" %>
+    </div>
+  </div>
+</div>

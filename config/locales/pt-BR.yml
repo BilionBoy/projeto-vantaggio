@@ -74,6 +74,9 @@ pt-BR:
       o_status:
         one: "Status"
         other: "Status"
+      o_proposta:
+        one: "Proposta"
+        other: "Propostas"
       t_taxa:
         one: "Taxa"
         other: "Taxas"

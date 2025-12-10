@@ -3,7 +3,7 @@
 class OSolicitacao < ApplicationRecord
   include UpcaseAttributes
 
-  belongs_to :o_status
+  belongs_to :a_status, class_name: "OStatus"
   belongs_to :o_urgencia
   belongs_to :o_categoria_servico
   belongs_to :c_condominio

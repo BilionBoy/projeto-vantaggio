@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :o_propostas
   resources :o_status
 
   resources :c_centros_custos do
