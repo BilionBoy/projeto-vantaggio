@@ -7,34 +7,52 @@
     </div>
     <div class="card-body">
       <div class="row g-3">
+        <!-- Nome -->
         <div class="col-md-6">
-          <%= f.input :nome, 
-                      placeholder: "Digite o nome completo",
-                      input_html: { class: "form-control" } %>
+          <%= f.input :nome, placeholder: "Nome completo", input_html: { class: "form-control" } %>
         </div>
+        <!-- Email -->
         <div class="col-md-6">
-          <%= f.input :email, 
-                      placeholder: "exemplo@empresa.com",
-                      input_html: { class: "form-control" } %>
+          <%= f.input :email, placeholder: "email@exemplo.com", input_html: { class: "form-control" } %>
         </div>
+        <!-- Telefone -->
         <div class="col-md-6">
-          <%= f.input :telefone, 
-                      placeholder: "(99) 99999-9999",
-                      input_html: { class: "form-control telefone" } %>
+          <%= f.input :telefone, placeholder: "(00) 00000-0000", input_html: { class: "form-control telefone" } %>
         </div>
+        <!-- Tipo de Usuário -->
         <div class="col-md-6">
-          <%= f.input :a_tipo_usuario_id, 
+          <%= f.input :a_tipo_usuario_id,
                       collection: ATipoUsuario.all,
                       label_method: :descricao,
                       value_method: :id,
                       prompt: "Selecione o tipo de usuário",
+                      input_html: { id: "tipo-usuario-select", class: "form-select" } %>
+        </div>
+        <!-- Condomínio (Somente para Síndico) -->
+        <div class="col-md-6" id="campo-condominio">
+          <%= f.input :c_condominio_id,
+                      collection: CCondominio.all,
+                      label_method: :nome,
+                      value_method: :id,
+                      prompt: "Selecione o Condomínio",
                       input_html: { class: "form-select" } %>
         </div>
+        <!-- Empresa Prestadora (Somente para Prestador) -->
+        <div class="col-md-6" id="campo-empresa-prestadora">
+          <%= f.input :a_empresa_prestador_id,
+                      collection: AEmpresaPrestador.all,
+                      label_method: :nome_fantasia,
+                      value_method: :id,
+                      prompt: "Selecione a Empresa Prestadora",
+                      input_html: { class: "form-select" } %>
+        </div>
+        <!-- Senha -->
         <div class="col-md-6">
           <%= f.input :password,
-                      placeholder: "Digite uma senha (opcional se for auto-gerada)",
+                      placeholder: "Senha (deixe em branco para manter a atual)",
                       input_html: { autocomplete: "new-password", class: "form-control" } %>
         </div>
+        <!-- Confirmar Senha -->
         <div class="col-md-6">
           <%= f.input :password_confirmation,
                       placeholder: "Confirme a senha",
@@ -48,3 +66,26 @@
     </div>
   </div>
 <% end %>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const selectTipo = document.getElementById("tipo-usuario-select");
+    const campoCondominio = document.getElementById("campo-condominio");
+    const campoPrestadora = document.getElementById("campo-empresa-prestadora");
+
+    function toggleFields() {
+      if (!selectTipo) return;
+
+      const text = selectTipo.options[selectTipo.selectedIndex].text.toLowerCase();
+
+      // Tipos esperados — ajuste caso seus tipos sejam diferentes
+      const isSindico = text.includes("síndico") || text.includes("sindico");
+      const isPrestador = text.includes("prestador");
+
+      campoCondominio.style.display = isSindico ? "block" : "none";
+      campoPrestadora.style.display = isPrestador ? "block" : "none";
+    }
+
+    selectTipo.addEventListener("change", toggleFields);
+    toggleFields(); // roda ao abrir a página
+  });
+</script>

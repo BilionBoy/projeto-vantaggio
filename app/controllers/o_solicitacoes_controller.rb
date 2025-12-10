@@ -6,6 +6,7 @@ class OSolicitacoesController < ApplicationController
   def index
     @q = OSolicitacao.ransack(params[:q])
     @pagy, @o_solicitacoes = pagy(@q.result)
+    @o_solicitacoes.each(&:update_if_expired!)
   end
 
   def new
@@ -16,10 +17,9 @@ class OSolicitacoesController < ApplicationController
   def edit
     load_centros
   end
-
   def create
     @o_solicitacao = OSolicitacao.new(o_solicitacao_params)
-
+    @o_solicitacao.c_condominio = current_user.c_condominio  
     if @o_solicitacao.save
       redirect_to o_solicitacoes_path, notice: t('messages.created_successfully'), status: :see_other
     else
@@ -27,6 +27,7 @@ class OSolicitacoesController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
+
 
   def update
     if @o_solicitacao.update(o_solicitacao_params)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_08_002052) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_08_225222) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -200,7 +200,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_08_002052) do
     t.integer "numero"
     t.string "descricao"
     t.text "observacao"
-    t.bigint "a_status_id", null: false
     t.bigint "c_condominio_id", null: false
     t.bigint "o_urgencia_id"
     t.bigint "o_tipo_solicitacao_id"
@@ -212,12 +211,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_08_002052) do
     t.datetime "updated_at", null: false
     t.bigint "c_centro_custo_id", null: false
     t.decimal "saldo_snapshot", precision: 15, scale: 2
-    t.index ["a_status_id"], name: "index_o_solicitacoes_on_a_status_id"
+    t.bigint "o_status_id", null: false
+    t.datetime "data_limite_publicacao"
     t.index ["c_centro_custo_id"], name: "index_o_solicitacoes_on_c_centro_custo_id"
     t.index ["c_condominio_id"], name: "index_o_solicitacoes_on_c_condominio_id"
     t.index ["o_categoria_servico_id"], name: "index_o_solicitacoes_on_o_categoria_servico_id"
+    t.index ["o_status_id"], name: "index_o_solicitacoes_on_o_status_id"
     t.index ["o_tipo_solicitacao_id"], name: "index_o_solicitacoes_on_o_tipo_solicitacao_id"
     t.index ["o_urgencia_id"], name: "index_o_solicitacoes_on_o_urgencia_id"
+  end
+
+  create_table "o_status", force: :cascade do |t|
+    t.string "descricao"
+    t.string "created_by"
+    t.string "updated_by"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "o_tipos_solicitacoes", force: :cascade do |t|
@@ -262,7 +272,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_08_002052) do
     t.bigint "a_tipo_usuario_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "c_condominio_id"
+    t.bigint "a_empresa_prestador_id"
+    t.index ["a_empresa_prestador_id"], name: "index_users_on_a_empresa_prestador_id"
     t.index ["a_tipo_usuario_id"], name: "index_users_on_a_tipo_usuario_id"
+    t.index ["c_condominio_id"], name: "index_users_on_c_condominio_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -279,12 +293,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_08_002052) do
   add_foreign_key "g_estados", "g_paises"
   add_foreign_key "g_localidades", "g_distritos"
   add_foreign_key "g_municipios", "g_estados"
-  add_foreign_key "o_solicitacoes", "a_status"
   add_foreign_key "o_solicitacoes", "c_centros_custos"
   add_foreign_key "o_solicitacoes", "c_condominios"
   add_foreign_key "o_solicitacoes", "o_categorias_servicos"
+  add_foreign_key "o_solicitacoes", "o_status"
   add_foreign_key "o_solicitacoes", "o_tipos_solicitacoes"
   add_foreign_key "o_solicitacoes", "o_urgencias"
   add_foreign_key "t_taxas", "a_status"
+  add_foreign_key "users", "a_empresas_prestadores"
   add_foreign_key "users", "a_tipo_usuarios"
+  add_foreign_key "users", "c_condominios"
 end

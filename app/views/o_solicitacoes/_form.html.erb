@@ -17,45 +17,26 @@
     <div class="card-body">
       <%= f.error_notification %>
       <div class="row">
-        <div class="col-3">
+        <div class="col-md-3 col-12">
           <%= f.input :descricao, placeholder: "Título" %>
         </div>
-        <div class="col-3">
-          <%= f.input :c_centro_custo_id,
-                       collection: @centros_disponiveis,
-                       label_method: :nome,
-                       value_method: :id,
-                       prompt: "Selecione o Centro de Custo",
-                       input_html: { id: "centro-custo-select" } %>
+        <div class="col-md-3 col-12">
+          <%= f.input :c_centro_custo_id, collection: CCentroCusto.all, label_method: :nome, value_method: :id, prompt: "Selecione o Centro de Custo", input_html: { id: "centro-custo-select" } %>
         </div>
-        <div class="col-3">
-          <%= f.input :o_categoria_servico_id,
-                       collection: OCategoriaServico.all,
-                       label_method: :descricao,
-                       value_method: :id,
-                       prompt: "Selecione a Categoria de Serviço" %>
+        <div class="col-md-3 col-12">
+          <%= f.input :o_categoria_servico_id, collection: OCategoriaServico.all, label_method: :descricao, value_method: :id, prompt: "Selecione a Categoria de Serviço" %>
         </div>
-        <div class="col-3">
-          <%= f.input :o_urgencia_id,
-                       collection: OUrgencia.all,
-                       label_method: :descricao,
-                       value_method: :id,
-                       prompt: "Selecione a Urgência" %>
+        <div class="col-md-3 col-12">
+          <%= f.input :o_urgencia_id, collection: OUrgencia.all, label_method: :descricao, value_method: :id, prompt: "Selecione a Urgência" %>
         </div>
-        <div class="col-3">
-          <%= f.input :saldo_snapshot,
-                        input_html: {
-                          readonly: true,
-                          id: "saldo-snapshot-field",
-                          value: @o_solicitacao.saldo_snapshot || 0
-                        },
-                        label: "Saldo atual do centro de custo" %>
+        <div class="col-md-3 col-12">
+          <%= f.input :saldo_snapshot, input_html: {   readonly: true,   id: "saldo-snapshot-field",   value: @o_solicitacao.saldo_snapshot || 0 }, label: "Saldo atual do centro de custo" %>
+        </div>
+        <div class="col-md-7 col-9">
+          <%= f.input :data_limite_publicacao, as: :datetime, label: "Data limite de publicação", input_html: { placeholder: "Selecione a data e horário" } %>
         </div>
         <div class="col-12 mt-2">
-          <%= f.input :observacao,
-                       as: :text,
-                       input_html: { rows: 3, placeholder: "Observações adicionais..." },
-                       label: "Observação" %>
+          <%= f.input :observacao, as: :text, input_html: { rows: 3, placeholder: "Observações adicionais..." }, label: "Observação" %>
         </div>
       </div>
     </div>

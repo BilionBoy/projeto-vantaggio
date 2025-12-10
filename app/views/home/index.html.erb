@@ -1,5 +1,7 @@
 <div class="observatory-dashboard">
-  <!-- Enhanced Metrics Grid -->
+  <!-- ===========================
+        MÉTRICAS SUPERIORES
+  ============================ -->
   <div class="metrics-observatory">
     <!-- Total Prestadores -->
     <div class="metric-card primary-metric">
@@ -12,7 +14,7 @@
           </div>
         </div>
         <div class="metric-content">
-          <h2 class="metric-value">0</h2>
+          <h2 class="metric-value"><%= @total_prestadores %></h2>
           <p class="metric-label">Prestadores Cadastrados</p>
           <div class="metric-trend">
             <span class="trend-indicator positive">↗</span>
@@ -32,7 +34,7 @@
           </div>
         </div>
         <div class="metric-content">
-          <h2 class="metric-value">0</h2>
+          <h2 class="metric-value"><%= @total_sindicos %></h2>
           <p class="metric-label">Síndicos Ativos</p>
         </div>
       </div>
@@ -48,12 +50,12 @@
           </div>
         </div>
         <div class="metric-content">
-          <h2 class="metric-value">0</h2>
+          <h2 class="metric-value"><%= @total_condominios %></h2>
           <p class="metric-label">Condomínios Registrados</p>
         </div>
       </div>
     </div>
-    <!-- Solicitações Ativas -->
+    <!-- Solicitações -->
     <div class="metric-card requests-card">
       <div class="metric-header">
         <div class="metric-icon-wrapper">
@@ -69,24 +71,27 @@
             <div class="request-item">
               <div class="request-indicator status-0"></div>
               <span class="request-status">Aguardando</span>
-              <span class="request-count">0</span>
+              <span class="request-count"><%= @aguardando %></span>
             </div>
             <div class="request-item">
               <div class="request-indicator status-1"></div>
               <span class="request-status">Em andamento</span>
-              <span class="request-count">0</span>
+              <span class="request-count"><%= @andamento %></span>
             </div>
             <div class="request-item">
               <div class="request-indicator status-2"></div>
               <span class="request-status">Concluídas</span>
-              <span class="request-count">0</span>
+              <span class="request-count"><%= @concluidas %></span>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- Analytics Section -->
+ <!-- metrics-observatory -->
+  <!-- ===========================
+        ANALYTICS
+  ============================ -->
   <div class="analytics-observatory">
     <div class="analytics-grid">
       <!-- Solicitações Chart -->
@@ -131,35 +136,39 @@
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- === REAL CHART DATA === -->
 <script>
-  // Mock gráfico de solicitações
+  // Solicitações Chart
   new Chart(document.getElementById('solicitacoesChart'), {
     type: 'doughnut',
     data: {
       labels: ["Aguardando", "Em andamento", "Concluídas"],
       datasets: [{
-        data: [0, 0, 0],
+        data: [
+          <%= @aguardando %>,
+          <%= @andamento %>,
+          <%= @concluidas %>
+        ],
         backgroundColor: ['#f6c23e', '#36a2eb', '#1cc88a']
       }]
     },
     options: { responsive: true }
   });
 
-  // Mock gráfico de prestadores
+  // Prestadores Chart
   new Chart(document.getElementById('prestadoresChart'), {
     type: 'bar',
     data: {
-      labels: ["Tipo A", "Tipo B", "Tipo C"],
+      labels: <%= raw @prestadores_por_tipo.keys.to_json %>,
       datasets: [{
         label: "Quantidade",
-        data: [0, 0, 0],
+        data: <%= raw @prestadores_por_tipo.values.to_json %>,
         backgroundColor: '#36a2eb'
       }]
     },
     options: { responsive: true }
   });
 </script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   .observatory-dashboard {
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
