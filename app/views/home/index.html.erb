@@ -1,536 +1,268 @@
-<div class="observatory-dashboard">
-  <!-- ===========================
-        MÉTRICAS
-  ============================ -->
-  <div class="metrics-observatory">
-    <div class="metric-card primary-metric">
-      <h2 class="metric-value"><%= @total_prestadores || 0 %></h2>
-      <p class="metric-label">Prestadores Cadastrados</p>
+<div class="dashboard-container">
+  <!-- HEADER -->
+  <header class="page-header">
+    <nav class="breadcrumb">
+      <a href="/">Início</a>
+      <span class="breadcrumb-separator">›</span>
+      <span>Visão Geral</span>
+    </nav>
+    <div class="header-content">
+      <div class="header-text">
+        <h1>Gestão de Condomínios</h1>
+        <p>Controle financeiro, solicitações e prestadores</p>
+      </div>
     </div>
-    <div class="metric-card">
-      <h2 class="metric-value"><%= @total_sindicos || 0 %></h2>
-      <p class="metric-label">Síndicos Ativos</p>
+  </header>
+  <!-- MÉTRICAS -->
+  <div class="metrics-grid">
+    <% metrics = [
+      { label: 'Orçamento Total', value: @orcamento_total, icon: '💰', desc: 'Centros de custo aprovados', color: 'blue' },
+      { label: 'Gastos Realizados', value: @gastos_totais, icon: '✓', desc: 'Serviços concluídos', color: 'green' },
+      { label: 'Saldo Disponível', value: @saldo_disponivel, icon: '⏱', desc: 'Saldo atual dos condomínios', color: 'yellow' },
+      { label: 'Receita de Taxas', value: @receita_taxas, icon: '📊', desc: 'Taxas aplicadas', color: 'red' }
+    ] %>
+    <% metrics.each do |m| %>
+      <div class="metric-card <%= m[:color] %>">
+        <div class="metric-header">
+          <div class="metric-icon"><%= m[:icon] %></div>
+        </div>
+        <div class="metric-label"><%= m[:label] %></div>
+        <div class="metric-value">
+          R$ <%= number_with_delimiter(m[:value] || 0, delimiter: '.') %>
+        </div>
+        <div class="metric-description"><%= m[:desc] %></div>
+      </div>
+    <% end %>
+  </div>
+  <!-- GRÁFICOS -->
+  <div class="charts-section">
+    <div class="chart-card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Solicitações por Status</div>
+          <div class="chart-subtitle">Distribuição atual</div>
+        </div>
+      </div>
+      <div class="chart-container" style="height:300px;">
+        <canvas id="statusChart"></canvas>
+      </div>
     </div>
-    <div class="metric-card">
-      <h2 class="metric-value"><%= @total_condominios || 0 %></h2>
-      <p class="metric-label">Condomínios</p>
+    <div class="chart-card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Solicitações por Categoria</div>
+          <div class="chart-subtitle">Top categorias</div>
+        </div>
+      </div>
+      <div class="chart-container" style="height:300px;">
+        <canvas id="categoryChart"></canvas>
+      </div>
     </div>
-    <div class="metric-card requests-card" style="min-width: 100%;">
-      <h3>Solicitações</h3>
-      <p>Pendentes: <%= @aguardando || 0 %></p>
-      <p>Em andamento: <%= @andamento || 0 %></p>
-      <p>Concluídas: <%= @concluidas || 0 %></p>
+    <div class="chart-card full-width">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Gastos por Centro de Custo</div>
+          <div class="chart-subtitle">Distribuição financeira</div>
+        </div>
+      </div>
+      <div class="chart-container" style="height:350px;">
+        <canvas id="costCenterChart"></canvas>
+      </div>
     </div>
   </div>
-  <!-- ===========================
-        GRÁFICOS
-  ============================ -->
-  <div class="analytics-observatory">
-    <div class="analytics-grid">
-      <div class="chart-panel">
-        <h3>Solicitações por Status</h3>
-        <canvas id="solicitacoesChart"></canvas>
-      </div>
+  <!-- ATIVIDADES -->
+  <div class="activities-section">
+    <div class="section-header">
+      <h2 class="section-title">Atividades Recentes</h2>
+    </div>
+    <div class="activities-list">
+      <% @atividades_recentes.each do |a| %>
+        <div class="activity-item">
+          <div class="activity-icon <%= a[:status].downcase %>">✓</div>
+          <div class="activity-content">
+            <div class="activity-title"><%= a[:descricao] %></div>
+            <div class="activity-meta">
+              <span>🏢 <%= a[:centro_custo] %></span>
+              <span>•</span>
+              <span>📅 <%= a[:data] %></span>
+            </div>
+          </div>
+          <span class="status-badge <%= a[:status].downcase %>">
+            <%= a[:status] %>
+          </span>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  new Chart(document.getElementById('solicitacoesChart'), {
+  new Chart(document.getElementById('statusChart'), {
     type: 'doughnut',
     data: {
-      labels: ['Pendente', 'Em andamento', 'Concluída'],
+      labels: <%= @status_labels.to_json.html_safe %>,
       datasets: [{
-        data: [
-          <%= @aguardando || 0 %>,
-          <%= @andamento || 0 %>,
-          <%= @concluidas || 0 %>
-        ],
-        backgroundColor: ['#f6c23e', '#36a2eb', '#1cc88a']
+        data: <%= @solicitacoes_por_status.to_json.html_safe %>,
+        backgroundColor: ['#FFCD07','#1351B4','#168821']
       }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false
+    }
+  });
+
+  new Chart(document.getElementById('categoryChart'), {
+    type: 'bar',
+    data: {
+      labels: <%= @categorias_labels.to_json.html_safe %>,
+      datasets: [{
+        data: <%= @categorias_data.to_json.html_safe %>,
+        backgroundColor:'#1351B4',
+        borderRadius:8
+      }]
+    }
+  });
+
+  new Chart(document.getElementById('costCenterChart'), {
+    type:'bar',
+    indexAxis:'y',
+    data: {
+      labels: <%= @centros_labels.to_json.html_safe %>,
+      datasets: [{
+        data: <%= @centros_data.to_json.html_safe %>,
+        backgroundColor:'#168821',
+        borderRadius:6
+      }]
     }
   });
 </script>
 <style>
-  .observatory-dashboard {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    min-height: 100vh;
-    padding: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* RESET E VARIÁVEIS */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary-blue: #1351B4;
+    --primary-dark: #071D41;
+    --success-green: #168821;
+    --warning-yellow: #FFCD07;
+    --danger-red: #E52207;
+    --gray-100: #F8F9FA;
+    --gray-200: #E9ECEF;
+    --gray-300: #DEE2E6;
+    --gray-700: #495057;
+    --gray-900: #212529;
+    --white: #FFFFFF;
+    --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+    --radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    --font-base: 'Inter', 'Rawline', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
-  .quick-stat {
-    text-align: center;
-    background: rgba(255, 255, 255, 0.15);
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
+  .dashboard-container {
+    max-width: 1400px;
+    margin: auto;
   }
 
-  .stat-number {
-    display: block;
-    font-size: 2rem;
-    font-weight: 700;
-  }
-
-  .stat-label {
-    font-size: 0.9rem;
-    opacity: 0.8;
-  }
-
-  /* Enhanced Metrics Grid */
-  .metrics-observatory {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    padding: 0 2rem;
-  }
-
-  .metric-card {
-    background: white;
-    border-radius: 16px;
-    padding: 1.5rem;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+  /* HEADER */
+  .page-header {
+    background: #1a4924ff;
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow-md);
     position: relative;
     overflow: hidden;
   }
-
-  .metric-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #3b82f6, #10b981);
+  .page-header::before {
+    content:'';
+    position:absolute;
+    top:0; right:0;
+    width:400px; height:100%;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.08), transparent 70%);
+    pointer-events:none;
   }
+  .breadcrumb { display:flex; gap:8px; font-size:14px; color:rgba(255,255,255,0.8); margin-bottom:16px; }
+  .breadcrumb a { color:rgba(255,255,255,0.9); text-decoration:none; transition: var(--transition); }
+  .breadcrumb a:hover { color: var(--white); }
+  .breadcrumb-separator { color: rgba(255,255,255,0.5); }
 
-  .metric-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  .header-text h1 { font-size:32px; font-weight:700; color:white; margin-bottom:8px; }
+  .header-text p { font-size:16px; color:rgba(255,255,255,0.85); }
+  .header-actions { display:flex; gap:12px; flex-wrap:wrap; }
+  .btn {
+    display:inline-flex; align-items:center; gap:8px; padding:12px 24px; border:none; border-radius:var(--radius);
+    font-size:14px; font-weight:600; cursor:pointer; transition: var(--transition);
   }
+  .btn-primary { background:white; color:var(--primary-blue); box-shadow:var(--shadow-sm);}
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+  .btn-secondary { background: rgba(255,255,255,0.15); color:white; backdrop-filter: blur(10px);}
+  .btn-secondary:hover { background: rgba(255,255,255,0.25); }
 
-  .primary-metric {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-    color: white;
+  /* METRICS */
+  .metrics-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; margin-bottom:32px; }
+  .metric-card {
+    background:white; border-radius:var(--radius); padding:24px; border:1px solid var(--gray-200);
+    box-shadow:var(--shadow-sm); transition: var(--transition); position:relative; overflow:hidden;
   }
-
-  .primary-metric::before {
-    background: rgba(255, 255, 255, 0.3);
-  }
-
-  .metric-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .metric-icon-wrapper {
-    flex-shrink: 0;
-  }
-
-  .metric-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-  }
-
-  .metric-icon svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  .metric-icon.budget { background: linear-gradient(135deg, #10b981, #059669); }
-  .metric-icon.vehicles-budgeted { background: linear-gradient(135deg, #f59e0b, #d97706); }
-  .metric-icon.total-vehicles { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-  .metric-icon.requests { background: linear-gradient(135deg, #ef4444, #dc2626); }
-
-  .primary-metric .metric-icon {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-  }
-
-  .metric-content {
-    flex: 1;
-  }
-
-  .metric-value {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #111827;
-    margin-bottom: 0.25rem;
-    line-height: 1;
-  }
-
-  .primary-metric .metric-value {
-    color: white;
-  }
-
-  .metric-label {
-    color: #6b7280;
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 0.75rem;
-  }
-
-  .primary-metric .metric-label {
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  .metric-trend {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .trend-indicator {
-    font-size: 1.2rem;
-  }
-
-  .trend-indicator.positive {
-    color: #10b981;
-  }
-
-  .primary-metric .trend-indicator.positive {
-    color: #86efac;
-  }
-
-  .trend-text {
-    font-size: 0.8rem;
-    color: #6b7280;
-  }
-
-  .primary-metric .trend-text {
-    color: rgba(255, 255, 255, 0.8);
-  }
-
-  .metric-progress {
-    margin-top: 0.75rem;
-  }
-
-  .progress-bar {
-    height: 6px;
-    background: #e5e7eb;
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 0.5rem;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #f59e0b, #d97706);
-    border-radius: 3px;
-    transition: width 1s ease;
-  }
-
-  .progress-text {
-    font-size: 0.8rem;
-    color: #6b7280;
-    font-weight: 500;
-  }
-
-  .metric-status {
-    margin-top: 0.75rem;
-  }
-
-  .status-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    background: #dcfdf7;
-    color: #065f46;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-  }
-
-  .requests-card .metric-label-main {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #111827;
-    margin-bottom: 1rem;
-  }
-
-  .requests-breakdown {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .request-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .request-indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-  }
-
-  .request-indicator.status-0 { background: #3b82f6; }
-  .request-indicator.status-1 { background: #10b981; }
-  .request-indicator.status-2 { background: #f59e0b; }
-  .request-indicator.status-3 { background: #ef4444; }
-
-  .request-status {
-    flex: 1;
-    font-size: 0.9rem;
-    color: #374151;
-    font-weight: 500;
-  }
-
-  .request-count {
-    font-weight: 700;
-    color: #111827;
-    background: #f3f4f6;
-    padding: 0.25rem 0.5rem;
-    border-radius: 6px;
-    font-size: 0.8rem;
-  }
-
-  /* Enhanced Analytics Section */
-  .analytics-observatory {
-    padding: 0 2rem;
-    margin-bottom: 2rem;
-  }
-
-  .analytics-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-
-  .chart-panel {
-    background: white;
-    border-radius: 20px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-
-  .chart-panel:hover {
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  }
-
-  .panel-header {
-    padding: 1.5rem 1.5rem 1rem;
-    border-bottom: 1px solid #f3f4f6;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  .panel-title {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .title-icon {
-    font-size: 1.5rem;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .title-content h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 0.25rem;
-  }
-
-  .title-content p {
-    font-size: 0.9rem;
-    color: #6b7280;
-    margin: 0;
-  }
-
-  .panel-controls {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .control-btn {
-    padding: 0.5rem 1rem;
-    border: 1px solid #e5e7eb;
-    background: white;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #6b7280;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .control-btn.active {
-    background: #3b82f6;
-    color: white;
-    border-color: #3b82f6;
-  }
-
-  .chart-container {
-    height: 300px;
-    padding: 1rem 1.5rem;
-  }
-
-  .chart-insights {
-    padding: 1rem 1.5rem 1.5rem;
-    background: #f8fafc;
-    display: flex;
-    justify-content: space-around;
-  }
-
-  .insight-item {
-    text-align: center;
-  }
-
-  .insight-label {
-    display: block;
-    font-size: 0.8rem;
-    color: #6b7280;
-    margin-bottom: 0.25rem;
-  }
-
-  .insight-value {
-    display: block;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #111827;
-  }
-
-  /* Observatory Footer */
-  .observatory-footer {
-    background: white;
-    border-top: 1px solid #e5e7eb;
-    padding: 1.5rem 2rem;
-    margin: 2rem -2rem -1rem;
-  }
-
-  .footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-info {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  .update-time {
-    font-size: 0.9rem;
-    color: #6b7280;
-  }
-
-  .system-status {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-    color: #374151;
-    font-weight: 500;
-  }
-
-  .status-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-  }
-
-  .status-indicator.online {
-    background: #10b981;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-  }
-
-  .footer-actions {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .action-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .action-btn:hover {
-    background: #1d4ed8;
-    transform: translateY(-1px);
-  }
-
-  .action-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  /* Responsive Design */
-  @media (max-width: 1200px) {
-    .metrics-observatory {
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .dashboard-hero {
-      flex-direction: column;
-      text-align: center;
-      gap: 1.5rem;
-    }
-
-    .hero-stats {
-      justify-content: center;
-    }
-
-    .metrics-observatory {
-      grid-template-columns: 1fr;
-      padding: 0 1rem;
-    }
-
-    .analytics-observatory {
-      padding: 0 1rem;
-    }
-
-    .analytics-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .observatory-footer {
-      padding: 1rem;
-    }
-
-    .footer-content {
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .footer-actions {
-      justify-content: center;
-    }
+  .metric-card::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; transition: var(--transition);}
+  .metric-card.blue::before { background: var(--primary-blue); }
+  .metric-card.green::before { background: var(--success-green); }
+  .metric-card.yellow::before { background: var(--warning-yellow); }
+  .metric-card.red::before { background: var(--danger-red); }
+  .metric-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); border-color:transparent; }
+
+  .metric-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+  .metric-icon { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; }
+  .metric-card.blue .metric-icon { background: rgba(19,81,180,0.1); color: var(--primary-blue);}
+  .metric-card.green .metric-icon { background: rgba(22,136,33,0.1); color: var(--success-green);}
+  .metric-card.yellow .metric-icon { background: rgba(255,205,7,0.2); color:#B8860B;}
+  .metric-card.red .metric-icon { background: rgba(229,34,7,0.1); color: var(--danger-red); }
+
+  .metric-trend { display:flex; align-items:center; gap:4px; font-size:13px; font-weight:600; padding:4px 8px; border-radius:4px; }
+  .metric-trend.up { background: rgba(22,136,33,0.1); color: var(--success-green);}
+  .metric-trend.down { background: rgba(229,34,7,0.1); color: var(--danger-red);}
+  .metric-trend.neutral { background: var(--gray-200); color: var(--gray-700); }
+
+  .metric-label { font-size:14px; font-weight:500; color: var(--gray-700); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;}
+  .metric-value { font-size:32px; font-weight:700; color: var(--gray-900); margin-bottom:4px; line-height:1.1; font-feature-settings:'tnum'; }
+  .metric-description { font-size:13px; color: var(--gray-700); }
+
+  /* CHARTS */
+  .charts-section { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:32px; }
+  .chart-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:var(--shadow-sm); border:1px solid var(--gray-200);}
+  .chart-card.full-width { grid-column:1/-1; }
+  .chart-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; border-bottom:2px solid var(--gray-200); padding-bottom:16px; }
+  .chart-title { font-size:18px; font-weight:700; color: var(--gray-900);}
+  .chart-subtitle { font-size:13px; color: var(--gray-700); margin-top:4px;}
+  .chart-container { position:relative; height:300px; }
+
+  /* ACTIVITIES */
+  .activities-section { background:white; border-radius:var(--radius); padding:24px; box-shadow:var(--shadow-sm); border:1px solid var(--gray-200);}
+  .section-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; padding-bottom:16px; border-bottom:2px solid var(--gray-200);}
+  .section-title { font-size:20px; font-weight:700; color: var(--gray-900);}
+  .activities-list { display:flex; flex-direction:column; gap:16px; }
+  .activity-item { display:flex; align-items:center; gap:16px; padding:16px; border-radius:var(--radius); background: var(--gray-100); transition: var(--transition);}
+  .activity-item:hover { transform:translateX(4px); background: var(--gray-200);}
+  .activity-icon { width:40px; height:40px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  .activity-icon.pending { background: rgba(255,205,7,0.2); color:#B8860B;}
+  .activity-icon.approved { background: rgba(22,136,33,0.1); color:var(--success-green);}
+  .activity-icon.rejected { background: rgba(229,34,7,0.1); color:var(--danger-red);}
+  .activity-content { flex:1; }
+  .activity-title { font-size:15px; font-weight:600; color: var(--gray-900); margin-bottom:4px;}
+  .activity-meta { display:flex; gap:12px; font-size:13px; color: var(--gray-700);}
+  .activity-value { font-size:16px; font-weight:700; color: var(--gray-900);}
+  .status-badge { padding:4px 12px; border-radius:12px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;}
+  .status-badge.pending { background: rgba(255,205,7,0.2); color:#B8860B;}
+  .status-badge.approved { background: rgba(22,136,33,0.1); color: var(--success-green);}
+  .status-badge.rejected { background: rgba(229,34,7,0.1); color: var(--danger-red);}
+
+  /* RESPONSIVO */
+  @media(max-width:1024px) { .charts-section { grid-template-columns:1fr; } }
+  @media(max-width:768px){
+    .dashboard-container { padding:16px; }
+    .page-header { padding:24px; }
+    .header-content { flex-direction:column; align-items:flex-start; gap:16px;}
+    .header-text h1 { font-size:24px; }
+    .metrics-grid { grid-template-columns:1fr; }
+    .header-actions { width:100%; flex-direction:column;}
+    .btn { width:100%; justify-content:center;}
   }
 </style>

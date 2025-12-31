@@ -128,26 +128,49 @@ class HomeController < ApplicationController
   # ADMIN (SIMPLES)
   # =========================================================
   def load_admin_dashboard_data
-    @total_condominios = CCondominio.count
-    @total_prestadores = User.where.not(a_empresa_prestador_id: nil).count
-    @total_sindicos = User
-                        .joins(:a_tipo_usuario)
-                        .where(a_tipo_usuarios: { descricao: 'sindico' })
-                        .count
-
-    @aguardando = OSolicitacao
-                    .joins(:o_status)
-                    .where(o_status: { descricao: 'Pendente' })
-                    .count
-
-    @andamento = OSolicitacao
-                   .joins(:o_status)
-                   .where(o_status: { descricao: 'Em andamento' })
+    centros = CCentroCusto.all
+  
+    @orcamento_total = centros.sum(:valor_inicial).to_f
+    @gastos_totais   = centros.sum('valor_inicial - saldo_atual').to_f
+    @saldo_disponivel = @orcamento_total - @gastos_totais
+  
+    @receita_taxas = TTaxa.sum(:percentual).to_f
+  
+    solicitacoes = OSolicitacao.joins(:o_status)
+  
+    status_group = solicitacoes.group('o_status.descricao').count
+    @status_labels = status_group.keys
+    @solicitacoes_por_status = status_group.values
+  
+    categorias = solicitacoes
+                   .joins(:o_categoria_servico)
+                   .group('o_categorias_servicos.descricao')
+                   .order(Arel.sql('COUNT(*) DESC'))
+                   .limit(6)
                    .count
-
-    @concluidas = OSolicitacao
-                    .joins(:o_status)
-                    .where(o_status: { descricao: 'Concluída' })
-                    .count
+  
+    @categorias_labels = categorias.keys
+    @categorias_data   = categorias.values
+  
+    gastos_centros = centros.map do |c|
+      [c.nome, (c.valor_inicial.to_f - c.saldo_atual.to_f)]
+    end
+  
+    @centros_labels = gastos_centros.map(&:first)
+    @centros_data   = gastos_centros.map(&:last)
+  
+    @atividades_recentes = OSolicitacao
+                             .includes(:o_status, :c_centro_custo)
+                             .order(created_at: :desc)
+                             .limit(8)
+                             .map do |s|
+      {
+        descricao: s.descricao || "Solicitação ##{s.id}",
+        status: s.o_status.descricao,
+        centro_custo: s.c_centro_custo.nome,
+        data: s.created_at.strftime('%d/%m/%Y')
+      }
+    end
   end
+
 end
