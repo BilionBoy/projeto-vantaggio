@@ -288,6 +288,11 @@ pt-BR:
       present: deve ficar em branco
       required: é obrigatório(a)
       taken: já está em uso
+      created_successfully: "Registro criado com sucesso."
+      updated_successfully: "Registro atualizado com sucesso."
+      deleted_successfully: "Registro excluído com sucesso."
+      not_found: "Registro não encontrado."
+      delete_failed_due_to_dependencies: "Não foi possível excluir o registro devido a dependências existentes."
       too_long:
         one: "é muito longo (máximo: %{count} caracter)"
         other: "é muito longo (máximo: %{count} caracteres)"
@@ -302,6 +307,7 @@ pt-BR:
       header:
         one: "Não foi possível gravar %{model}: %{count} erro"
         other: "Não foi possível gravar %{model}: %{count} erros"
+
   helpers:
     select:
       prompt: Por favor selecione

@@ -131,7 +131,7 @@
           <% end %>
           <!-- SÍNDICO APROVA FINALIZAÇÃO -->
           <% if current_user.c_condominio_id.present? && status_descricao == "Finalizada" %>
-            <%= button_to aprovar_finalizacao_o_ordem_servico_path(os),
+            <%= button_to aprovar_o_ordem_servico_path(os),
                 method: :patch,
                 class: "btn btn-primary" do %>
               Aprovar Finalização
