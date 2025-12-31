@@ -56,14 +56,7 @@
         <li class="nav-item">
           <%= link_to o_propostas_path, class: "nav-link" do %>
             <i class="ph-list-checks"></i>
-            <span>Solicitações Disponíveis</span>
-          <% end %>
-        </li>
-        <!-- Minhas propostas -->
-        <li class="nav-item">
-          <%= link_to o_propostas_path(q: { a_empresa_prestador_id_eq: current_user.a_empresa_prestador_id }), class: "nav-link" do %>
-            <i class="ph-file-text"></i>
-            <span>Minhas Propostas</span>
+            <span>Enviar Proposta</span>
           <% end %>
         </li>
         <!-- Minhas Ordens de Serviço -->

@@ -1,172 +1,58 @@
 <div class="observatory-dashboard">
   <!-- ===========================
-        MÉTRICAS SUPERIORES
+        MÉTRICAS
   ============================ -->
   <div class="metrics-observatory">
-    <!-- Total Prestadores -->
     <div class="metric-card primary-metric">
-      <div class="metric-header">
-        <div class="metric-icon-wrapper">
-          <div class="metric-icon prestadores">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>
-          </div>
-        </div>
-        <div class="metric-content">
-          <h2 class="metric-value"><%= @total_prestadores %></h2>
-          <p class="metric-label">Prestadores Cadastrados</p>
-          <div class="metric-trend">
-            <span class="trend-indicator positive">↗</span>
-            <span class="trend-text">+0% vs mês anterior</span>
-          </div>
-        </div>
-      </div>
+      <h2 class="metric-value"><%= @total_prestadores || 0 %></h2>
+      <p class="metric-label">Prestadores Cadastrados</p>
     </div>
-    <!-- Total Síndicos -->
     <div class="metric-card">
-      <div class="metric-header">
-        <div class="metric-icon-wrapper">
-          <div class="metric-icon sindicos">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>
-          </div>
-        </div>
-        <div class="metric-content">
-          <h2 class="metric-value"><%= @total_sindicos %></h2>
-          <p class="metric-label">Síndicos Ativos</p>
-        </div>
-      </div>
+      <h2 class="metric-value"><%= @total_sindicos || 0 %></h2>
+      <p class="metric-label">Síndicos Ativos</p>
     </div>
-    <!-- Total Condomínios -->
     <div class="metric-card">
-      <div class="metric-header">
-        <div class="metric-icon-wrapper">
-          <div class="metric-icon condominios">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm4-4h14v-2H7v2zm0 4h14v-2H7v2z"/>
-            </svg>
-          </div>
-        </div>
-        <div class="metric-content">
-          <h2 class="metric-value"><%= @total_condominios %></h2>
-          <p class="metric-label">Condomínios Registrados</p>
-        </div>
-      </div>
+      <h2 class="metric-value"><%= @total_condominios || 0 %></h2>
+      <p class="metric-label">Condomínios</p>
     </div>
-    <!-- Solicitações -->
-    <div class="metric-card requests-card">
-      <div class="metric-header">
-        <div class="metric-icon-wrapper">
-          <div class="metric-icon requests">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h8c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-            </svg>
-          </div>
-        </div>
-        <div class="metric-content">
-          <h2 class="metric-label-main">Solicitações Ativas</h2>
-          <div class="requests-breakdown">
-            <div class="request-item">
-              <div class="request-indicator status-0"></div>
-              <span class="request-status">Aguardando</span>
-              <span class="request-count"><%= @aguardando %></span>
-            </div>
-            <div class="request-item">
-              <div class="request-indicator status-1"></div>
-              <span class="request-status">Em andamento</span>
-              <span class="request-count"><%= @andamento %></span>
-            </div>
-            <div class="request-item">
-              <div class="request-indicator status-2"></div>
-              <span class="request-status">Concluídas</span>
-              <span class="request-count"><%= @concluidas %></span>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="metric-card requests-card" style="min-width: 100%;">
+      <h3>Solicitações</h3>
+      <p>Pendentes: <%= @aguardando || 0 %></p>
+      <p>Em andamento: <%= @andamento || 0 %></p>
+      <p>Concluídas: <%= @concluidas || 0 %></p>
     </div>
   </div>
- <!-- metrics-observatory -->
   <!-- ===========================
-        ANALYTICS
+        GRÁFICOS
   ============================ -->
   <div class="analytics-observatory">
     <div class="analytics-grid">
-      <!-- Solicitações Chart -->
       <div class="chart-panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <div class="title-icon">📊</div>
-            <div class="title-content">
-              <h3>Distribuição de Solicitações</h3>
-              <p>Análise por status atual</p>
-            </div>
-          </div>
-          <div class="panel-controls">
-            <button class="control-btn active">Mensal</button>
-            <button class="control-btn">Anual</button>
-          </div>
-        </div>
-        <div class="chart-container">
-          <canvas id="solicitacoesChart"></canvas>
-        </div>
-      </div>
-      <!-- Prestadores Chart -->
-      <div class="chart-panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <div class="title-icon">🛠️</div>
-            <div class="title-content">
-              <h3>Prestadores Cadastrados</h3>
-              <p>Distribuição por tipo</p>
-            </div>
-          </div>
-          <div class="panel-controls">
-            <button class="control-btn active">Atual</button>
-            <button class="control-btn">Histórico</button>
-          </div>
-        </div>
-        <div class="chart-container">
-          <canvas id="prestadoresChart"></canvas>
-        </div>
+        <h3>Solicitações por Status</h3>
+        <canvas id="solicitacoesChart"></canvas>
       </div>
     </div>
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- === REAL CHART DATA === -->
 <script>
-  // Solicitações Chart
   new Chart(document.getElementById('solicitacoesChart'), {
     type: 'doughnut',
     data: {
-      labels: ["Aguardando", "Em andamento", "Concluídas"],
+      labels: ['Pendente', 'Em andamento', 'Concluída'],
       datasets: [{
         data: [
-          <%= @aguardando %>,
-          <%= @andamento %>,
-          <%= @concluidas %>
+          <%= @aguardando || 0 %>,
+          <%= @andamento || 0 %>,
+          <%= @concluidas || 0 %>
         ],
         backgroundColor: ['#f6c23e', '#36a2eb', '#1cc88a']
       }]
     },
-    options: { responsive: true }
-  });
-
-  // Prestadores Chart
-  new Chart(document.getElementById('prestadoresChart'), {
-    type: 'bar',
-    data: {
-      labels: <%= raw @prestadores_por_tipo.keys.to_json %>,
-      datasets: [{
-        label: "Quantidade",
-        data: <%= raw @prestadores_por_tipo.values.to_json %>,
-        backgroundColor: '#36a2eb'
-      }]
-    },
-    options: { responsive: true }
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
   });
 </script>
 <style>

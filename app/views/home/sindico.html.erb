@@ -375,13 +375,13 @@
   }
 </style>
 <div class="observatory-dashboard">
-  <!-- Métricas Principais -->
+  <!-- MÉTRICAS PRINCIPAIS -->
   <div class="metrics-observatory">
-    <!-- Solicitações Totais (Primary Card) -->
+    <!-- Solicitações -->
     <div class="metric-card primary-metric">
       <div class="metric-header">
         <div class="metric-info">
-          <h2 class="metric-value">0</h2>
+          <h2 class="metric-value"><%= @solicitacoes_total %></h2>
           <p class="metric-label">Solicitações Totais</p>
         </div>
         <div class="metric-icon-wrapper">
@@ -390,203 +390,118 @@
       </div>
       <div class="requests-breakdown">
         <div class="request-item">
-          <div class="request-status-wrapper">
-            <span class="request-indicator status-pending"></span>
-            <span class="request-status">Pendentes</span>
-          </div>
-          <span class="request-count">3</span>
+          <span class="request-status">Pendentes</span>
+          <span class="request-count"><%= @solicitacoes_pendentes %></span>
         </div>
         <div class="request-item">
-          <div class="request-status-wrapper">
-            <span class="request-indicator status-progress"></span>
-            <span class="request-status">Em Andamento</span>
-          </div>
-          <span class="request-count">5</span>
+          <span class="request-status">Em Andamento</span>
+          <span class="request-count"><%= @solicitacoes_andamento %></span>
         </div>
         <div class="request-item">
-          <div class="request-status-wrapper">
-            <span class="request-indicator status-completed"></span>
-            <span class="request-status">Concluídas</span>
-          </div>
-          <span class="request-count">10</span>
+          <span class="request-status">Concluídas</span>
+          <span class="request-count"><%= @solicitacoes_concluidas %></span>
         </div>
       </div>
     </div>
-    <!-- Propostas Recebidas -->
+    <!-- Propostas -->
     <div class="metric-card">
       <div class="metric-header">
         <div class="metric-info">
-          <h2 class="metric-value">0</h2>
+          <h2 class="metric-value"><%= @propostas_recebidas %></h2>
           <p class="metric-label">Propostas Recebidas</p>
         </div>
         <div class="metric-icon-wrapper">
-          <div class="metric-icon proposals">📨</div>
+          <div class="metric-icon">📨</div>
         </div>
       </div>
-      <div class="metric-footer">
-        <span class="metric-trend trend-up">
-          <span class="trend-icon">↗</span>
-          <span>Aguardando análise</span>
-        </span>
-      </div>
     </div>
-    <!-- Orçamento Disponível -->
+    <!-- Orçamento -->
     <div class="metric-card">
       <div class="metric-header">
         <div class="metric-info">
-          <h2 class="metric-value">R$ 0,00</h2>
+          <h2 class="metric-value">
+            R$ <%= number_with_delimiter(@orcamento_total - @gastos_totais, delimiter: ".", separator: ",") %>
+          </h2>
           <p class="metric-label">Orçamento Disponível</p>
         </div>
         <div class="metric-icon-wrapper">
-          <div class="metric-icon finance">💰</div>
+          <div class="metric-icon">💰</div>
         </div>
       </div>
       <div class="metric-footer">
-        <span style="color: var(--gray-600);">
-          Total: R$ 12.000,00
-        </span>
+        Total: R$ <%= number_with_delimiter(@orcamento_total, delimiter: ".", separator: ",") %>
       </div>
     </div>
   </div>
-  <!-- Seção de Análises -->
+  <!-- GRÁFICOS -->
   <div class="analytics-observatory">
     <div class="analytics-grid">
       <!-- Solicitações por Categoria -->
       <div class="chart-panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <div class="title-icon">📊</div>
-            <h3>Solicitações por Categoria</h3>
-          </div>
-        </div>
-        <div class="chart-container">
+        <h3>Solicitações por Categoria</h3>
+        <% if @solicitacoes_por_categoria.any? %>
           <canvas id="solicitacoesChart"></canvas>
-        </div>
+        <% else %>
+          <p>Nenhuma solicitação registrada</p>
+        <% end %>
       </div>
-      <!-- Gastos por Centro de Custo -->
+      <!-- Gastos por Centro -->
       <div class="chart-panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <div class="title-icon">💵</div>
-            <h3>Gastos por Centro de Custo</h3>
-          </div>
-        </div>
-        <div class="chart-container">
+        <h3>Gastos por Centro de Custo</h3>
+        <% if @gastos_por_centro.any? %>
           <canvas id="gastosChart"></canvas>
-        </div>
+        <% else %>
+          <p>Nenhum gasto registrado</p>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-  // Configuração global dos gráficos
-  Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+  Chart.defaults.font.family = "'Inter', sans-serif";
   Chart.defaults.color = '#6b7280';
 
-  // Dados mock: Solicitações por Categoria
-  const categoriasSolicitacoes = ["TI", "Financeiro", "RH", "Marketing"];
-  const solicitacoesData = [4, 6, 5, 3];
-
-  new Chart(document.getElementById('solicitacoesChart'), {
-    type: 'bar',
-    data: {
-      labels: categoriasSolicitacoes,
-      datasets: [{
-        label: 'Solicitações',
-        data: solicitacoesData,
-        backgroundColor: 'rgba(37, 99, 235, 0.8)',
-        borderColor: 'rgba(37, 99, 235, 1)',
-        borderWidth: 2,
-        borderRadius: 8,
-        borderSkipped: false,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: 'rgba(17, 24, 39, 0.95)',
-          padding: 12,
-          borderRadius: 8,
-          titleFont: { size: 14, weight: 'bold' },
-          bodyFont: { size: 13 }
-        }
+  <% if @solicitacoes_por_categoria.any? %>
+    new Chart(document.getElementById('solicitacoesChart'), {
+      type: 'bar',
+      data: {
+        labels: <%= raw @solicitacoes_por_categoria.map(&:descricao).to_json %>,
+        datasets: [{
+          data: <%= raw @solicitacoes_por_categoria.map(&:count).to_json %>,
+          backgroundColor: 'rgba(37,99,235,0.8)',
+          borderRadius: 8
+        }]
       },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: { precision: 0, font: { size: 12 } },
-          grid: { color: 'rgba(229, 231, 235, 0.5)', drawBorder: false }
-        },
-        x: {
-          grid: { display: false },
-          ticks: { font: { size: 12 } }
-        }
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
       }
-    }
-  });
+    });
+  <% end %>
 
-  // Dados mock: Gastos por Centro de Custo
-  const centrosCusto = ["TI", "RH", "Marketing", "Operações", "Financeiro", "Jurídico"];
-  const gastosData = [3000, 1500, 1200, 1000, 1500, 1300];
-
-  new Chart(document.getElementById('gastosChart'), {
-    type: 'doughnut',
-    data: {
-      labels: centrosCusto,
-      datasets: [{
-        data: gastosData,
-        backgroundColor: [
-          'rgba(37, 99, 235, 0.8)',
-          'rgba(16, 185, 129, 0.8)',
-          'rgba(245, 158, 11, 0.8)',
-          'rgba(239, 68, 68, 0.8)',
-          'rgba(139, 92, 246, 0.8)',
-          'rgba(236, 72, 153, 0.8)'
-        ],
-        borderColor: [
-          'rgba(37, 99, 235, 1)',
-          'rgba(16, 185, 129, 1)',
-          'rgba(245, 158, 11, 1)',
-          'rgba(239, 68, 68, 1)',
-          'rgba(139, 92, 246, 1)',
-          'rgba(236, 72, 153, 1)'
-        ],
-        borderWidth: 2,
-        hoverOffset: 8
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            padding: 15,
-            font: { size: 12 },
-            usePointStyle: true,
-            pointStyle: 'circle'
-          }
-        },
-        tooltip: {
-          backgroundColor: 'rgba(17, 24, 39, 0.95)',
-          padding: 12,
-          borderRadius: 8,
-          titleFont: { size: 14, weight: 'bold' },
-          bodyFont: { size: 13 },
-          callbacks: {
-            label: function(context) {
-              return context.label + ': R$ ' + context.parsed.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+  <% if @gastos_por_centro.any? %>
+    new Chart(document.getElementById('gastosChart'), {
+      type: 'doughnut',
+      data: {
+        labels: <%= raw @gastos_por_centro.map(&:nome).to_json %>,
+        datasets: [{
+          data: <%= raw @gastos_por_centro.map(&:valor).to_json %>,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        cutout: '65%',
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: ctx =>
+                ctx.label + ': R$ ' +
+                ctx.parsed.toLocaleString('pt-BR', { minimumFractionDigits: 2 })
             }
           }
         }
-      },
-      cutout: '65%'
-    }
-  });
+      }
+    });
+  <% end %>
 </script>

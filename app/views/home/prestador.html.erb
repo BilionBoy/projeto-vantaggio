@@ -14,6 +14,31 @@
     margin-bottom: 2rem;
     padding: 0 2rem;
   }
+  /* ============================= */
+  /* CARD SOLICITAÇÕES (ESPECÍFICO) */
+  /* ============================= */
+
+  .metrics-observatory .metric-card.requests-card {
+  grid-column: span 2;        /* ocupa o espaço de dois cards */
+  min-height: 140px;          /* deixa retangular */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 24px;
+  }
+
+  /* Título */
+  .metrics-observatory .metric-card.requests-card h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  }
+
+  /* Linhas internas */
+  .metrics-observatory .metric-card.requests-card p {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #4b5563;
+  }
 
   .metric-card {
     background: white;
@@ -242,169 +267,59 @@
   }
 </style>
 <div class="observatory-dashboard">
-  <!-- Métricas do Fornecedor -->
+  <!-- MÉTRICAS -->
   <div class="metrics-observatory">
-    <!-- Saldo Disponível -->
     <div class="metric-card primary-metric">
-      <div class="metric-header">
-        <div class="metric-icon-wrapper">
-          <div class="metric-icon budget">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-            </svg>
-          </div>
-        </div>
-        <div class="metric-content">
-          <h2 class="metric-value">
-            R$ 12.500,00
-          </h2>
-          <p class="metric-label">Saldo A receber</p>
-        </div>
-      </div>
+      <h2 class="metric-value">
+        R$ <%= number_with_delimiter(@saldo_a_receber, delimiter: ".", separator: ",") %>
+      </h2>
+      <p class="metric-label">Saldo a receber</p>
     </div>
-    <!-- Total de Serviços Ativos -->
     <div class="metric-card">
-      <div class="metric-header">
-        <div class="metric-icon-wrapper">
-          <div class="metric-icon vehicles-budgeted">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18 2H6v20h12V2zm-2 14H8v-2h8v2zm0-4H8V8h8v4z"/>
-            </svg>
-          </div>
-        </div>
-        <div class="metric-content">
-          <h2 class="metric-value">15</h2>
-          <p class="metric-label">Serviços Ativos</p>
-        </div>
-      </div>
+      <h2 class="metric-value"><%= @servicos_ativos %></h2>
+      <p class="metric-label">Serviços Ativos</p>
     </div>
-    <!-- Total de Movimentos -->
-    <div class="metric-card">
-      <div class="metric-header">
-        <div class="metric-icon-wrapper">
-          <div class="metric-icon total-vehicles">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17 5H3v14h14V5z"/>
-            </svg>
-          </div>
-        </div>
-        <div class="metric-content">
-          <h2 class="metric-value">42</h2>
-          <p class="metric-label">Movimentos Financeiros</p>
-        </div>
-      </div>
-    </div>
-    <!-- Solicitações -->
     <div class="metric-card requests-card">
-      <div class="metric-header">
-        <div class="metric-icon-wrapper">
-          <div class="metric-icon requests">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M14 2H6v20h12V2z"/>
-            </svg>
-          </div>
-        </div>
-        <div class="metric-content">
-          <h2 class="metric-label-main">Solicitações</h2>
-          <div class="requests-breakdown">
-            <div class="request-item">
-              <div class="request-indicator status-0"></div>
-              <span class="request-status">Aguardando</span>
-              <span class="request-count">3</span>
-            </div>
-            <div class="request-item">
-              <div class="request-indicator status-1"></div>
-              <span class="request-status">Em andamento</span>
-              <span class="request-count">5</span>
-            </div>
-            <div class="request-item">
-              <div class="request-indicator status-2"></div>
-              <span class="request-status">Concluídas</span>
-              <span class="request-count">10</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <h3>Solicitações</h3>
+      <p>Pendentes: <%= @solicitacoes_pendentes %></p>
+      <p>Em andamento: <%= @solicitacoes_andamento %></p>
+      <p>Concluídas: <%= @solicitacoes_concluidas %></p>
     </div>
   </div>
-
-  <!-- Gráficos de Análise -->
+  <!-- GRÁFICOS -->
   <div class="analytics-observatory">
     <div class="analytics-grid">
-      <!-- Distribuição de Movimentos -->
       <div class="chart-panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <div class="title-icon">💰</div>
-            <div class="title-content">
-              <h3>Movimentos Financeiros</h3>
-              <p>Distribuição por tipo</p>
-            </div>
-          </div>
-        </div>
-        <div class="chart-container">
-          <canvas id="movimentosChart"></canvas>
-        </div>
+        <h3>Movimentos Financeiros</h3>
+        <canvas id="movimentosChart"></canvas>
       </div>
-
-      <!-- Performance de Serviços -->
       <div class="chart-panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <div class="title-icon">🛠️</div>
-            <div class="title-content">
-              <h3>Serviços Prestados</h3>
-              <p>Quantidade por categoria</p>
-            </div>
-          </div>
-        </div>
-        <div class="chart-container">
-          <canvas id="servicosChart"></canvas>
-        </div>
+        <h3>Serviços por Categoria</h3>
+        <canvas id="servicosChart"></canvas>
       </div>
     </div>
   </div>
 </div>
-
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  // Dados mock para Movimentos
-  const tiposMovimentos = ["Receita", "Despesa", "Investimento", "Outros"];
-  const movimentosPorTipo = [12, 8, 15, 7];
-
   new Chart(document.getElementById('movimentosChart'), {
     type: 'doughnut',
     data: {
-      labels: tiposMovimentos,
+      labels: <%= raw @movimentos_por_tipo.map(&:descricao).to_json %>,
       datasets: [{
-        data: movimentosPorTipo,
-        backgroundColor: ['#f6c23e', '#36a2eb', '#1cc88a', '#e74a3b']
+        data: <%= raw @movimentos_por_tipo.map(&:count).to_json %>
       }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true
     }
   });
-
-  // Dados mock para Serviços
-  const categoriasServicos = ["Manutenção", "Transporte", "Consultoria", "Suporte"];
-  const servicosPorCategoria = [5, 3, 4, 3];
 
   new Chart(document.getElementById('servicosChart'), {
     type: 'bar',
     data: {
-      labels: categoriasServicos,
+      labels: <%= raw @servicos_por_categoria.map(&:descricao).to_json %>,
       datasets: [{
-        label: "Serviços Ativos",
-        data: servicosPorCategoria,
-        backgroundColor: '#36a2eb'
+        label: 'Serviços',
+        data: <%= raw @servicos_por_categoria.map(&:count).to_json %>
       }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true
     }
   });
 </script>

@@ -18,29 +18,23 @@
       <%= f.error_notification %>
       <div class="row mb-3">
         <div class="col-4">
-          <%= f.input :valor_total,
-              label: "Valor Total (R$)",
-              placeholder: "Ex.: 1500.00" %>
+          <%= f.input :valor_total,label: "Valor Total (R$)",placeholder: "Ex.: 1500.00" %>
         </div>
         <div class="col-4">
-          <%= f.input :prazo_execucao_dias,
-              label: "Prazo de Execução (dias)",
-              placeholder: "Ex.: 5" %>
+          <%= f.input :prazo_execucao_dias, label: "Prazo de Execução (dias)", placeholder: "Ex.: 5" %>
         </div>
         <div class="col-4">
-          <%= f.input :validade_proposta,
-              as: :date,
-              label: "Validade da Proposta" %>
+          <%= f.input :validade_proposta, as: :date, label: "Validade da Proposta" %>
         </div>
       </div>
-      <%= f.input :observacao,
-          as: :text,
-          label: "Observações",
-          input_html: { rows: 4, placeholder: "Informações adicionais do serviço..." } %>
+      <%= f.input :observacao, as: :text, label: "Observações", input_html: { rows: 4, placeholder: "Informações adicionais do serviço..." } %>
     </div>
-    <div class="card-footer d-flex justify-content-between">
-      <%= f.submit "Enviar Proposta", class: "btn btn-primary" %>
-      <%= link_to "Cancelar", o_propostas_path, class: "btn btn-light" %>
+    <div class="card-footer d-flex justify-content-end gap-2">
+      <%= link_to o_propostas_path, class: "btn btn-light" do %>
+        <i class="bi bi-x-circle me-1"></i>
+        Cancelar
+      <% end %>
+      <%= f.submit "Enviar Proposta", class: "btn btn-primary bi bi-send" %>
     </div>
   <% end %>
 </div>
