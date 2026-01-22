@@ -17,7 +17,7 @@ class OPropostasController < ApplicationController
       solicitacoes =
         @q.result
           .includes(:c_condominio, :o_categoria_servico, :o_status)
-          .where(o_status: OStatus.find_by(descricao: "Pendente"))
+          .where(o_status: OStatus.where(descricao: ["Publicada", "Aprovada", "Rejeitada"]))
 
       @pagy, @solicitacoes = pagy(solicitacoes.order(created_at: :desc))
     else

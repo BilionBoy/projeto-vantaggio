@@ -1,12 +1,21 @@
-<%= render "shared/context_nav", title: t("activerecord.models.#{OSolicitacao.model_name.i18n_key}.other"), new_path: new_o_solicitacao_path do %>
-  <span class="breadcrumb-item active"><%= t("activerecord.models.#{OSolicitacao.model_name.i18n_key}.other") %></span>
+<%= render "shared/context_nav",title: t("activerecord.models.#{OSolicitacao.model_name.i18n_key}.other"),new_path: new_o_solicitacao_path do %>
+  <span class="breadcrumb-item active">
+    <%= t("activerecord.models.#{OSolicitacao.model_name.i18n_key}.other") %>
+  </span>
 <% end %>
 <div class="card">
   <div class="card-header d-flex">
-    <%= search_form_for @q, html: { class: "d-flex gap-2", autocomplete: "off" } do |f| %>
-      <%= f.search_field :numero_cont, class: "form-control", placeholder: "Pesquisar" %>
-      <%= f.button(type: 'submit', class: 'btn btn-info') { tag.i(class: 'ph-magnifying-glass') } %>
-      <%= link_to tag.i(class: 'ph-x-circle'), o_solicitacoes_path, class: "btn btn-light" if params[:q] %>
+    <%= search_form_for @q,
+          html: { class: "d-flex gap-2", autocomplete: "off" } do |f| %>
+      <%= f.search_field :numero_cont,
+            class: "form-control",
+            placeholder: "Pesquisar" %>
+      <%= f.button(type: "submit", class: "btn btn-info") do %>
+        <i class="ph-magnifying-glass"></i>
+      <% end %>
+      <%= link_to tag.i(class: "ph-x-circle"),
+                  o_solicitacoes_path,
+                  class: "btn btn-light" if params[:q] %>
     <% end %>
   </div>
   <div class="card-body">
@@ -15,34 +24,44 @@
         <thead>
           <tr>
             <th class="text-center">Ações</th>
-            <th><%= sort_link(@q, :descricao, t("activerecord.attributes.o_solicitacao.descricao")) %></th>
-            <th><%= sort_link(@q, :observacao, t("activerecord.attributes.o_solicitacao.observacao")) %></th>
-            <th><%= sort_link(@q, :o_status, t("activerecord.attributes.o_solicitacao.status")) %></th>
-            <th><%= sort_link(@q, :o_urgencia, t("activerecord.attributes.o_solicitacao.urgencia")) %></th>
-            <th><%= sort_link(@q, :o_categoria_servico, t("activerecord.attributes.o_solicitacao.categoria_servico")) %></th>
-            <th><%= sort_link(@q, :c_condominio, t("activerecord.attributes.o_solicitacao.condominio")) %></th>
-            <!-- 🚀 NOVA COLUNA -->
-            <th><%= sort_link(@q, :data_limite_publicacao, "Data Limite") %></th>
+            <th>Descrição</th>
+            <th>Observação</th>
+            <th>Status</th>
+            <th>Urgência</th>
+            <th>Categoria</th>
+            <th>Condomínio</th>
+            <th>Data Limite</th>
           </tr>
         </thead>
         <tbody>
           <% @o_solicitacoes.each do |o_solicitacao| %>
             <tr>
               <td class="text-center">
-                <div class="dropdown-toggle">
-                  <a href="#" class="text-body dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="dropdown dropstart position-static">
+                  <a href="#" class="text-body" data-bs-toggle="dropdown">
                     <i class="ph-gear"></i>
                   </a>
-                  <div class="dropdown-menu">
+                  <div class="dropdown-menu dropdown-menu-end">
                     <div class="dropdown-header">Opções</div>
-                    <%= link_to edit_o_solicitacao_path(o_solicitacao), class: "dropdown-item" do %>
+                    <%= link_to edit_o_solicitacao_path(o_solicitacao),
+                                class: "dropdown-item" do %>
                       <i class="ph-pen me-2"></i> Editar
                     <% end %>
+                    <% if o_solicitacao.o_status&.descricao == "Pendente" %>
+                      <%= button_to publicar_o_solicitacao_path(o_solicitacao),
+                            method: :patch,
+                            form: { class: "d-inline" },
+                            class: "dropdown-item text-success",
+                            data: { confirm: "Deseja publicar esta solicitação?" } do %>
+                        <i class="ph-upload-simple me-2"></i> Publicar
+                      <% end %>
+                    <% end %>
+                    <div class="dropdown-divider"></div>
                     <%= form_for o_solicitacao, method: :delete do |f| %>
-                      <a class="dropdown-item hand-pointer"
-                        data-confirm-delete="<%= o_solicitacao_path(o_solicitacao) %>"
-                        data-csrf-token="<%= form_authenticity_token %>">
-                        <i class="ph-trash-simple me-2"></i>Excluir
+                      <a class="dropdown-item text-danger hand-pointer"
+                         data-confirm-delete="<%= o_solicitacao_path(o_solicitacao) %>"
+                         data-csrf-token="<%= form_authenticity_token %>">
+                        <i class="ph-trash-simple me-2"></i> Excluir
                       </a>
                     <% end %>
                   </div>
@@ -64,6 +83,7 @@
     </div>
   </div>
   <div class="card-footer">
-    <%= pagy_bootstrap_nav(@pagy, link_extra: 'class="btn btn-outline-secondary btn-sm mx-1"').html_safe %>
+    <%= pagy_bootstrap_nav(@pagy,
+          link_extra: 'class="btn btn-outline-secondary btn-sm mx-1"').html_safe %>
   </div>
 </div>

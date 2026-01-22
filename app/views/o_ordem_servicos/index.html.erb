@@ -139,9 +139,7 @@
           <% end %>
           <!-- ADMIN CONFIRMA PAGAMENTO -->
           <% if current_user.admin? && status_descricao == "Aprovada" %>
-            <%= button_to pagar_o_ordem_servico_path(os),
-                method: :patch,
-                class: "btn btn-warning" do %>
+            <%= button_to pagar_o_ordem_servico_path(os),method: :patch,class: "btn btn-success",data: { turbo: false, confirm: "Confirmar pagamento desta ordem de serviço?" } do %>
               Confirmar Pagamento
             <% end %>
           <% end %>

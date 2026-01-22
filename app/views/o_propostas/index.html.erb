@@ -379,9 +379,7 @@
   <% else %>
     <div class="cards-grid" data-count="<%= @solicitacoes.count %>">
       <% @solicitacoes.each do |solic| %>
-        <% propostas_do_prestador = solic.o_propostas
-                                          .where(a_empresa_prestador_id: current_user.a_empresa_prestador_id)
-                                          .order(:created_at) %>
+        <% propostas_do_prestador = solic.o_propostas.where(a_empresa_prestador_id: current_user.a_empresa_prestador_id).order(:created_at) %>
         <!-- CARD DA SOLICITAÇÃO → PRESTADOR -->
         <article class="proposal-card">
           <header class="proposal-header">

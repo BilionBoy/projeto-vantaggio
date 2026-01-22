@@ -15,7 +15,8 @@ end
   resources :o_solicitacoes do
     resources :o_propostas, only: [:new, :create]
     member do
-      get :saldo_centro
+      patch :publicar         # Publica solicitação
+      get   :saldo_centro
     end
   end
 

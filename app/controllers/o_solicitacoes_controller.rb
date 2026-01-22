@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class OSolicitacoesController < ApplicationController
-  before_action :set_o_solicitacao, only: %i[show edit update destroy]
+  before_action :set_o_solicitacao, only: %i[show edit update destroy publicar]
 
   rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
   rescue_from ActiveRecord::InvalidForeignKey, with: :handle_foreign_key_violation
@@ -27,7 +27,7 @@ class OSolicitacoesController < ApplicationController
 
     if @o_solicitacao.save
       redirect_to o_solicitacoes_path,
-                  notice: t('messages.created_successfully'),
+                  notice: t("messages.created_successfully"),
                   status: :see_other
     else
       load_centros
@@ -38,7 +38,7 @@ class OSolicitacoesController < ApplicationController
   def update
     if @o_solicitacao.update(o_solicitacao_params)
       redirect_to o_solicitacoes_path,
-                  notice: t('errors.messages.updated_successfully'),
+                  notice: t("errors.messages.updated_successfully"),
                   status: :see_other
     else
       load_centros
@@ -46,11 +46,19 @@ class OSolicitacoesController < ApplicationController
     end
   end
 
-  # ✅ DELETE PROFISSIONAL
+  def publicar
+    @o_solicitacao.publicar!
+
+    redirect_to o_solicitacoes_path,notice: "Solicitação publicada com sucesso",status: :see_other
+  rescue => e
+    redirect_to o_solicitacoes_path, alert: e.message
+  end
+
+  # DELETE
   def destroy
     @o_solicitacao.destroy
     redirect_to o_solicitacoes_path,
-                notice: t('errors.messages.deleted_successfully')
+                notice: t("errors.messages.deleted_successfully")
   end
 
   def saldo_centro
@@ -61,9 +69,7 @@ class OSolicitacoesController < ApplicationController
   private
 
   def set_o_solicitacao
-    @o_solicitacao = OSolicitacao.find_by(id: params[:id])
-    return redirect_to o_solicitacoes_path,
-                       alert: t('messages.not_found') unless @o_solicitacao
+    @o_solicitacao = OSolicitacao.find(params[:id])
   end
 
   def o_solicitacao_params
@@ -78,11 +84,11 @@ class OSolicitacoesController < ApplicationController
   end
 
   def handle_not_found
-    redirect_to o_solicitacoes_path, alert: t('messages.not_found')
+    redirect_to o_solicitacoes_path, alert: t("messages.not_found")
   end
 
   def handle_foreign_key_violation
     redirect_to o_solicitacoes_path,
-      alert: t('errors.messages.delete_failed_due_to_dependencies')
+                alert: t("errors.messages.delete_failed_due_to_dependencies")
   end
 end
