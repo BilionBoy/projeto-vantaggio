@@ -134,8 +134,15 @@ class HomeController < ApplicationController
     @gastos_totais   = centros.sum('valor_inicial - saldo_atual').to_f
     @saldo_disponivel = @orcamento_total - @gastos_totais
   
-    @receita_taxas = TTaxa.sum(:percentual).to_f
-  
+    pago_status_id = OStatus.find_by!(descricao: "Pago").id
+
+   @receita_taxas = OOrdemServico
+     .joins(a_empresa_prestador: :t_taxa)
+     .where(o_status_id: pago_status_id)
+     .sum(
+       "o_ordem_servicos.valor_total * (t_taxas.percentual / 100.0)"
+     )
+     .to_f  
     solicitacoes = OSolicitacao.joins(:o_status)
   
     status_group = solicitacoes.group('o_status.descricao').count
