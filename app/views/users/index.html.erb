@@ -1,6 +1,4 @@
-<%= render "shared/context_nav",
-           title: t("activerecord.models.#{User.model_name.i18n_key}.other"),
-           new_path: new_user_path do %>
+<%= render "shared/context_nav",title: t("activerecord.models.#{User.model_name.i18n_key}.other"),new_path: new_user_path do %>
   <span class="breadcrumb-item active">
     <%= t("activerecord.models.#{User.model_name.i18n_key}.other") %>
   </span>
@@ -30,7 +28,7 @@
           <th><%= sort_link(@q, :nome,  t("activerecord.attributes.user.nome")) %></th>
           <th><%= sort_link(@q, :email, t("activerecord.attributes.user.email")) %></th>
           <th><%= sort_link(@q, :telefone, t("activerecord.attributes.user.telefone")) %></th>
-          <th><%= sort_link(@q, :a_tipo_usuario, t("activerecord.attributes.user.a_tipo_usuario")) %></th>
+          <th><%= sort_link(@q, :a_tipo_usuario, t("activerecord.attributes.user.tipo_usuario")) %></th>
         </tr>
       </thead>
       <tbody>

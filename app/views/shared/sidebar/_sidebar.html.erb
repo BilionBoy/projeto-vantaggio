@@ -34,141 +34,166 @@
   .form-control-feedback-icon {
     color: rgba(255, 255, 255, 0.8);
   }
+  .nav-item-header {
+  padding: 8px 16px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  opacity: 0.7;
+  color: #fff;
+  }
 </style>
 <div class="sidebar sidebar-dark sidebar-main sidebar-expand-xl">
   <div class="sidebar-content">
-    <!-- Busca -->
+    <!-- 🔍 Busca -->
     <div class="sidebar-section-body p-2">
       <div class="form-control-feedback form-control-feedback-end">
-        <input type="search" id="sidebar-search-input" class="form-control" placeholder="Pesquisar" onkeyup="filterSidebar()">
-        <div class="form-control-feedback-icon">
-          <i class="ph-magnifying-glass opacity-50"></i>
+        <input
+          type="search"
+          id="sidebar-search-input"
+          class="form-control"
+          placeholder="Pesquisar"
+          onkeyup="filterSidebar()"
+        >
+          <div class="form-control-feedback-icon">
+            <i class="ph-magnifying-glass opacity-50"></i>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- Menu -->
-    <div class="sidebar-section">
-      <ul class="nav nav-sidebar" data-nav-type="accordion" id="sidebar-items">
-        <!-- Home -->
-        <li class="nav-item">
-          <%= link_to root_path, class: "nav-link" do %>
-            <i class="ph-house"></i>
-            <span>Home</span>
-          <% end %>
-        </li>
-        <!-- Usuários -->
-        <li class="nav-item">
-          <%= link_to users_path, class: "nav-link" do %>
-            <i class="ph-users"></i>
-            <span>Usuários</span>
-          <% end %>
-        </li>
-        <!-- Empresas Prestadoras -->
-        <li class="nav-item">
-          <%= link_to a_empresas_prestadores_path, class: "nav-link" do %>
-            <i class="ph-storefront"></i>
-            <span>Empresas Prestadoras</span>
-          <% end %>
-        </li>
-        <!-- Condomínios -->
-        <li class="nav-item">
-          <%= link_to c_condominios_path, class: "nav-link" do %>
-            <i class="ph-buildings"></i>
-            <span>Condomínios</span>
-          <% end %>
-        </li>
-        <!-- Cartões -->
-        <li class="nav-item nav-item-submenu">
-          <a href="#" class="nav-link">
-            <i class="ph-credit-card"></i>
-            <span>Cartões</span>
-          </a>
-          <ul class="nav-group-sub collapse">
-            <li class="nav-item"><%= link_to "Cartões", c_cartoes_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Tipos de Cartão", c_tipo_cartoes_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Níveis de Cartão", c_nivel_cartoes_path, class: "nav-link" %></li>
-          </ul>
-        </li>
-        <!-- Taxas -->
-        <li class="nav-item">
-          <%= link_to t_taxas_path, class: "nav-link" do %>
-            <i class="ph-percent"></i>
-            <span>Taxas</span>
-          <% end %>
-        </li>
-        <!-- Operações -->
-        <li class="nav-item nav-item-submenu">
-          <a href="#" class="nav-link">
-            <i class="ph-briefcase"></i>
-            <span>Operações</span>
-          </a>
-          <ul class="nav-group-sub collapse">
-            <li class="nav-item"><%= link_to "Tipos de Solicitação", o_tipos_solicitacoes_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Categorias de Serviços", o_categorias_servicos_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Urgências", o_urgencias_path, class: "nav-link" %></li>
-            <!-- 🔥 NOVO: Ordens de Serviço -->
-            <li class="nav-item">
-              <%= link_to o_ordem_servicos_path, class: "nav-link" do %>
-                <i class="ph-hammer"></i>
-                <span>Ordens de Serviço</span>
-              <% end %>
-            </li>
-          </ul>
-        </li>
-        <!-- Tabelas Referenciais -->
-        <li class="nav-item nav-item-submenu">
-          <a href="#" class="nav-link">
-            <i class="ph-folders"></i>
-            <span>Tabelas Referenciais</span>
-          </a>
-          <ul class="nav-group-sub collapse">
-            <li class="nav-item"><%= link_to "Status Administrativo", a_status_index_path,  class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Status Solicitações",   o_status_index_path,  class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Tipo Usuários",         a_tipo_usuarios_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Países",                g_paises_path,        class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Estados",               g_estados_path,       class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Municípios",            g_municipios_path,    class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Bairros",               g_bairros_path,       class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Distritos",             g_distritos_path,     class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to "Localidades",           g_localidades_path,   class: "nav-link" %></li>
-          </ul>
-        </li>
-      </ul>
+      <div class="sidebar-section">
+        <ul class="nav nav-sidebar pv-nav" data-nav-type="accordion" id="sidebar-items">
+          <li class="nav-item">
+            <%= link_to root_path, class: "nav-link" do %>
+              <i class="ph-house"></i>
+              <span>Home</span>
+            <% end %>
+          </li>
+          <li class="nav-item-header">Administrativo</li>
+          <li class="nav-item">
+            <%= link_to users_path, class: "nav-link" do %>
+              <i class="ph-users"></i>
+              <span>Usuários</span>
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to a_empresas_prestadores_path, class: "nav-link" do %>
+              <i class="ph-storefront"></i>
+              <span>Empresas Prestadoras</span>
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to c_condominios_path, class: "nav-link" do %>
+              <i class="ph-buildings"></i>
+              <span>Condomínios</span>
+            <% end %>
+          </li>
+          <!-- ================= OPERAÇÕES ================= -->
+          <li class="nav-item-header">Operações</li>
+          <li class="nav-item">
+            <%= link_to o_ordem_servicos_path, class: "nav-link" do %><i class="ph-file-text"></i><span>Ordens de Serviço</span>
+            <% end %>
+          </li>
+          <li class="nav-item">
+            <%= link_to t_taxas_path, class: "nav-link" do %>
+              <i class="ph-percent"></i>
+              <span>Taxas</span>
+            <% end %>
+          </li>
+          <li class="nav-item nav-item-submenu">
+            <a href="#" class="nav-link">
+              <i class="ph-credit-card"></i>
+              <span>Cartões</span>
+            </a>
+            <ul class="nav-group-sub collapse">
+              <li class="nav-item"><%= link_to "Cartões", c_cartoes_path, class: "nav-link" %></li>
+              <li class="nav-item"><%= link_to "Tipos de Cartão", c_tipo_cartoes_path, class: "nav-link" %></li>
+              <li class="nav-item"><%= link_to "Níveis de Cartão", c_nivel_cartoes_path, class: "nav-link" %></li>
+            </ul>
+          </li>
+          <!-- ================= CONFIGURAÇÕES ================= -->
+          <li class="nav-item-header">Configurações</li>
+          <li class="nav-item nav-item-submenu">
+            <a href="#" class="nav-link">
+              <i class="ph-database"></i>
+              <span>Tabelas Referenciais</span>
+            </a>
+            <ul class="nav-group-sub collapse">
+              <!-- 🔹 USUÁRIOS -->
+              <li class="nav-item nav-item-submenu">
+                <a href="#" class="nav-link">
+                  <i class="ph-users"></i>
+                  <span>Usuários</span>
+                </a>
+                <ul class="nav-group-sub">
+                  <li><%= link_to "Tipos de Usuário", a_tipo_usuarios_path, class: "nav-link" %></li>
+                  <li><%= link_to "Status Administrativo", a_status_index_path, class: "nav-link" %></li>
+                </ul>
+              </li>
+              <!-- 🔹 OPERAÇÕES (MOVIDO PRA REFERENCIAIS) -->
+              <li class="nav-item nav-item-submenu">
+                <a href="#" class="nav-link">
+                  <i class="ph-briefcase"></i>
+                  <span>Operações</span>
+                </a>
+                <ul class="nav-group-sub">
+                  <li><%= link_to "Tipos de Solicitação", o_tipos_solicitacoes_path, class: "nav-link" %></li>
+                  <li><%= link_to "Categorias de Serviços", o_categorias_servicos_path, class: "nav-link" %></li>
+                  <li><%= link_to "Urgências", o_urgencias_path, class: "nav-link" %></li>
+                  <li><%= link_to "Status de Solicitações", o_status_index_path, class: "nav-link" %></li>
+                </ul>
+              </li>
+              <!-- 🔹 LOCALIDADES -->
+              <li class="nav-item nav-item-submenu">
+                <a href="#" class="nav-link">
+                  <i class="ph-map-pin-line"></i>
+                  <span>Localidades</span>
+                </a>
+                <ul class="nav-group-sub">
+                  <li><%= link_to "Países", g_paises_path, class: "nav-link" %></li>
+                  <li><%= link_to "Estados", g_estados_path, class: "nav-link" %></li>
+                  <li><%= link_to "Municípios", g_municipios_path, class: "nav-link" %></li>
+                  <li><%= link_to "Distritos", g_distritos_path, class: "nav-link" %></li>
+                  <li><%= link_to "Bairros", g_bairros_path, class: "nav-link" %></li>
+                  <li><%= link_to "Localidades", g_localidades_path, class: "nav-link" %></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
-<script>
-  function filterSidebar() {
-    const filter = document.getElementById("sidebar-search-input").value.toLowerCase().trim();
-    const items = document.querySelectorAll("#sidebar-items > li");
+  <script>
+    function filterSidebar() {
+      const filter = document.getElementById("sidebar-search-input").value.toLowerCase().trim();
+      const items = document.querySelectorAll("#sidebar-items > li");
 
-    items.forEach(item => {
-      const text = item.textContent.toLowerCase();
-      const submenu = item.querySelector(".nav-group-sub");
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const submenu = item.querySelector(".nav-group-sub");
 
-      if (!filter) {
-        item.style.display = "";
-        if (submenu) submenu.classList.remove("show");
-        return;
-      }
-
-      if (submenu) {
-        let match = false;
-        submenu.querySelectorAll("li.nav-item").forEach(sub => {
-          const ok = sub.textContent.toLowerCase().includes(filter);
-          sub.style.display = ok ? "" : "none";
-          if (ok) match = true;
-        });
-
-        if (match || text.includes(filter)) {
+        if (!filter) {
           item.style.display = "";
-          submenu.classList.add("show");
-        } else {
-          item.style.display = "none";
+          if (submenu) submenu.classList.remove("show");
+          return;
         }
-      } else {
-        item.style.display = text.includes(filter) ? "" : "none";
-      }
-    });
-  }
-</script>
+
+        if (submenu) {
+          let match = false;
+          submenu.querySelectorAll("li.nav-item").forEach(sub => {
+            const ok = sub.textContent.toLowerCase().includes(filter);
+            sub.style.display = ok ? "" : "none";
+            if (ok) match = true;
+          });
+
+          if (match || text.includes(filter)) {
+            item.style.display = "";
+            submenu.classList.add("show");
+          } else {
+            item.style.display = "none";
+          }
+        } else {
+          item.style.display = text.includes(filter) ? "" : "none";
+        }
+      });
+    }
+  </script>

@@ -3,7 +3,12 @@
   <head>
     <title>Vantaggio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Metadados  -->
+    <link rel="icon" href="/layout/assets/img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/layout/assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/layout/assets/img/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/layout/assets/img/apple-touch-icon.png">
+    <link rel="manifest" href="/layout/assets/img/site.webmanifest">
+    <!-- Metadados -->
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <% # Dependências CSS %>
@@ -11,9 +16,8 @@
     <%= stylesheet_link_tag "/layout/assets/icons/phosphor/styles.min.css", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "/layout/assets/css/all.min.css",               "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "/layout/assets/css/animate.min.css",           "data-turbo-track": "reload" %>
-    <%= stylesheet_link_tag "devise",                                                         "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "devise",                                       "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <% # App JS do projeto %>
   </head>
   <body>
     <%= yield %>
